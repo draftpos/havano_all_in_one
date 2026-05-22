@@ -83,16 +83,24 @@ class ResUsers(models.Model):
                     {"group_ids": [(6, 0, groups.ids)]}
                 )
 
+    def _havano_prepare_vals(self, vals, for_create=False):
+        rec = dict(vals)
+        if rec.get("is_pharmacist") or rec.get("is_cashier"):
+            if rec.get("role") in (False, None, ""):
+                if "role" in rec:
+                    raise ValidationError(
+                        _(
+                            "Pharmacist and Cashier must be used together with "
+                            "the User or Administrator role."
+                        )
+                    )
+                if for_create:
+                    rec["role"] = "group_user"
+        return rec
+
     @api.model_create_multi
     def create(self, vals_list):
-        prepared = []
-        for vals in vals_list:
-            rec = dict(vals)
-            if (rec.get("is_pharmacist") or rec.get("is_cashier")) and rec.get(
-                "role"
-            ) in (False, None, ""):
-                rec["role"] = "group_user"
-            prepared.append(rec)
+        prepared = [self._havano_prepare_vals(vals, for_create=True) for vals in vals_list]
         users = super().create(prepared)
         users.filtered(lambda u: not u.share)._havano_apply_addon_roles()
         return users
@@ -100,10 +108,7 @@ class ResUsers(models.Model):
     def write(self, vals):
         if self.env.context.get("havano_skip_addon_role_sync"):
             return super().write(vals)
-        if (vals.get("is_pharmacist") or vals.get("is_cashier")) and vals.get(
-            "role"
-        ) in (False, None, ""):
-            vals = dict(vals, role="group_user")
+        vals = self._havano_prepare_vals(vals)
         res = super().write(vals)
         if {"is_pharmacist", "is_cashier", "role"}.intersection(vals):
             self.filtered(lambda u: not u.share)._havano_apply_addon_roles()
