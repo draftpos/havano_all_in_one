@@ -19,5 +19,6 @@
     <record id="group_havano_cashier" model="res.groups">
         <field name="name">Cashier</field>
         <field name="privilege_id" ref="res_groups_privilege_havano_user_roles"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 </odoo>

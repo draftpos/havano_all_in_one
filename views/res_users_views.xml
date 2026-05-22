@@ -14,8 +14,9 @@
                     <label for="is_cashier" string="Cashier"/>
                 </div>
                 <div class="text-muted" invisible="share">
-                    Combine User or Administrator with Pharmacist and/or Cashier.
-                    Cashier can be used without User (cashier-only account).
+                    Pharmacist and Cashier are additional roles on top of User
+                    or Administrator (for example User + Pharmacist, or
+                    Administrator + Cashier).
                 </div>
             </xpath>
             <xpath expr="//notebook" position="inside">

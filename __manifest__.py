@@ -1,6 +1,6 @@
 {
     "name": "Havano All In One",
-    "version": "19.0.1.0.5",
+    "version": "19.0.1.0.6",
     "category": "Sales",
     "summary": "Havano suite: duplicates, contacts, pharmacy products, doctors, tax pricing, PDF preview",
     "author": "Havano",

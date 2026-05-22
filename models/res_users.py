@@ -24,48 +24,29 @@ class ResUsers(models.Model):
     is_pharmacist = fields.Boolean(
         string="Pharmacist",
         default=False,
-        help="Additional role for pharmacy workflows. Combine with User or Administrator.",
+        help="Additional pharmacy role. Requires User or Administrator.",
     )
     is_cashier = fields.Boolean(
         string="Cashier",
         default=False,
-        help=(
-            "Additional role for cashier / POS operations. "
-            "Can be used alone without the User base role."
-        ),
-    )
-    hao_cashier_only = fields.Boolean(
-        string="Cashier-only account",
-        default=False,
-        copy=False,
-        help="Internal flag: cashier role without User/Administrator base role.",
+        help="Additional cashier / POS role. Requires User or Administrator.",
     )
 
+    def _havano_has_base_role(self, user):
+        return user.has_group("base.group_user") or user.has_group(
+            "base.group_system"
+        )
+
     @api.constrains("is_pharmacist", "is_cashier", "share")
-    def _check_role_combination(self):
-        group_user = self.env.ref("base.group_user")
-        group_system = self.env.ref("base.group_system")
+    def _check_addon_roles_require_base(self):
         for user in self.filtered(lambda u: not u.share):
-            if user.is_pharmacist and not (
-                user.has_group("base.group_system")
-                or user.has_group("base.group_user")
+            if (user.is_pharmacist or user.is_cashier) and not self._havano_has_base_role(
+                user
             ):
                 raise ValidationError(
                     _(
-                        "Pharmacist must be combined with the User or "
-                        "Administrator role."
-                    )
-                )
-            if user.active and not (
-                user.is_cashier
-                or user.is_pharmacist
-                or user.has_group("base.group_user")
-                or user.has_group("base.group_system")
-            ):
-                raise ValidationError(
-                    _(
-                        "Internal users need at least one role: User, "
-                        "Administrator, Pharmacist, or Cashier."
+                        "Pharmacist and Cashier must be used together with "
+                        "the User or Administrator role."
                     )
                 )
 
@@ -78,20 +59,16 @@ class ResUsers(models.Model):
     def _havano_apply_addon_roles(self):
         """Sync pharmacist / cashier booleans to security groups."""
         pharmacist_group, cashier_group = self._havano_role_groups()
-        group_user = self.env.ref("base.group_user")
-        group_system = self.env.ref("base.group_system")
         for user in self.filtered(lambda u: not u.share):
-            if user.is_pharmacist and not (
-                user.has_group("base.group_system")
-                or user.role == "group_user"
+            if (user.is_pharmacist or user.is_cashier) and not self._havano_has_base_role(
+                user
             ):
-                if not user.has_group("base.group_user") and user.role != "group_system":
-                    raise ValidationError(
-                        _(
-                            "Pharmacist must be combined with the User or "
-                            "Administrator role."
-                        )
+                raise ValidationError(
+                    _(
+                        "Pharmacist and Cashier must be used together with "
+                        "the User or Administrator role."
                     )
+                )
             groups = user.group_ids
             if user.is_pharmacist:
                 groups |= pharmacist_group
@@ -101,13 +78,6 @@ class ResUsers(models.Model):
                 groups |= cashier_group
             else:
                 groups -= cashier_group
-            cashier_only = user.hao_cashier_only or (
-                user.is_cashier
-                and not user.is_pharmacist
-                and user.role not in ("group_user", "group_system")
-            )
-            if cashier_only:
-                groups = cashier_group
             if groups != user.group_ids:
                 user.with_context(havano_skip_addon_role_sync=True).sudo().write(
                     {"group_ids": [(6, 0, groups.ids)]}
@@ -118,12 +88,10 @@ class ResUsers(models.Model):
         prepared = []
         for vals in vals_list:
             rec = dict(vals)
-            if (
-                rec.get("is_cashier")
-                and not rec.get("is_pharmacist")
-                and rec.get("role") in (False, None, "")
-            ):
-                rec["hao_cashier_only"] = True
+            if (rec.get("is_pharmacist") or rec.get("is_cashier")) and rec.get(
+                "role"
+            ) in (False, None, ""):
+                rec["role"] = "group_user"
             prepared.append(rec)
         users = super().create(prepared)
         users.filtered(lambda u: not u.share)._havano_apply_addon_roles()
@@ -132,14 +100,10 @@ class ResUsers(models.Model):
     def write(self, vals):
         if self.env.context.get("havano_skip_addon_role_sync"):
             return super().write(vals)
-        if (
-            vals.get("is_cashier")
-            and not vals.get("is_pharmacist")
-            and vals.get("role") in (False, None, "")
-        ):
-            vals = dict(vals, hao_cashier_only=True)
-        elif vals.get("role") in ("group_user", "group_system"):
-            vals = dict(vals, hao_cashier_only=False)
+        if (vals.get("is_pharmacist") or vals.get("is_cashier")) and vals.get(
+            "role"
+        ) in (False, None, ""):
+            vals = dict(vals, role="group_user")
         res = super().write(vals)
         if {"is_pharmacist", "is_cashier", "role"}.intersection(vals):
             self.filtered(lambda u: not u.share)._havano_apply_addon_roles()
@@ -154,5 +118,4 @@ class ResUsers(models.Model):
             "is_administrator": self.has_group("base.group_system"),
             "is_pharmacist": bool(self.is_pharmacist),
             "is_cashier": bool(self.is_cashier),
-            "cashier_only": bool(self.hao_cashier_only),
         }
