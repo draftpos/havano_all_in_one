@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_havano_preview" model="report.paperformat">
+        <field name="name">Havano Preview A4</field>
+        <field name="format">A4</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">8</field>
+        <field name="margin_bottom">8</field>
+        <field name="margin_left">8</field>
+        <field name="margin_right">8</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+    </record>
+
+    <record id="action_report_preview_list_pdf" model="ir.actions.report">
+        <field name="name">Preview List PDF</field>
+        <field name="model">ir.model</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">havano_all_in_one.report_preview_list_pdf</field>
+        <field name="report_file">havano_all_in_one.report_preview_list_pdf</field>
+        <field name="print_report_name">'List Preview'</field>
+        <field name="paperformat_id" ref="havano_all_in_one.paperformat_havano_preview"/>
+    </record>
+
+    <template id="report_preview_list_pdf">
+        <t t-call="web.html_container">
+            <div class="page" style="padding: 10px;">
+                <h3><t t-esc="data.get('model_name', 'Records')"/></h3>
+                <p>
+                    <strong>Records:</strong>
+                    <t t-esc="data.get('showing_from')"/> -
+                    <t t-esc="data.get('showing_to')"/> /
+                    <t t-esc="data.get('total_records')"/>
+                </p>
+                <table style="width:100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th t-foreach="data.get('table_chunks')[0].get('headers', [])" t-as="header" style="border:1px solid #ccc; padding:6px;">
+                                <t t-esc="header"/>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="data.get('table_chunks')[0].get('rows', [])" t-as="row">
+                            <td t-foreach="row" t-as="cell" style="border:1px solid #ccc; padding:6px;">
+                                <t t-esc="cell"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_havano_all_in_one" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.havano.all.in.one</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Havano All In One" name="havano_all_in_one_app">
+                    <block title="Disallow Duplicate Contacts">
+                        <setting><field name="hao_check_name_exact"/></setting>
+                        <setting><field name="hao_check_email_only"/></setting>
+                        <setting><field name="hao_check_email_name"/></setting>
+                        <setting><field name="hao_check_phone_only"/></setting>
+                        <setting><field name="hao_check_phone_name"/></setting>
+                        <setting><field name="hao_check_name_address"/></setting>
+                    </block>
+                    <block title="Disallow Duplicate Products">
+                        <setting><field name="hao_product_check_name"/></setting>
+                        <setting><field name="hao_product_check_default_code"/></setting>
+                    </block>
+                    <block title="Pharmacy">
+                        <setting help="Show pharmacy item checkbox and dosage on products. Also enables pharmacy fields in Havano API.">
+                            <field name="hao_activate_pharmacy"/>
+                        </setting>
+                    </block>
+                    <block title="Customer and Supplier Separation">
+                        <setting><field name="hao_show_only_customers_in_sales"/></setting>
+                        <setting><field name="hao_show_only_suppliers_in_purchases"/></setting>
+                        <setting><field name="hao_auto_mark_customer_from_sales"/></setting>
+                        <setting><field name="hao_auto_mark_supplier_from_purchase"/></setting>
+                    </block>
+                    <block title="Templates">
+                        <div class="text-muted mb-2">
+                            Create and manage invoice templates for future automation.
+                        </div>
+                        <button type="action" class="btn btn-secondary" name="%(action_havano_invoice_template)d" string="Manage Invoice Templates"/>
+                    </block>
+                    <block title="Tax Pricing Defaults">
+                        <setting help="Switch tax price mode and recalculate product sales prices, then reload Odoo.">
+                            <div class="d-flex flex-column gap-2">
+                                <div>
+                                    <span class="fw-bold">Current mode: </span>
+                                    <field name="hao_tax_price_mode_label" class="d-inline" readonly="1" nolabel="1"/>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button name="action_hao_switch_tax_included"
+                                            type="object"
+                                            string="Apply Tax Included and Update Prices"
+                                            class="btn btn-primary"
+                                            icon="fa-check"/>
+                                    <button name="action_hao_switch_tax_excluded"
+                                            type="object"
+                                            string="Apply Tax Excluded and Update Prices"
+                                            class="btn btn-secondary"
+                                            icon="fa-undo"/>
+                                </div>
+                                <div class="text-muted">
+                                    Uses each product's sales tax (or company default sale tax) to convert list prices, then reloads the app.
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

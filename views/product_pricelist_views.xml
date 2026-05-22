@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_pricelist_item_form_allow_multi_uom_visibility" model="ir.ui.view">
+        <field name="name">product.pricelist.item.form.allow.multi.uom.visibility</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="allow_multi_uom.product_pricelist_item_form_view_inherit_uom"/>
+        <field name="priority" eval="60"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='uom_id']/preceding-sibling::separator[1]" position="attributes">
+                <attribute name="invisible">not product_tmpl_id.allow_multi_uom</attribute>
+            </xpath>
+            <xpath expr="//field[@name='uom_id']/preceding-sibling::label[1]" position="attributes">
+                <attribute name="invisible">not product_tmpl_id.allow_multi_uom</attribute>
+            </xpath>
+            <field name="uom_id" position="attributes">
+                <attribute name="invisible">not product_tmpl_id.allow_multi_uom</attribute>
+            </field>
+            <xpath expr="//field[@name='uom_barcode']/preceding-sibling::label[1]" position="attributes">
+                <attribute name="invisible">not product_tmpl_id.allow_multi_uom</attribute>
+            </xpath>
+            <field name="uom_barcode" position="attributes">
+                <attribute name="invisible">not product_tmpl_id.allow_multi_uom</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

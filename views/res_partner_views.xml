@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_havano_all_in_one" model="ir.ui.view">
+        <field name="name">res.partner.form.havano.all.in.one</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_customer" readonly="is_doctor"/>
+                <field name="is_supplier" readonly="is_doctor"/>
+                <field name="is_doctor"/>
+                <field name="contact_type" readonly="1"/>
+            </xpath>
+            <xpath expr="//field[@name='is_doctor']" position="after">
+                <field name="doctor_reg_no" invisible="not is_doctor" required="is_doctor"/>
+                <field name="doctor_certificate_filename" invisible="1"/>
+                <field name="doctor_certificate" invisible="not is_doctor" filename="doctor_certificate_filename"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_tree_havano_all_in_one" model="ir.ui.view">
+        <field name="name">res.partner.tree.havano.all.in.one</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='complete_name']" position="after">
+                <field name="contact_type"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter_havano_all_in_one" model="ir.ui.view">
+        <field name="name">res.partner.search.havano.all.in.one</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <filter name="only_customers_hao" string="Only Customers" domain="[('is_customer','=',True)]"/>
+                <filter name="only_suppliers_hao" string="Only Suppliers" domain="[('is_supplier','=',True)]"/>
+                <filter name="both_hao" string="Both" domain="[('is_customer','=',True),('is_supplier','=',True)]"/>
+                <filter name="only_doctors_hao" string="Doctors" domain="[('is_doctor','=',True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_hao_open_duplicate_partner" model="ir.actions.act_window">
+        <field name="name">Duplicate Contact</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('id', 'in', active_ids)]</field>
+    </record>
+</odoo>

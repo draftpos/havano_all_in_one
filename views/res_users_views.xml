@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_inherit_havano_all_in_one" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.havano.all.in.one</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Havano Automation">
+                    <group string="Sales and Invoice Automation">
+                        <field name="hao_enable_sales_automation"/>
+                        <field name="hao_auto_confirm_quotation" invisible="not hao_enable_sales_automation"/>
+                        <field name="hao_auto_create_invoice" invisible="not hao_enable_sales_automation"/>
+                        <field name="hao_auto_post_invoice" invisible="not hao_enable_sales_automation"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
