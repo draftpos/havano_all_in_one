@@ -1,6 +1,6 @@
 {
     "name": "Havano All In One",
-    "version": "19.0.1.0.4",
+    "version": "19.0.1.0.5",
     "category": "Sales",
     "summary": "Havano suite: duplicates, contacts, pharmacy products, doctors, tax pricing, PDF preview",
     "author": "Havano",
@@ -18,6 +18,7 @@
         "allow_multi_uom",
     ],
     "data": [
+        "security/havano_user_roles.xml",
         "security/ir.model.access.csv",
         "data/sequence_data.xml",
         "views/invoice_template_views.xml",
