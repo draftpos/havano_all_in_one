@@ -76,6 +76,12 @@ class ResConfigSettings(models.TransientModel):
         readonly=False,
         help="When enabled, products can be marked as pharmacy items with mandatory dosage.",
     )
+    hao_activate_inventory_orders = fields.Boolean(
+        string="Inventory Order Settings",
+        related="company_id.hao_activate_inventory_orders",
+        readonly=False,
+        help="When enabled, products can use Order 1–5 flags on the Inventory tab.",
+    )
 
     hao_tax_price_mode_label = fields.Char(
         compute="_compute_hao_tax_price_mode_label",

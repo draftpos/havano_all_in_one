@@ -11,6 +11,12 @@
                         <field name="hao_activate_pharmacy"/>
                     </setting>
                 </block>
+                <block title="Inventory Order Settings" name="hao_inventory_orders_setting">
+                    <setting string="Activate Inventory Order Settings"
+                               help="Show Order 1–5 checkboxes on each product Inventory tab and in the POS API.">
+                        <field name="hao_activate_inventory_orders"/>
+                    </setting>
+                </block>
             </xpath>
         </field>
     </record>

@@ -39,11 +39,26 @@ class ProductTemplate(models.Model):
         default=False,
     )
 
+    hao_activate_inventory_orders = fields.Boolean(
+        compute="_compute_hao_activate_inventory_orders",
+    )
+    order_1 = fields.Boolean(string="Order 1", default=False)
+    order_2 = fields.Boolean(string="Order 2", default=False)
+    order_3 = fields.Boolean(string="Order 3", default=False)
+    order_4 = fields.Boolean(string="Order 4", default=False)
+    order_5 = fields.Boolean(string="Order 5", default=False)
+
     @api.depends("company_id", "company_id.hao_activate_pharmacy")
     def _compute_hao_activate_pharmacy(self):
         activated = bool(self.env.company.hao_activate_pharmacy)
         for product in self:
             product.hao_activate_pharmacy = activated
+
+    @api.depends("company_id", "company_id.hao_activate_inventory_orders")
+    def _compute_hao_activate_inventory_orders(self):
+        activated = bool(self.env.company.hao_activate_inventory_orders)
+        for product in self:
+            product.hao_activate_inventory_orders = activated
 
     @api.constrains("is_pharmacy", "pharmacy_dosage_id", "company_id")
     def _check_pharmacy_dosage(self):
