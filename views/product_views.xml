@@ -29,8 +29,8 @@
         <field name="priority" eval="60"/>
         <field name="arch" type="xml">
             <page name="sales" position="after">
-                <page string="Others" name="hao_others">
-                    <group string="Multi UoM Settings" col="2">
+                <page string="Other" name="hao_others">
+                    <group string="Multi UoM Settings" name="hao_multi_uom" col="2">
                         <field name="allow_multi_uom" string="Enable Multi UoM Pricing"/>
                         <field name="strict_uom_tracking"
                                string="Allow Strict UoM Tracking on Sales Lines"
