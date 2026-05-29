@@ -5,8 +5,7 @@ from odoo import SUPERUSER_ID, api
 _logger = logging.getLogger(__name__)
 
 
-def post_init_hook(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def post_init_hook(env):
     duplicate_menu = env.ref(
         "havano_all_in_one.menu_hao_sale_customers", raise_if_not_found=False
     )
