@@ -76,12 +76,20 @@ class SaleOrderLine(models.Model):
     @api.onchange("product_id")
     def _onchange_product_id(self):
         res = super()._onchange_product_id()
-        if self.product_id and self.product_id.product_tmpl_id.allow_multi_uom and self.product_id.product_tmpl_id.strict_uom_tracking:
+        if not self.product_id:
+            return res
+        template = self.product_id.product_tmpl_id
+        if template.allow_multi_uom and template.strict_uom_tracking:
             self.product_uom_id = False
             return {
                 "warning": {
                     "title": _("UoM Selection Required"),
-                    "message": _("Strict UoM tracking is enabled; select Unit of Measure before continuing."),
+                    "message": _(
+                        "Strict UoM tracking is enabled for this product. "
+                        "Please select the Unit of Measure before proceeding."
+                    ),
                 }
             }
+        if template.allow_multi_uom:
+            self.product_uom_id = self.product_id.uom_id
         return res

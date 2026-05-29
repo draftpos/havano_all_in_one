@@ -7,6 +7,11 @@ _logger = logging.getLogger(__name__)
 
 def post_init_hook(cr, registry):
     env = api.Environment(cr, SUPERUSER_ID, {})
+    duplicate_menu = env.ref(
+        "havano_all_in_one.menu_hao_sale_customers", raise_if_not_found=False
+    )
+    if duplicate_menu:
+        duplicate_menu.unlink()
     companies = env["res.company"].search([])
     for company in companies:
         if company.account_price_include != "tax_included":

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <!-- Role-specific partner forms -->
+  <record id="view_partner_form_hao_doctor" model="ir.ui.view">
+    <field name="name">res.partner.form.hao.doctor</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="havano_all_in_one.view_partner_form_havano_all_in_one"/>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='is_customer']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='is_supplier']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='is_doctor']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='contact_type']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="view_partner_form_hao_customer" model="ir.ui.view">
+    <field name="name">res.partner.form.hao.customer</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="havano_all_in_one.view_partner_form_havano_all_in_one"/>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='is_supplier']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='is_doctor']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='doctor_reg_no']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='doctor_certificate']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='is_customer']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='contact_type']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="view_partner_form_hao_supplier" model="ir.ui.view">
+    <field name="name">res.partner.form.hao.supplier</field>
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="havano_all_in_one.view_partner_form_havano_all_in_one"/>
+    <field name="mode">primary</field>
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='is_customer']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='is_doctor']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='doctor_reg_no']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='doctor_certificate']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='is_supplier']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+      <xpath expr="//field[@name='contact_type']" position="attributes">
+        <attribute name="invisible">1</attribute>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="action_hao_partners_customers" model="ir.actions.act_window">
+    <field name="name">Customers</field>
+    <field name="res_model">res.partner</field>
+    <field name="view_mode">list,kanban,form</field>
+    <field name="domain">[('is_customer', '=', True), ('is_doctor', '=', False)]</field>
+    <field name="context">{
+      'default_is_customer': True,
+      'default_is_supplier': False,
+      'default_is_doctor': False,
+      'default_customer_rank': 1,
+      'default_is_company': True,
+      'hao_partner_role': 'customer'
+    }</field>
+    <field name="view_ids" eval="[
+      (5, 0, 0),
+      (0, 0, {'view_mode': 'list', 'view_id': ref('base.view_partner_tree')}),
+      (0, 0, {'view_mode': 'kanban', 'view_id': ref('base.res_partner_kanban_view')}),
+      (0, 0, {'view_mode': 'form', 'view_id': ref('havano_all_in_one.view_partner_form_hao_customer')}),
+    ]"/>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create a new customer</p>
+      <p>Only contacts marked as customers appear here (not doctors or vendors-only).</p>
+    </field>
+  </record>
+
+  <record id="action_hao_partners_doctors" model="ir.actions.act_window">
+    <field name="name">Doctors</field>
+    <field name="res_model">res.partner</field>
+    <field name="view_mode">list,kanban,form</field>
+    <field name="domain">[('is_doctor', '=', True)]</field>
+    <field name="context">{
+      'default_is_doctor': True,
+      'default_is_customer': False,
+      'default_is_supplier': False,
+      'hao_partner_role': 'doctor'
+    }</field>
+    <field name="view_ids" eval="[
+      (5, 0, 0),
+      (0, 0, {'view_mode': 'list', 'view_id': ref('base.view_partner_tree')}),
+      (0, 0, {'view_mode': 'kanban', 'view_id': ref('base.res_partner_kanban_view')}),
+      (0, 0, {'view_mode': 'form', 'view_id': ref('havano_all_in_one.view_partner_form_hao_doctor')}),
+    ]"/>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create a new doctor</p>
+      <p>Doctors are managed separately from customers and vendors.</p>
+    </field>
+  </record>
+
+  <record id="action_hao_partners_vendors" model="ir.actions.act_window">
+    <field name="name">Vendors</field>
+    <field name="res_model">res.partner</field>
+    <field name="view_mode">list,kanban,form</field>
+    <field name="domain">[('is_supplier', '=', True), ('is_doctor', '=', False)]</field>
+    <field name="context">{
+      'default_is_supplier': True,
+      'default_is_customer': False,
+      'default_is_doctor': False,
+      'default_supplier_rank': 1,
+      'default_is_company': True,
+      'hao_partner_role': 'supplier'
+    }</field>
+    <field name="view_ids" eval="[
+      (5, 0, 0),
+      (0, 0, {'view_mode': 'list', 'view_id': ref('base.view_partner_tree')}),
+      (0, 0, {'view_mode': 'kanban', 'view_id': ref('base.res_partner_kanban_view')}),
+      (0, 0, {'view_mode': 'form', 'view_id': ref('havano_all_in_one.view_partner_form_hao_supplier')}),
+    ]"/>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">Create a new vendor</p>
+      <p>Only contacts marked as suppliers appear here.</p>
+    </field>
+  </record>
+
+  <menuitem id="menu_hao_sale_doctors"
+            name="Doctors"
+            parent="sale.sale_order_menu"
+            action="action_hao_partners_doctors"
+            groups="sales_team.group_sale_salesman"
+            sequence="36"/>
+
+  <!-- Replace default Sales > Customers menu -->
+  <record id="sale.res_partner_menu" model="ir.ui.menu">
+    <field name="action" ref="action_hao_partners_customers"/>
+    <field name="name">Customers</field>
+  </record>
+
+  <!-- Purchase: Vendors -->
+  <record id="purchase.menu_procurement_management_supplier_name" model="ir.ui.menu">
+    <field name="action" ref="action_hao_partners_vendors"/>
+    <field name="name">Vendors</field>
+  </record>
+</odoo>

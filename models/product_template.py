@@ -60,16 +60,6 @@ class ProductTemplate(models.Model):
         for product in self:
             product.hao_activate_inventory_orders = activated
 
-    @api.constrains("is_pharmacy", "pharmacy_dosage_id", "company_id")
-    def _check_pharmacy_dosage(self):
-        for product in self:
-            if not product.company_id.hao_activate_pharmacy:
-                continue
-            if product.is_pharmacy and not product.pharmacy_dosage_id:
-                raise ValidationError(
-                    _("Pharmacy products must have a dosage (code and description).")
-                )
-
     @api.onchange("is_pharmacy")
     def _onchange_is_pharmacy(self):
         if not self.is_pharmacy:
@@ -99,11 +89,54 @@ class ProductTemplate(models.Model):
                     _("Internal Reference '%(code)s' already exists.", code=product.default_code)
                 )
 
+    def _hao_collect_numeric_codes(self):
+        """Highest numeric ITEM CODE across templates and variants."""
+        codes = []
+        for model_name in ("product.template", "product.product"):
+            for code in self.env[model_name].search([("default_code", "!=", False)]).mapped(
+                "default_code"
+            ):
+                stripped = (code or "").strip()
+                if stripped.isdigit():
+                    codes.append(int(stripped))
+        return codes
+
+    def _hao_code_is_taken(self, code, exclude_template_ids=None):
+        if not code:
+            return False
+        exclude_template_ids = exclude_template_ids or []
+        domain = [("default_code", "=", code), ("id", "not in", exclude_template_ids)]
+        if self.search(domain, limit=1):
+            return True
+        variant_domain = [("default_code", "=", code)]
+        if exclude_template_ids:
+            variant_domain.append(("product_tmpl_id", "not in", exclude_template_ids))
+        return bool(self.env["product.product"].search(variant_domain, limit=1))
+
+    def _hao_next_item_code(self, exclude_template_ids=None):
+        """Next unused numeric ITEM CODE (e.g. after 187 comes 188)."""
+        numeric_codes = self._hao_collect_numeric_codes()
+        candidate = (max(numeric_codes) + 1) if numeric_codes else 101
+        while self._hao_code_is_taken(str(candidate), exclude_template_ids=exclude_template_ids):
+            candidate += 1
+        sequence = self.env["ir.sequence"].search(
+            [("code", "=", "product.item.code")], limit=1
+        )
+        if sequence and sequence.number_next <= candidate:
+            sequence.sudo().write({"number_next": candidate + 1})
+        return str(candidate)
+
+    def _hao_assign_item_code(self, vals, exclude_template_ids=None):
+        code = (vals.get("default_code") or "").strip()
+        if not code or self._hao_code_is_taken(code, exclude_template_ids=exclude_template_ids):
+            vals["default_code"] = self._hao_next_item_code(
+                exclude_template_ids=exclude_template_ids
+            )
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if not vals.get("default_code"):
-                vals["default_code"] = self.env["ir.sequence"].next_by_code("product.item.code") or "101"
+            self._hao_assign_item_code(vals)
         records = super().create(vals_list)
         for product in records:
             product._raise_if_duplicate_product(product.name, product.default_code, current_id=product.id)

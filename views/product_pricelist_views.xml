@@ -3,7 +3,7 @@
     <record id="product_pricelist_item_form_allow_multi_uom_visibility" model="ir.ui.view">
         <field name="name">product.pricelist.item.form.allow.multi.uom.visibility</field>
         <field name="model">product.pricelist.item</field>
-        <field name="inherit_id" ref="allow_multi_uom.product_pricelist_item_form_view_inherit_uom"/>
+        <field name="inherit_id" ref="havano_all_in_one.product_pricelist_item_form_view_inherit_uom"/>
         <field name="priority" eval="60"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='uom_id']/preceding-sibling::separator[1]" position="attributes">

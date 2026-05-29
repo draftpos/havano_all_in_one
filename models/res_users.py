@@ -21,6 +21,26 @@ class ResUsers(models.Model):
         string="Auto-post invoice",
         default=False,
     )
+    hao_enable_purchase_automation = fields.Boolean(
+        string="Enable purchase automation",
+        default=False,
+    )
+    hao_auto_confirm_purchase = fields.Boolean(
+        string="Auto-confirm purchase order",
+        default=False,
+    )
+    hao_auto_validate_receipt = fields.Boolean(
+        string="Auto-validate receipt",
+        default=False,
+    )
+    hao_auto_create_vendor_bill = fields.Boolean(
+        string="Auto-create vendor bill",
+        default=False,
+    )
+    hao_auto_post_vendor_bill = fields.Boolean(
+        string="Auto-post vendor bill",
+        default=False,
+    )
     is_pharmacist = fields.Boolean(
         string="Pharmacist",
         default=False,

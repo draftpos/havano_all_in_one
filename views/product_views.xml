@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="product_template_form_view_havano_item_code" model="ir.ui.view">
+        <field name="name">product.template.form.havano.item.code</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="attributes">
+                <attribute name="string">ITEM CODE</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_tree_view_havano_item_code" model="ir.ui.view">
+        <field name="name">product.template.tree.havano.item.code</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='default_code']" position="attributes">
+                <attribute name="string">ITEM CODE</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="product_template_form_view_havano_all_in_one_uom_prices" model="ir.ui.view">
         <field name="name">product.template.form.havano.all.in.one.uom.prices</field>
         <field name="model">product.template</field>
@@ -22,24 +44,15 @@
     <record id="product_template_form_view_havano_pharmacy" model="ir.ui.view">
         <field name="name">product.template.form.havano.pharmacy</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="stock.view_template_property_form"/>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@class='o_row'][.//field[@name='qty_available']]" position="after">
+            <xpath expr="//div[@name='options']/span[@name='sale_option']" position="after">
                 <field name="hao_activate_pharmacy" invisible="1"/>
-                <label for="is_pharmacy" string="Is Pharmacy" invisible="not hao_activate_pharmacy"/>
-                <div class="o_row" invisible="not hao_activate_pharmacy">
-                    <field name="is_pharmacy" nolabel="1"/>
-                </div>
-                <group string="Dosage Information"
-                       invisible="not is_pharmacy or not hao_activate_pharmacy"
-                       colspan="2">
-                    <field name="pharmacy_dosage_id"
-                           required="is_pharmacy"
-                           options="{'no_create_edit': False}"/>
-                    <field name="pharmacy_dosage_code" readonly="1"/>
-                    <field name="pharmacy_dosage_description" readonly="1"/>
-                </group>
+                <span name="pharmacy_option" class="d-inline-flex" invisible="not hao_activate_pharmacy">
+                    <field name="is_pharmacy"/>
+                    <label for="is_pharmacy" string="Is Pharmacy"/>
+                </span>
             </xpath>
         </field>
     </record>
@@ -62,6 +75,24 @@
                     <field name="order_5" string="Order 5"/>
                 </group>
             </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_view_havano_invoice_policy_layout" model="ir.ui.view">
+        <field name="name">product.template.form.havano.invoice.policy.layout</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="sale.product_template_form_view"/>
+        <field name="priority" eval="70"/>
+        <field name="arch" type="xml">
+            <field name="invoice_policy" position="replace">
+                <label for="invoice_policy"
+                       string="Invoicing Policy"
+                       invisible="not sale_ok or type == 'combo'"/>
+                <div class="o_row"
+                     invisible="not sale_ok or type == 'combo'">
+                    <field name="invoice_policy" nolabel="1" required="1"/>
+                </div>
+            </field>
         </field>
     </record>
 

@@ -56,12 +56,36 @@ class ResPartner(models.Model):
         elif vals.get("is_customer") or vals.get("is_supplier"):
             vals["is_doctor"] = False
 
+    def _apply_partner_role_context(self, vals):
+        """Apply defaults from Sales/Purchase role menus (customer, supplier, doctor)."""
+        role = self.env.context.get("hao_partner_role")
+        if role == "doctor":
+            vals["is_doctor"] = True
+            vals["is_customer"] = False
+            vals["is_supplier"] = False
+        elif role == "customer":
+            vals["is_customer"] = True
+            vals["is_supplier"] = False
+            vals["is_doctor"] = False
+            vals.setdefault("customer_rank", 1)
+        elif role == "supplier":
+            vals["is_supplier"] = True
+            vals["is_customer"] = False
+            vals["is_doctor"] = False
+            vals.setdefault("supplier_rank", 1)
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             self._raise_if_duplicate_for_values(vals)
+            self._apply_partner_role_context(vals)
             self._apply_doctor_role_vals(vals)
-            if not vals.get("is_doctor") and "is_customer" not in vals and "is_supplier" not in vals:
+            if (
+                not vals.get("is_doctor")
+                and "is_customer" not in vals
+                and "is_supplier" not in vals
+                and not self.env.context.get("hao_partner_role")
+            ):
                 vals.setdefault("is_customer", True)
             if self.env.context.get("from_sale_order") and self._is_enabled("auto_mark_customer_from_sales"):
                 vals["is_customer"] = True
