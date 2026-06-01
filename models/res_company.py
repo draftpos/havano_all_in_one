@@ -14,7 +14,4 @@ class ResCompany(models.Model):
         default=True,
         help="Show order checkboxes on product inventory tab and expose them via API.",
     )
-    havano_bypass_tax_price_check = fields.Boolean(
-        string="Bypass Havano Tax Price Check",
-        default=False,
-    )
+   
