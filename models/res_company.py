@@ -4,6 +4,17 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = "res.company"
 
+    base_layout = fields.Selection(
+        selection=[('default', 'Default'),
+                   ('modern', 'Modern'),
+                   ('normal', 'Normal'),
+                   ('old', 'Old Standard')],
+        string="Invoice Document Layout", default="default",
+        help="base layout selection")
+    document_layout_id = fields.Many2one("havano.invoice.template",
+                                         string="Invoice Layout Configuration",
+                                         help="Invoice layout configuration")
+
     hao_activate_pharmacy = fields.Boolean(
         string="Activate Pharmacy",
         default=True,
