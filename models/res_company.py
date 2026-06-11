@@ -13,6 +13,7 @@ class ResCompany(models.Model):
         help="base layout selection")
     document_layout_id = fields.Many2one("havano.invoice.template",
                                          string="Invoice Layout Configuration",
+                                         ondelete="set null",
                                          help="Invoice layout configuration")
 
     hao_activate_pharmacy = fields.Boolean(

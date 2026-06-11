@@ -22,24 +22,7 @@
         </field>
     </record>
 
-    <record id="product_template_form_view_havano_all_in_one_uom_prices" model="ir.ui.view">
-        <field name="name">product.template.form.havano.all.in.one.uom.prices</field>
-        <field name="model">product.template</field>
-        <field name="inherit_id" ref="product.product_template_form_view"/>
-        <field name="priority" eval="60"/>
-        <field name="arch" type="xml">
-            <page name="sales" position="after">
-                <page string="Other" name="hao_others">
-                    <group string="Multi UoM Settings" name="hao_multi_uom" col="2">
-                        <field name="allow_multi_uom" string="Enable Multi UoM Pricing"/>
-                        <field name="strict_uom_tracking"
-                               string="Allow Strict UoM Tracking on Sales Lines"
-                               invisible="not allow_multi_uom"/>
-                    </group>
-                </page>
-            </page>
-        </field>
-    </record>
+    <!-- Duplicate Multi UoM settings removed (handled by allow_multi_uom module) -->
 
     <record id="product_template_form_view_havano_pharmacy" model="ir.ui.view">
         <field name="name">product.template.form.havano.pharmacy</field>

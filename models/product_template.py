@@ -71,8 +71,9 @@ class ProductTemplate(models.Model):
             if not product.name or not self._is_enabled("product_check_name"):
                 continue
             normalized_name = self._normalize_name(product.name)
-            existing = self.search([("id", "!=", product.id), ("name", "!=", False)])
-            for existing_product in existing:
+            # Fetch candidates with similar name to avoid loading the entire database
+            candidates = self.search([("id", "!=", product.id), ("name", "=ilike", product.name)], limit=20)
+            for existing_product in candidates:
                 if normalized_name == self._normalize_name(existing_product.name):
                     raise ValidationError(
                         _("Product '%(name)s' already exists.", name=existing_product.display_name)
@@ -91,14 +92,17 @@ class ProductTemplate(models.Model):
 
     def _hao_collect_numeric_codes(self):
         """Highest numeric ITEM CODE across templates and variants."""
+        # Use SQL to prevent loading thousands of records into memory
+        self.env.cr.execute("SELECT default_code FROM product_template WHERE default_code IS NOT NULL")
+        t_codes = [r[0] for r in self.env.cr.fetchall()]
+        self.env.cr.execute("SELECT default_code FROM product_product WHERE default_code IS NOT NULL")
+        p_codes = [r[0] for r in self.env.cr.fetchall()]
+        
         codes = []
-        for model_name in ("product.template", "product.product"):
-            for code in self.env[model_name].search([("default_code", "!=", False)]).mapped(
-                "default_code"
-            ):
-                stripped = (code or "").strip()
-                if stripped.isdigit():
-                    codes.append(int(stripped))
+        for code in set(t_codes + p_codes):
+            stripped = (code or "").strip()
+            if stripped.isdigit():
+                codes.append(int(stripped))
         return codes
 
     def _hao_code_is_taken(self, code, exclude_template_ids=None):
@@ -115,20 +119,27 @@ class ProductTemplate(models.Model):
 
     def _hao_next_item_code(self, exclude_template_ids=None):
         """Next unused numeric ITEM CODE (e.g. after 187 comes 188)."""
+        sequence = self.env["ir.sequence"].search(
+            [("code", "=", "product.item.code")], limit=1
+        )
+        if sequence:
+            while True:
+                candidate = sequence.next_by_id()
+                if not self._hao_code_is_taken(str(candidate), exclude_template_ids=exclude_template_ids):
+                    return str(candidate)
+                    
+        # Fallback if no sequence is found
         numeric_codes = self._hao_collect_numeric_codes()
         candidate = (max(numeric_codes) + 1) if numeric_codes else 101
         while self._hao_code_is_taken(str(candidate), exclude_template_ids=exclude_template_ids):
             candidate += 1
-        sequence = self.env["ir.sequence"].search(
-            [("code", "=", "product.item.code")], limit=1
-        )
-        if sequence and sequence.number_next <= candidate:
-            sequence.sudo().write({"number_next": candidate + 1})
         return str(candidate)
 
     def _hao_assign_item_code(self, vals, exclude_template_ids=None):
         code = (vals.get("default_code") or "").strip()
-        if not code or self._hao_code_is_taken(code, exclude_template_ids=exclude_template_ids):
+        # Only assign an item code if it wasn't provided at all.
+        # If the user explicitly provided a duplicate, let the constrains/write checks raise an error.
+        if not code:
             vals["default_code"] = self._hao_next_item_code(
                 exclude_template_ids=exclude_template_ids
             )
@@ -144,10 +155,13 @@ class ProductTemplate(models.Model):
 
     def write(self, vals):
         res = super().write(vals)
-        for product in self:
-            name = vals.get("name", product.name)
-            default_code = vals.get("default_code", product.default_code)
-            product._raise_if_duplicate_product(name, default_code, current_id=product.id)
+        # Only check for duplicates if name or default_code was actually changed.
+        # This prevents duplicate errors when editing unrelated fields like track_inventory.
+        if "name" in vals or "default_code" in vals:
+            for product in self:
+                name = vals.get("name", product.name)
+                default_code = vals.get("default_code", product.default_code)
+                product._raise_if_duplicate_product(name, default_code, current_id=product.id)
         return res
 
     def _normalize_name(self, value):
