@@ -64,6 +64,7 @@ class PreviewListPdfController(http.Controller):
         }
         html, _ = request.env["ir.actions.report"].sudo()._render_qweb_html(
             "havano_all_in_one.action_report_preview_list_pdf",
+            [],
             data=report_data,
         )
         # Inject a small script to allow instant printing from the browser
