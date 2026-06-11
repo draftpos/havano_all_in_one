@@ -71,6 +71,6 @@ class PreviewListPdfController(http.Controller):
         headers = [
             ("Content-Type", "application/pdf"),
             ("Content-Length", str(len(pdf_content))),
-            ("Content-Disposition", f'attachment; filename="{model_name}_preview.pdf"')
+            ("Content-Disposition", f'inline; filename="{model_name}_preview.pdf"')
         ]
         return request.make_response(pdf_content, headers=headers)
