@@ -36,31 +36,7 @@
                         </div>
                         <button type="action" class="btn btn-secondary" name="%(action_havano_invoice_template)d" string="Manage Invoice Templates"/>
                     </block>
-                    <block title="Tax Pricing Defaults">
-                        <setting help="Switch tax price mode and recalculate product sales prices, then reload Odoo.">
-                            <div class="d-flex flex-column gap-2">
-                                <div>
-                                    <span class="fw-bold">Current mode: </span>
-                                    <field name="hao_tax_price_mode_label" class="d-inline" readonly="1" nolabel="1"/>
-                                </div>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <button name="action_hao_switch_tax_included"
-                                            type="object"
-                                            string="Apply Tax Included and Update Prices"
-                                            class="btn btn-primary"
-                                            icon="fa-check"/>
-                                    <button name="action_hao_switch_tax_excluded"
-                                            type="object"
-                                            string="Apply Tax Excluded and Update Prices"
-                                            class="btn btn-secondary"
-                                            icon="fa-undo"/>
-                                </div>
-                                <div class="text-muted">
-                                    Uses each product's sales tax (or company default sale tax) to convert list prices, then reloads the app.
-                                </div>
-                            </div>
-                        </setting>
-                    </block>
+
                 </app>
             </xpath>
         </field>
