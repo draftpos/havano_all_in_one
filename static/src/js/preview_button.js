@@ -91,71 +91,11 @@ patch(ListController.prototype, {
         });
 
         const pdfUrl = `/havano/preview/pdf/${encodeURIComponent(model)}?${params.toString()}`;
-        this._haoShowLoadingOverlay();
-
-        fetch(pdfUrl, { credentials: "same-origin" })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                return response.blob();
-            })
-            .then((blob) => {
-                this._haoHideLoadingOverlay();
-                const url = URL.createObjectURL(blob);
-                const win = window.open("", "_blank");
-                if (!win) {
-                    this.notification.add(_t("Allow pop-ups to open the PDF preview."), { type: "warning" });
-                    return;
-                }
-                win.document.write(this._haoGetViewerHTML(url, model, limit, offset, total));
-                win.document.close();
-            })
-            .catch(() => {
-                this._haoHideLoadingOverlay();
-                window.open(pdfUrl, "_blank");
-            });
-    },
-
-    _haoShowLoadingOverlay() {
-        this._haoHideLoadingOverlay();
-        const overlay = document.createElement("div");
-        overlay.id = "hao_pdf_preview_overlay";
-        overlay.innerHTML = `
-            <div style="position:fixed;top:0;left:0;width:100%;height:100%;
-                background:rgba(15,23,42,0.55);z-index:10000;display:flex;align-items:center;justify-content:center;">
-                <div style="background:#fff;border-radius:12px;padding:28px 32px;text-align:center;min-width:280px;">
-                    <div style="width:42px;height:42px;border:4px solid #e0f2fe;border-top:4px solid #0891b2;
-                        border-radius:50%;animation:hao-spin 0.8s linear infinite;margin:0 auto 16px;"></div>
-                    <div style="font-weight:600;color:#1e293b;">${_t("Generating PDF Preview")}</div>
-                </div>
-            </div>
-            <style>@keyframes hao-spin{to{transform:rotate(360deg);}}</style>
-        `;
-        document.body.appendChild(overlay);
-    },
-
-    _haoHideLoadingOverlay() {
-        const overlay = document.getElementById("hao_pdf_preview_overlay");
-        if (overlay) {
-            overlay.remove();
+        
+        const win = window.open(pdfUrl, "_blank");
+        if (!win) {
+            this.notification.add(_t("Allow pop-ups to open the PDF preview."), { type: "warning" });
         }
-    },
-
-    _haoGetViewerHTML(pdfUrl, model, limit, offset, total) {
-        const showingFrom = offset + 1;
-        const showingTo = Math.min(offset + limit, total);
-        return `
-            <!DOCTYPE html>
-            <html><head><meta charset="utf-8"><title>${model}</title></head>
-            <body style="margin:0;font-family:system-ui,sans-serif;">
-                <div style="padding:10px 16px;background:#f8fafc;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;">
-                    <strong>${model}</strong>
-                    <span>${showingFrom}-${showingTo} / ${total}</span>
-                </div>
-                <iframe src="${pdfUrl}" style="width:100%;height:calc(100vh - 48px);border:none;"></iframe>
-            </body></html>
-        `;
     },
 
     _haoGetColumns() {

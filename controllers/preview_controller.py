@@ -62,11 +62,23 @@ class PreviewListPdfController(http.Controller):
             "total_records": total_count,
             "rows": rows,
         }
-        pdf, _ = request.env["ir.actions.report"].sudo()._render_qweb_pdf(
+        html, _ = request.env["ir.actions.report"].sudo()._render_qweb_html(
             "havano_all_in_one.action_report_preview_list_pdf",
             data=report_data,
         )
-        headers = [("Content-Type", "application/pdf"), ("Content-Length", str(len(pdf)))]
-        disposition = "attachment" if kwargs.get("download") else "inline"
-        headers.append(("Content-Disposition", f'{disposition}; filename="{model_name}_preview.pdf"'))
-        return request.make_response(pdf, headers=headers)
+        # Inject a small script to allow instant printing from the browser
+        print_script = """
+        <script>
+            window.onload = function() {
+                var btn = document.createElement('button');
+                btn.innerHTML = '🖨️ Print / Save as PDF';
+                btn.style.cssText = 'position:fixed;top:10px;right:10px;z-index:9999;padding:10px 20px;background:#0891b2;color:white;border:none;border-radius:5px;cursor:pointer;font-weight:bold;box-shadow:0 4px 6px rgba(0,0,0,0.1);';
+                btn.onclick = function() { btn.style.display = 'none'; window.print(); btn.style.display = 'block'; };
+                document.body.appendChild(btn);
+            };
+        </script>
+        """.encode("utf-8")
+        html += print_script
+
+        headers = [("Content-Type", "text/html; charset=utf-8"), ("Content-Length", str(len(html)))]
+        return request.make_response(html, headers=headers)
