@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-   <data noupdate="1">
+    <data noupdate="0">
         <!--Demo records within the doc layout model-->
         <record id="Modern" model="havano.invoice.template">
             <field name="name">Modern</field>
@@ -28,6 +28,8 @@
         </record>
         <record id="trucking" model="havano.invoice.template">
       	    <field name="name">Trucking</field>
+            <field name="base_layout">trucking</field>
+            <field name="is_default">True</field>
             <field name="base_color">#ff7733</field>
             <field name="heading_text_color">#ffffff</field>
             <field name="text_color">#000000</field>
@@ -38,5 +40,5 @@
             <field name="company_position">right</field>
             <field name="company_text_color">#17822f</field>
         </record>
-   </data>
+    </data>
 </odoo>

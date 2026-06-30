@@ -15,7 +15,8 @@ class HavanoInvoiceTemplate(models.Model):
                    ('modern', 'Modern'),
                    ('normal', 'Normal'),
                    ('old', 'Old Standard'),
-                   ('fresh', 'Fresh Company (Fiscal Tax Invoice)')],
+                   ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
+                   ('trucking', 'Trucking (Fiscal Tax Invoice)')],
         required=True, string="Base Layout", default="default")
     
     base_color = fields.Char(string="Base Color", default="#000000", help="Background color for the invoice")
