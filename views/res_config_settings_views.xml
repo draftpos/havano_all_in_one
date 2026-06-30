@@ -30,13 +30,87 @@
                         <setting><field name="hao_auto_mark_customer_from_sales"/></setting>
                         <setting><field name="hao_auto_mark_supplier_from_purchase"/></setting>
                     </block>
+                    <block title="Global Operations Setting">
+                        <setting help="Default Automation flow for Sales">
+                            <field name="hao_global_sales_automation_method" widget="radio" />
+                        </setting>
+                        <setting help="Default Automation flow for Purchases">
+                            <field name="hao_global_purchase_automation_method" widget="radio" />
+                        </setting>
+                        <div class="mt-3">
+                            <button name="action_apply_automation_methods_to_all_users" type="object" string="Apply to all users" class="btn btn-secondary"/>
+                        </div>
+                    </block>
                     <block title="Templates">
                         <div class="text-muted mb-2">
                             Create and manage invoice templates for future automation.
                         </div>
                         <button type="action" class="btn btn-secondary" name="%(action_havano_invoice_template)d" string="Manage Invoice Templates"/>
                     </block>
+                    <block title="Payroll">
+                        <setting help="Maximum insurable earnings ceiling for NSSA calculation.">
+                            <field name="hao_nssa_cap"/>
+                        </setting>
+                        <setting help="Percentage used for NSSA deduction calculation.">
+                            <field name="hao_nssa_percentage"/>
+                        </setting>
+                    </block>
+                    <block title="Rebranding">
+                        <div class="text-muted mb-2">
+                            Rename standard terminology to match your business needs.
+                        </div>
+                        <setting help="Rename the Customers menu and UI throughout Accounting.">
+                            <field name="hao_rebrand_customers"/>
+                        </setting>
+                        <setting help="Rename the Vendors menu and UI throughout Accounting.">
+                            <field name="hao_rebrand_vendors"/>
+                        </setting>
+                        
+                        <div class="mt-4 text-muted font-weight-bold">Customers Dropdown Items</div>
+                        <div class="row mt-2">
+                            <setting><field name="hao_show_cust_invoices"/></setting>
+                            <setting><field name="hao_show_cust_credit_notes"/></setting>
+                            <setting><field name="hao_show_cust_payments"/></setting>
+                            <setting><field name="hao_show_cust_products"/></setting>
+                            <setting><field name="hao_show_cust_customers"/></setting>
+                        </div>
 
+                        <div class="mt-4 text-muted font-weight-bold">Vendors Dropdown Items</div>
+                        <div class="row mt-2">
+                            <setting><field name="hao_show_vend_bills"/></setting>
+                            <setting><field name="hao_show_vend_refunds"/></setting>
+                            <setting><field name="hao_show_vend_payments"/></setting>
+                            <setting><field name="hao_show_vend_expenses"/></setting>
+                            <setting><field name="hao_show_vend_products"/></setting>
+                            <setting><field name="hao_show_vend_vendors"/></setting>
+                        </div>
+                    </block>
+                    <block title="Login Page Set-Up" name="havano_all_in_one_login_setting_container">
+                        <setting id="locations_approval"
+                                 title="Customize the login page with change the position of login box and customize background">
+                                <label string="Always Redirect Home to Login" for="hao_redirect_home_to_login" class="col-lg-3 o_light_label"/>
+                                <field name="hao_redirect_home_to_login" help="If enabled, accessing the root URL '/' will automatically redirect to the login page."/>
+                                <div class="w-100 mb-3"/>
+                                <label string="Orientation" for="hao_login_orientation" class="col-lg-3 o_light_label"/>
+                                <field name="hao_login_orientation" help="Select orientation of login box."/>
+                            <div class="row mt-2" invisible="hao_login_orientation in ('default', False)">
+                                <label string="Background" for="hao_login_background" class="col-lg-3 o_light_label"/>
+                                <field name="hao_login_background"/>
+                            </div>
+                            <div class="row mt-2" invisible="hao_login_background in ('url', 'image', False) or hao_login_orientation in ('default', False)">
+                                <label string="Color" for="hao_login_color" class="col-lg-3 o_light_label"/>
+                                <field name="hao_login_color" widget="color" help="Set a login background color."/>
+                            </div>
+                            <div class="row mt-2" invisible="hao_login_background in ('image', 'color', False) or hao_login_orientation in ('default', False)">
+                                <label string="URL" for="hao_login_url" class="col-lg-3 o_light_label" />
+                                <field name="hao_login_url" help="Set a url of background image."/>
+                            </div>
+                            <div class="row mt-2" invisible="hao_login_background in ('url', 'color', False) or hao_login_orientation in ('default', False)">
+                                <label string="Image" for="hao_login_image" class="col-lg-3 o_light_label"/>
+                                <field name="hao_login_image" help="Select a login background image from system."/>
+                            </div>
+                        </setting>
+                    </block>
                 </app>
             </xpath>
         </field>

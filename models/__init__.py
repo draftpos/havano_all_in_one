@@ -11,3 +11,4 @@ from . import product_pricelist_item
 from . import sale_order_line
 from . import invoice_template
 from . import report_preview_pdf
+from . import ir_attachment

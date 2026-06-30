@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_template_report_fresh">
+        <t t-set="doc_model" t-value="o._name"/>
+        
+        <!-- Header -->
+        <div class="header" style="font-family: Arial, sans-serif; font-size: 13px; width: 100%;">
+            <div style="padding: 10px 0 0 0; width: 100%;">
+                <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 120px; max-width: 100%; object-fit: contain;" alt="Logo"/>
+                <h2 t-if="not o.company_id.logo" style="margin: 0; font-weight: bold; color: #333; font-size: 24px;" t-field="o.company_id.name"/>
+            </div>
+            <!-- Gradient Bar below logo -->
+            <div style="height: 15px; width: 100%; background: linear-gradient(to right, #b3b3b3, #e6e6e6, #f2f2f2); margin-top: 5px;"></div>
+        </div>
+        
+        <!-- Page Body -->
+        <div class="article page" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" style="font-family: Arial, sans-serif; font-size: 12px; width: 100%;">
+            
+            <!-- Document Title Row -->
+            <div style="border: 1px solid black; background-color: #e6e6e6; text-align: center; padding: 6px; font-weight: bold; font-size: 18px; margin-top: 15px;">
+                <t t-if="doc_model == 'account.move'">
+                    <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">FISCAL TAX INVOICE</span>
+                    <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">DRAFT INVOICE</span>
+                    <span t-if="o.move_type == 'out_refund'">CREDIT NOTE</span>
+                    <span t-if="o.move_type == 'in_invoice'">VENDOR BILL</span>
+                    <span t-if="o.move_type == 'in_refund'">VENDOR CREDIT NOTE</span>
+                </t>
+                <t t-if="doc_model == 'sale.order'">
+                    <span t-if="o.state not in ['draft','sent']">SALES ORDER</span>
+                    <span t-if="o.state in ['draft','sent']">QUOTATION</span>
+                </t>
+            </div>
+            
+            <!-- Header Details (Company vs Customer) -->
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid black; border-top: none; margin: 0;">
+                <tr>
+                    <!-- Left side: Company Details -->
+                    <td style="width: 50%; padding: 0; border-right: 1px solid black; vertical-align: top;">
+                        <div style="padding: 10px 15px;">
+                            <div style="font-weight: bold; font-size: 14px; text-transform: uppercase; margin-bottom: 5px;" t-field="o.company_id.name"/>
+                            <table style="width: 100%; line-height: 1.4;">
+                                <tr>
+                                    <td style="font-weight: bold; width: 35%; text-align: right; padding-right: 10px;">Comp. Reg. No.</td>
+                                    <td><span t-field="o.company_id.company_registry"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">VAT Number</td>
+                                    <td><span t-field="o.company_id.vat"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Salesrep</td>
+                                    <td><span t-field="o.user_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Telephone</td>
+                                    <td><span t-field="o.company_id.phone"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Fax Number</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Email</td>
+                                    <td><span t-field="o.company_id.email"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px; vertical-align: top;">Company Address</td>
+                                    <td>
+                                        <div t-field="o.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    
+                    <!-- Right side: Customer Details -->
+                    <td style="width: 50%; padding: 0; vertical-align: top;">
+                        <div style="padding: 3px 15px; border-bottom: 1px solid black; background-color: #f2f2f2; font-size: 13px;">
+                            Account Sales
+                        </div>
+                        <div style="padding: 10px 15px;">
+                            <table style="width: 100%; line-height: 1.4;">
+                                <tr>
+                                    <td style="font-weight: bold; width: 40%; text-align: right; padding-right: 10px;">Account</td>
+                                    <td>
+                                        <t t-if="o.partner_id.ref"><span t-field="o.partner_id.ref"/> </t>
+                                        <span t-field="o.partner_id.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Client Reference</td>
+                                    <td>
+                                        <t t-if="doc_model == 'account.move'">
+                                            <span t-field="o.ref"/>
+                                        </t>
+                                        <t t-if="doc_model == 'sale.order'">
+                                            <span t-field="o.client_order_ref"/>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Trade Name</td>
+                                    <td><span t-field="o.partner_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Contact Name</td>
+                                    <td><span t-field="o.partner_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Customer Phone</td>
+                                    <td><span t-field="o.partner_id.phone"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Customer Email</td>
+                                    <td><span t-field="o.partner_id.email"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Customer VAT</td>
+                                    <td><span t-field="o.partner_id.vat"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px;">Customer TIN</td>
+                                    <td><span t-field="o.partner_id.company_registry"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; text-align: right; padding-right: 10px; vertical-align: top;">Customer Address</td>
+                                    <td>
+                                        <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <div style="margin-top: 25px;">
+                                <table style="width: 100%; line-height: 1.4;">
+                                    <tr>
+                                        <td style="font-weight: bold; width: 40%; text-align: right; padding-right: 10px;">Document No</td>
+                                        <td><span t-field="o.name"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; text-align: right; padding-right: 10px;">Document Date</td>
+                                        <td>
+                                            <t t-if="doc_model == 'account.move'">
+                                                <span t-field="o.invoice_date"/>
+                                            </t>
+                                            <t t-if="doc_model == 'sale.order'">
+                                                <span t-field="o.date_order" t-options='{"widget": "date"}'/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Order Lines -->
+            <table style="width: 100%; border-collapse: collapse; border-bottom: 1px solid black; margin-top: 0;">
+                <thead>
+                    <tr style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #f2f2f2; font-weight: bold;">
+                        <th style="padding: 5px; text-align: left; width: 15%;">HS Code</th>
+                        <th style="padding: 5px; text-align: left; width: 45%;">Description</th>
+                        <th style="padding: 5px; text-align: center; width: 6%;">Units</th>
+                        <th style="padding: 5px; text-align: center; width: 6%;">Qty</th>
+                        <th style="padding: 5px; text-align: right; width: 10%;">Price INCL</th>
+                        <th style="padding: 5px; text-align: right; width: 8%;">VAT</th>
+                        <th style="padding: 5px; text-align: right; width: 10%;">Total INCL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="lines" t-value="o.invoice_line_ids if doc_model == 'account.move' else o.order_line"/>
+                    <tr t-foreach="lines" t-as="line" style="border-bottom: 1px solid transparent; background-color: #ffffff;">
+                        <t t-if="line.display_type in ['product', False, '']">
+                            <td style="padding: 5px;">
+                                <t t-if="'l10n_zw_hs_code' in line.product_id">
+                                    <span t-field="line.product_id.l10n_zw_hs_code"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-field="line.product_id.default_code"/>
+                                </t>
+                            </td>
+                            <td style="padding: 5px;"><span t-field="line.name"/></td>
+                            <td style="padding: 5px; text-align: center;">
+                                <span t-field="line.product_uom_id.name"/>
+                            </td>
+                            <td style="padding: 5px; text-align: center;">
+                                <span t-if="doc_model == 'account.move'" t-field="line.quantity"/>
+                                <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty"/>
+                            </td>
+                            <!-- Price INCL -->
+                            <t t-set="qty" t-value="line.quantity if doc_model == 'account.move' else line.product_uom_qty"/>
+                            <t t-set="line_taxes" t-value="line.tax_ids"/>
+                            <t t-set="taxes" t-value="line_taxes.compute_all(line.price_unit, o.currency_id, qty, product=line.product_id, partner=o.partner_id)"/>
+                            <t t-set="price_incl" t-value="taxes['total_included'] / qty if qty else 0.0"/>
+                            <td style="padding: 5px; text-align: right;">
+                                <span t-esc="price_incl" t-options='{"widget": "float", "precision": 2}'/>
+                            </td>
+                            <!-- VAT amount for this line -->
+                            <t t-set="vat_amount" t-value="taxes['total_included'] - taxes['total_excluded']"/>
+                            <td style="padding: 5px; text-align: right;">
+                                <span t-esc="vat_amount" t-options='{"widget": "float", "precision": 2}'/>
+                            </td>
+                            <!-- Total INCL -->
+                            <td style="padding: 5px; text-align: right;">
+                                <span t-esc="taxes['total_included']" t-options='{"widget": "float", "precision": 2}'/>
+                            </td>
+                        </t>
+                        <t t-if="line.display_type == 'line_section'">
+                            <td colspan="7" style="padding: 5px; font-weight: bold; background-color: #f2f2f2;">
+                                <span t-field="line.name"/>
+                            </td>
+                        </t>
+                        <t t-if="line.display_type == 'line_note'">
+                            <td colspan="7" style="padding: 5px; font-style: italic;">
+                                <span t-field="line.name"/>
+                            </td>
+                        </t>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Totals and Signature Section -->
+            <table style="width: 100%; margin-top: 10px;">
+                <tr>
+                    <td style="width: 60%; padding-left: 20px; vertical-align: bottom; padding-bottom: 10px;">
+                        <div>
+                            <div style="text-align: left; margin-left: 60px; font-weight: bold; margin-bottom: 5px;">Signature</div>
+                            <div style="display: inline-block; width: 300px; border-bottom: 1px solid black;"></div>
+                        </div>
+                    </td>
+                    <td style="width: 40%; vertical-align: top; padding-right: 5px;">
+                        <table style="width: 100%; border-collapse: collapse; border: 2px solid black; font-size: 15px; font-family: Arial, sans-serif;">
+                            <tr style="border-bottom: 1px solid black;">
+                                <td style="padding: 6px 10px; font-weight: bold; border-right: 1px solid black; background-color: #e6e6e6; width: 45%;">Sub-Total</td>
+                                <td style="padding: 6px 10px; text-align: right; background-color: #e6e6e6; width: 55%; font-weight: bold;">
+                                    <span t-if="doc_model == 'account.move'" t-field="o.amount_untaxed"/>
+                                    <span t-if="doc_model == 'sale.order'" t-field="o.amount_untaxed"/>
+                                </td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid black;">
+                                <td style="padding: 6px 10px; font-weight: bold; border-right: 1px solid black; background-color: #e6e6e6;">V.A.T</td>
+                                <td style="padding: 6px 10px; text-align: right; background-color: #e6e6e6; font-weight: bold;">
+                                    <span t-if="doc_model == 'account.move'" t-field="o.amount_tax"/>
+                                    <span t-if="doc_model == 'sale.order'" t-field="o.amount_tax"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 6px 10px; font-weight: bold; border-right: 1px solid black; background-color: #e6e6e6;">TOTAL INCL</td>
+                                <td style="padding: 6px 10px; text-align: right; background-color: #e6e6e6; font-weight: bold;">
+                                    <span t-if="doc_model == 'account.move'" t-field="o.amount_total"/>
+                                    <span t-if="doc_model == 'sale.order'" t-field="o.amount_total"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- End of Document Banner -->
+            <div style="text-align: center; margin: 30px 0 20px 0; font-weight: bold; font-size: 14px;">
+                **** END OF DOCUMENT ****
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer" style="font-family: Arial, sans-serif; font-size: 10px; width: 100%;">
+            <div style="display: flex; justify-content: space-between; border-top: 1px solid black; padding-top: 5px;">
+                <div>
+                    Printed on : <span t-esc="datetime.datetime.now().strftime('%Y/%m/%d at %H:%M:%S')"/> by <span t-esc="env.user.name"/>
+                </div>
+                <div>
+                    Page <span class="page"/> of <span class="topage"/>
+                </div>
+                <div>
+                    Exit Door Scan on :
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

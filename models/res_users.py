@@ -9,6 +9,10 @@ class ResUsers(models.Model):
         string="Enable sales automation",
         default=False,
     )
+    hao_sales_automation_method = fields.Selection([
+        ('full', 'Full Automate'),
+        ('quote_invoice', 'Quote - Sales Invoice')
+    ], string='Sales Automation Method', default='full')
     hao_auto_confirm_quotation = fields.Boolean(
         string="Auto-confirm quotation",
         default=False,
@@ -25,6 +29,10 @@ class ResUsers(models.Model):
         string="Enable purchase automation",
         default=False,
     )
+    hao_purchase_automation_method = fields.Selection([
+        ('full', 'Full Automate'),
+        ('quote_invoice', 'Quote - Purchase Invoice')
+    ], string='Purchase Automation Method', default='full')
     hao_auto_confirm_purchase = fields.Boolean(
         string="Auto-confirm purchase order",
         default=False,

@@ -14,7 +14,8 @@ class HavanoInvoiceTemplate(models.Model):
         selection=[('default', 'Default'),
                    ('modern', 'Modern'),
                    ('normal', 'Normal'),
-                   ('old', 'Old Standard')],
+                   ('old', 'Old Standard'),
+                   ('fresh', 'Fresh Company (Fiscal Tax Invoice)')],
         required=True, string="Base Layout", default="default")
     
     base_color = fields.Char(string="Base Color", default="#000000", help="Background color for the invoice")
@@ -47,7 +48,7 @@ class HavanoInvoiceTemplate(models.Model):
         for template in self:
             class MockCompany:
                 def __init__(self, t):
-                    self.document_layout_id = t
+                    self.hao_document_layout_id = t
                     self.base_layout = t.base_layout
                     self.logo = False
                     self.name = "My Company"
@@ -58,6 +59,8 @@ class HavanoInvoiceTemplate(models.Model):
                     self.website = "www.company.com"
                     self.report_header = "Report Header"
                     self.report_footer = "Report Footer"
+                    self.external_report_layout_id = False
+                    self.id = 1
 
             mock_company = MockCompany(template)
 
@@ -75,6 +78,8 @@ class HavanoInvoiceTemplate(models.Model):
                     template.preview = ir_ui_view._render_template('havano_all_in_one.report_preview_modern', values)
                 elif template.base_layout == 'old':
                     template.preview = ir_ui_view._render_template('havano_all_in_one.report_preview_old', values)
+                elif template.base_layout == 'fresh':
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Preview not available here</h4><p>The Fresh Company layout requires a real invoice or quotation to accurately calculate inclusive taxes and line items. Please print a test document to see the exact design.</p></div>"
                 else:
                     template.preview = False
             except Exception as e:
@@ -83,7 +88,7 @@ class HavanoInvoiceTemplate(models.Model):
     def action_apply_layout(self):
         self.ensure_one()
         self.env.company.base_layout = self.base_layout
-        self.env.company.document_layout_id = self.id
+        self.env.company.hao_document_layout_id = self.id
         if self.is_default:
             self.search([('id', '!=', self.id)]).write({'is_default': False})
         return {

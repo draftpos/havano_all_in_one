@@ -71,32 +71,32 @@
                     <tr>
                         <th t-if="o.invoice_date"
                             class='text-center'
-                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.document_layout_id.heading_text_color};">
+                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.hao_document_layout_id.heading_text_color};">
                             Invoice Date
                         </th>
                         <th t-if="o.invoice_date_due"
                             class='text-center'
-                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.document_layout_id.heading_text_color};">
+                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.hao_document_layout_id.heading_text_color};">
                             Due Date
                         </th>
                         <th t-if="o.invoice_payment_term_id"
                             class='text-center'
-                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.document_layout_id.heading_text_color};">
+                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.hao_document_layout_id.heading_text_color};">
                             Payment Term
                         </th>
                         <th t-if="(o.theme_id.sales_person) and (o.user_id)"
                             class='text-center'
-                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.document_layout_id.heading_text_color};">
+                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.hao_document_layout_id.heading_text_color};">
                             Sales Person
                         </th>
                         <th t-if="(o.theme_id.reference) and (o.ref)"
                             class='text-center'
-                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.document_layout_id.heading_text_color};">
+                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.hao_document_layout_id.heading_text_color};">
                             Reference
                         </th>
                         <th t-if="(o.theme_id.source) and (o.invoice_origin)"
                             class='text-center'
-                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.document_layout_id.heading_text_color};">
+                            t-attf-style=" background-color:#{o.theme_id.base_color};color:#{company.hao_document_layout_id.heading_text_color};">
                             Source
                         </th>
                     </tr>
@@ -142,7 +142,7 @@
                 </table>
                 <!--Invoice Number-->
                 <div class="page" style="text-align: center">
-                    <h2 t-attf-style="color:#{company.document_layout_id.customer_text_color};">
+                    <h2 t-attf-style="color:#{company.hao_document_layout_id.customer_text_color};">
                         <center>
                             <span t-if="o.move_type == 'out_invoice' and (o.state == 'draft' or o.state == 'posted')">
                                 <font>Invoice</font>

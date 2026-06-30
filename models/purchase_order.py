@@ -17,14 +17,73 @@ class PurchaseOrder(models.Model):
 
     partner_id = fields.Many2one(domain=lambda self: self._hao_supplier_partner_domain())
 
+    hao_custom_status = fields.Selection([
+        ('quote', 'Quote'),
+        ('purchase_invoice', 'Purchase Invoice')
+    ], string='Status', copy=False, readonly=True)
+
+    hao_receipt_location_id = fields.Many2one(
+        'stock.location', string='Receipt Location',
+        domain=[('usage', '=', 'internal')]
+    )
+
+    def action_hao_quote(self):
+        for order in self:
+            if not order.hao_custom_status and order.state in ('draft', 'sent'):
+                order.hao_custom_status = 'quote'
+
+    def action_hao_convert_to_invoice(self):
+        for order in self:
+            if order.hao_custom_status == 'quote':
+                order.button_confirm()
+                if order.state == 'to approve' and order._approval_allowed():
+                    order.button_approve()
+                
+                # Update receipt location
+                if order.hao_receipt_location_id:
+                    for picking in getattr(order, 'picking_ids', []):
+                        if picking.state not in ('done', 'cancel'):
+                            picking.location_dest_id = order.hao_receipt_location_id
+                            for move in picking.move_ids:
+                                move.location_dest_id = order.hao_receipt_location_id
+
+                # Validate receipt
+                pickings = getattr(order, 'picking_ids', order.env['stock.picking']).filtered(lambda p: p.state not in ('done', 'cancel'))
+                for picking in pickings:
+                    for move in picking.move_ids:
+                        if not move.quantity:
+                            move.quantity = move.product_uom_qty
+                    res = picking.button_validate()
+                    if isinstance(res, dict) and res.get('res_model') == 'stock.immediate.transfer':
+                        wizard = order.env['stock.immediate.transfer'].with_context(res.get('context', {})).create({'pick_ids': [(4, picking.id)]})
+                        wizard.process()
+
+                # Auto-deliver manual lines
+                for line in order.order_line:
+                    if line.qty_received_method == 'manual' and line.qty_received < line.product_qty:
+                        line.qty_received = line.product_qty
+
+                # Create and post vendor bill
+                if order.invoice_status in ("to invoice", "no"):
+                    order.action_create_invoice()
+                    bills = order.invoice_ids.filtered(lambda inv: inv.state == "draft")
+                    bills.filtered(lambda inv: not inv.invoice_date).write(
+                        {"invoice_date": fields.Date.context_today(order)}
+                    )
+                    if bills:
+                        bills.action_post()
+                
+                order.hao_custom_status = 'purchase_invoice'
     def _hao_run_purchase_automation(self):
         """Auto-receive, bill, and post vendor bills when enabled for the user."""
         for order in self:
             user = order.user_id or self.env.user
             if not user.hao_enable_purchase_automation:
                 continue
+            if user.hao_purchase_automation_method != 'full':
+                continue
             if user.hao_auto_validate_receipt and order.state in ("purchase", "done"):
-                pickings = order.picking_ids.filtered(
+                pickings = getattr(order, 'picking_ids', order.env['stock.picking']).filtered(
                     lambda p: p.state not in ("done", "cancel")
                 )
                 for picking in pickings:
@@ -62,6 +121,7 @@ class PurchaseOrder(models.Model):
             user = order.user_id or self.env.user
             if (
                 user.hao_enable_purchase_automation
+                and user.hao_purchase_automation_method == 'full'
                 and user.hao_auto_confirm_purchase
                 and order.order_line
                 and order.state in ("draft", "sent")

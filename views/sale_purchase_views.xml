@@ -5,8 +5,49 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_hao_quote" string="Quote" type="object" invisible="hao_custom_status != False or state not in ('draft', 'sent')" />
+                <button name="action_hao_convert_to_invoice" string="Convert to Sales Invoice" type="object" class="oe_highlight" invisible="hao_custom_status != 'quote'" />
+                <button name="action_hao_pay_invoice" string="Pay" type="object" class="oe_highlight" invisible="hao_custom_status != 'sales_invoice'" />
+                <button name="action_hao_print_invoice" string="Print Invoice" type="object" invisible="hao_custom_status != 'sales_invoice'" />
+                <button name="action_hao_print_delivery" string="Print Delivery" type="object" invisible="hao_custom_status != 'sales_invoice'" />
+                <button name="action_hao_reset_invoice_to_draft" string="Reset to Draft" type="object" invisible="hao_custom_status != 'sales_invoice'" />
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_invoice" type="object" class="oe_stat_button" icon="fa-money" invisible="hao_custom_status != 'sales_invoice'">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="hao_paid_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        </span>
+                        <span class="o_stat_text">Paid</span>
+                    </div>
+                </button>
+            </xpath>
             <xpath expr="//field[@name='partner_id']" position="attributes">
                 <attribute name="context">{'from_sale_order': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="hao_delivery_location_id" />
+                <field name="hao_custom_status" invisible="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="sale_order_view_tree_havano_all_in_one" model="ir.ui.view">
+        <field name="name">sale.order.tree.havano.all.in.one</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_hao_quote" string="Quote" type="object" />
+                <button name="action_hao_convert_to_invoice" string="Convert to Sales Invoice" type="object" />
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="hao_custom_status" widget="badge" decoration-info="hao_custom_status == 'quote'" decoration-success="hao_custom_status == 'sales_invoice'" optional="show" />
+                <field name="hao_delivery_location_id" optional="hide" />
             </xpath>
         </field>
     </record>
@@ -16,9 +57,59 @@
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_hao_quote" string="Quote" type="object" invisible="hao_custom_status != False or state not in ('draft', 'sent')" />
+                <button name="action_hao_convert_to_invoice" string="Convert to Purchase Invoice" type="object" class="oe_highlight" invisible="hao_custom_status != 'quote'" />
+            </xpath>
             <xpath expr="//field[@name='partner_id']" position="attributes">
                 <attribute name="context">{'from_purchase_order': True}</attribute>
             </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="hao_receipt_location_id" />
+                <field name="hao_custom_status" invisible="1" />
+            </xpath>
         </field>
     </record>
+
+    <record id="purchase_order_view_tree_havano_all_in_one" model="ir.ui.view">
+        <field name="name">purchase.order.tree.havano.all.in.one</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_hao_quote" string="Quote" type="object" />
+                <button name="action_hao_convert_to_invoice" string="Convert to Purchase Invoice" type="object" />
+            </xpath>
+            <xpath expr="//field[@name='state']" position="attributes">
+                <attribute name="column_invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='state']" position="after">
+                <field name="hao_custom_status" widget="badge" decoration-info="hao_custom_status == 'quote'" decoration-success="hao_custom_status == 'purchase_invoice'" optional="show" />
+                <field name="hao_receipt_location_id" optional="hide" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_hao_credit_note_sale_order" model="ir.actions.server">
+        <field name="name">Credit Note</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records[0].action_hao_credit_note()
+        </field>
+    </record>
+
+    <!-- Reporting: Sales Invoices by Item -->
+    <record id="action_hao_sales_invoice_lines" model="ir.actions.act_window">
+        <field name="name">Sales Invoices by Item</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_id.move_type', '=', 'out_invoice'), ('move_id.state', '=', 'posted'), ('display_type', '=', 'product')]</field>
+        <field name="context">{'group_by': ['product_id']}</field>
+    </record>
+
+    <menuitem id="menu_hao_sales_reporting" name="Sales Invoices by Item" parent="sale.menu_sale_report" action="action_hao_sales_invoice_lines" sequence="10"/>
+
 </odoo>

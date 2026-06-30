@@ -65,7 +65,7 @@
                 <br/>
                 <!--Invoice details-->
                 <div class="page">
-                    <div t-attf-style=" background-color:#{company.document_layout_id.base_color};padding:2% ;color:#{company.document_layout_id.customer_text_color};">
+                    <div t-attf-style=" background-color:#{company.hao_document_layout_id.base_color};padding:2% ;color:#{company.hao_document_layout_id.customer_text_color};">
                         <!--Invoice sl no-->
                         <h2>
                             <span t-if="o.move_type == 'out_invoice' and (o.state == 'draft' or o.state == 'posted')">

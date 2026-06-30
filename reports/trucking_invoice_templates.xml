@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_template_report_invoice_trucking">
+        <t t-call="web.basic_layout">
+            <div class="page" style="font-family: Arial, sans-serif; font-size: 12px; color: black;">
+                
+                <div class="row">
+                    <div class="col-7">
+                        <h3 style="font-weight: bold; margin-bottom: 20px;">Fiscal Tax Invoice</h3>
+                        <p style="margin: 0; font-size: 12px;"><strong>FROM:</strong> <span t-field="o.company_id.name" style="text-transform: uppercase;"/></p>
+                        <p style="margin: 0; font-size: 12px;"><span t-field="o.company_id.street"/></p>
+                        <p style="margin: 0; font-size: 12px;">
+                            <span t-field="o.company_id.city"/><t t-if="o.company_id.city and o.company_id.country_id">, </t>
+                            <span t-field="o.company_id.country_id.name"/>
+                        </p>
+                    </div>
+                    <div class="col-5 text-end">
+                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 100px; margin-top: 20px;" alt="Logo"/>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-7">
+                        <table style="width: 100%; font-size: 12px;">
+                            <tr>
+                                <td style="width: 25%; vertical-align: top;"><strong>INVOICE TO:</strong></td>
+                                <td style="vertical-align: top;"><span t-field="o.partner_id.name" style="text-transform: uppercase;"/></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;"><strong>ADDRESS:</strong></td>
+                                <td style="vertical-align: top;">
+                                    <span t-field="o.partner_id.street"/><br/>
+                                    <span t-field="o.partner_id.street2"/><t t-if="o.partner_id.street2"><br/></t>
+                                    <span t-field="o.partner_id.city"/><t t-if="o.partner_id.city and o.partner_id.country_id">, </t>
+                                    <span t-field="o.partner_id.country_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <table style="width: 100%; margin-top: 20px; font-size: 12px;">
+                            <tr>
+                                <td style="width: 25%;"><strong>VAT NO:</strong></td>
+                                <td><span t-field="o.partner_id.vat"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TIN NO:</strong></td>
+                                <td><span t-esc="o.partner_id.company_registry or '0'"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TCC NO:</strong></td>
+                                <td><span t-esc="'0'"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-5">
+                        <div style="border: 1px solid black; padding: 10px; margin-top: 40px; margin-left: 20px;">
+                            <table style="width: 100%; font-size: 12px;">
+                                <tr>
+                                    <td style="width: 40%;"><strong>NO:</strong></td>
+                                    <td><span t-field="o.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DATE:</strong></td>
+                                    <td><span t-field="o.invoice_date"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>VAT NO:</strong></td>
+                                    <td><span t-field="o.company_id.vat"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12 text-center">
+                        <h6 style="font-weight: bold;">REGISTERED NAME: <span t-field="o.company_id.name" style="text-transform: uppercase;"/></h6>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <p style="margin-bottom: 5px; font-size: 12px;"><strong>Description:</strong> <span t-field="o.trucking_description"/></p>
+                        
+                        <table class="table table-sm table-bordered" style="border: 1px solid black; width: 100%;">
+                            <thead>
+                                <tr style="border: 1px solid black; text-align: center; font-weight: bold; font-size: 11px;">
+                                    <th style="border: 1px solid black; vertical-align: middle;">TRUCK REG<br/>No.</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">TRAILER REG<br/>NO.</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">ORDER</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">GRV NO.</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">QNTY<br/>(MT)</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">RATE<br/>(USD)</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">TOTAL<br/>AMOUNT</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">PAID AMOUNT</th>
+                                    <th style="border: 1px solid black; vertical-align: middle;">REMAINING<br/>BALANCE (USD)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total_remaining" t-value="0.0"/>
+                                <t t-foreach="o.trucking_load_ids" t-as="load">
+                                    <t t-set="total_remaining" t-value="total_remaining + load.customer_balance"/>
+                                    <tr style="border: 1px solid black; text-align: center; font-size: 11px;">
+                                        <td style="border: 1px solid black;"><span t-esc="load.vehicle_id.name or load.vehicle_id.license_plate"/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.trailer_1_id.name"/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.name"/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.pod"/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.qty_tonnes" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.customer_rate" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.total_per_load" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.paid" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="border: 1px solid black;"><span t-field="load.customer_balance" t-options='{"widget": "float", "precision": 2}'/></td>
+                                    </tr>
+                                </t>
+                                <tr style="border: 1px solid black; font-weight: bold; text-align: center; font-size: 11px;">
+                                    <td colspan="3" style="border: 1px solid black; text-align: left; padding-left: 10px;">TOTAL</td>
+                                    <td style="border: 1px solid black;"><span t-esc="len(o.trucking_load_ids)"/></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"><span t-esc="total_remaining" t-options='{"widget": "float", "precision": 2}'/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12" style="padding-left: 40px; font-weight: bold; font-size: 11px;">
+                        <p style="text-decoration: underline; margin-bottom: 5px;">BANKING DETAILS</p>
+                        <table style="width: 100%;">
+                            <t t-set="bank" t-value="o.company_id.partner_id.bank_ids[:1]"/>
+                            <tr>
+                                <td style="width: 150px;">ACCOUNT NAME:</td>
+                                <td><span t-esc="bank.acc_holder_name or o.company_id.name" style="text-transform: uppercase;"/></td>
+                            </tr>
+                            <tr>
+                                <td>BANK:</td>
+                                <td><span t-esc="bank.bank_id.name" style="text-transform: uppercase;"/></td>
+                            </tr>
+                            <tr>
+                                <td>ACCOUNT NO:</td>
+                                <td><span t-esc="bank.acc_number"/></td>
+                            </tr>
+                            <tr>
+                                <td>BRANCH:</td>
+                                <td><span t-esc="bank.bank_id.city or ''" style="text-transform: uppercase;"/></td>
+                            </tr>
+                            <tr>
+                                <td>BRANCH CODE:</td>
+                                <td><span t-esc="bank.bank_id.bic or bank.bank_id.zip or ''"/></td>
+                            </tr>
+                            <tr>
+                                <td>SWIFT CODE:</td>
+                                <td><span t-esc="bank.bank_id.bic or ''"/></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+</odoo>

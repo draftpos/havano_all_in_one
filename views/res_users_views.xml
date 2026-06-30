@@ -23,16 +23,18 @@
                 <page string="Havano Automation">
                     <group string="Sales and Invoice Automation">
                         <field name="hao_enable_sales_automation"/>
-                        <field name="hao_auto_confirm_quotation" invisible="not hao_enable_sales_automation"/>
-                        <field name="hao_auto_create_invoice" invisible="not hao_enable_sales_automation"/>
-                        <field name="hao_auto_post_invoice" invisible="not hao_enable_sales_automation"/>
+                        <field name="hao_sales_automation_method" invisible="not hao_enable_sales_automation"/>
+                        <field name="hao_auto_confirm_quotation" invisible="not hao_enable_sales_automation or hao_sales_automation_method != 'full'"/>
+                        <field name="hao_auto_create_invoice" invisible="not hao_enable_sales_automation or hao_sales_automation_method != 'full'"/>
+                        <field name="hao_auto_post_invoice" invisible="not hao_enable_sales_automation or hao_sales_automation_method != 'full'"/>
                     </group>
                     <group string="Purchase Automation">
                         <field name="hao_enable_purchase_automation"/>
-                        <field name="hao_auto_confirm_purchase" invisible="not hao_enable_purchase_automation"/>
-                        <field name="hao_auto_validate_receipt" invisible="not hao_enable_purchase_automation"/>
-                        <field name="hao_auto_create_vendor_bill" invisible="not hao_enable_purchase_automation"/>
-                        <field name="hao_auto_post_vendor_bill" invisible="not hao_enable_purchase_automation"/>
+                        <field name="hao_purchase_automation_method" invisible="not hao_enable_purchase_automation"/>
+                        <field name="hao_auto_confirm_purchase" invisible="not hao_enable_purchase_automation or hao_purchase_automation_method != 'full'"/>
+                        <field name="hao_auto_validate_receipt" invisible="not hao_enable_purchase_automation or hao_purchase_automation_method != 'full'"/>
+                        <field name="hao_auto_create_vendor_bill" invisible="not hao_enable_purchase_automation or hao_purchase_automation_method != 'full'"/>
+                        <field name="hao_auto_post_vendor_bill" invisible="not hao_enable_purchase_automation or hao_purchase_automation_method != 'full'"/>
                     </group>
                 </page>
             </xpath>
