@@ -175,8 +175,8 @@
                         <t t-foreach="o.trucking_load_ids" t-as="load">
                             <t t-set="total_remaining" t-value="total_remaining + load.customer_balance"/>
                             <tr style="border-bottom: 1px solid #e6e6e6; background-color: #ffffff; font-size: 11px;">
-                                <td style="padding: 5px;"><span t-esc="load.vehicle_id.name or load.vehicle_id.license_plate"/></td>
-                                <td style="padding: 5px;"><span t-field="load.trailer_1_id.name"/></td>
+                                <td style="padding: 5px;"><span t-esc="load.vehicle_id.reg_number"/></td>
+                                <td style="padding: 5px;"><span t-esc="load.trailer_1_id.reg_number"/></td>
                                 <td style="padding: 5px;"><span t-field="load.name"/></td>
                                 <td style="padding: 5px;"><span t-field="load.pod"/></td>
                                 <td style="padding: 5px; text-align: center;"><span t-field="load.qty_tonnes" t-options='{"widget": "float", "precision": 2}'/></td>
