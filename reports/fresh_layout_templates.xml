@@ -154,69 +154,111 @@
                 </tr>
             </table>
 
-            <!-- Order Lines -->
+            <!-- Order Lines or Trucking Loads -->
             <table style="width: 100%; border-collapse: collapse; border-bottom: 1px solid black; margin-top: 0;">
-                <thead>
-                    <tr style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #f2f2f2; font-weight: bold;">
-                        <th style="padding: 5px; text-align: left; width: 15%;">HS Code</th>
-                        <th style="padding: 5px; text-align: left; width: 45%;">Description</th>
-                        <th style="padding: 5px; text-align: center; width: 6%;">Units</th>
-                        <th style="padding: 5px; text-align: center; width: 6%;">Qty</th>
-                        <th style="padding: 5px; text-align: right; width: 10%;">Price INCL</th>
-                        <th style="padding: 5px; text-align: right; width: 8%;">VAT</th>
-                        <th style="padding: 5px; text-align: right; width: 10%;">Total INCL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <t t-set="lines" t-value="o.invoice_line_ids if doc_model == 'account.move' else o.order_line"/>
-                    <tr t-foreach="lines" t-as="line" style="border-bottom: 1px solid transparent; background-color: #ffffff;">
-                        <t t-if="line.display_type in ['product', False, '']">
-                            <td style="padding: 5px;">
-                                <t t-if="'l10n_zw_hs_code' in line.product_id">
-                                    <span t-field="line.product_id.l10n_zw_hs_code"/>
-                                </t>
-                                <t t-else="">
-                                    <span t-field="line.product_id.default_code"/>
-                                </t>
-                            </td>
-                            <td style="padding: 5px;"><span t-field="line.name"/></td>
-                            <td style="padding: 5px; text-align: center;">
-                                <span t-field="line.product_uom_id.name"/>
-                            </td>
-                            <td style="padding: 5px; text-align: center;">
-                                <span t-if="doc_model == 'account.move'" t-field="line.quantity"/>
-                                <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty"/>
-                            </td>
-                            <!-- Price INCL -->
-                            <t t-set="qty" t-value="line.quantity if doc_model == 'account.move' else line.product_uom_qty"/>
-                            <t t-set="line_taxes" t-value="line.tax_ids"/>
-                            <t t-set="taxes" t-value="line_taxes.compute_all(line.price_unit, o.currency_id, qty, product=line.product_id, partner=o.partner_id)"/>
-                            <t t-set="price_incl" t-value="taxes['total_included'] / qty if qty else 0.0"/>
-                            <td style="padding: 5px; text-align: right;">
-                                <span t-esc="price_incl" t-options='{"widget": "float", "precision": 2}'/>
-                            </td>
-                            <!-- VAT amount for this line -->
-                            <t t-set="vat_amount" t-value="taxes['total_included'] - taxes['total_excluded']"/>
-                            <td style="padding: 5px; text-align: right;">
-                                <span t-esc="vat_amount" t-options='{"widget": "float", "precision": 2}'/>
-                            </td>
-                            <!-- Total INCL -->
-                            <td style="padding: 5px; text-align: right;">
-                                <span t-esc="taxes['total_included']" t-options='{"widget": "float", "precision": 2}'/>
-                            </td>
+                <t t-if="doc_model == 'account.move' and o.trucking_load_ids">
+                    <thead>
+                        <tr style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #f2f2f2; font-weight: bold; font-size: 11px;">
+                            <th style="padding: 5px; text-align: left;">Truck Reg</th>
+                            <th style="padding: 5px; text-align: left;">Trailer Reg</th>
+                            <th style="padding: 5px; text-align: left;">Order No.</th>
+                            <th style="padding: 5px; text-align: left;">GRV NO (POD)</th>
+                            <th style="padding: 5px; text-align: center;">QNTY (MT)</th>
+                            <th style="padding: 5px; text-align: right;">RATE (USD)</th>
+                            <th style="padding: 5px; text-align: right;">TOTAL AMOUNT</th>
+                            <th style="padding: 5px; text-align: right;">PAID AMOUNT</th>
+                            <th style="padding: 5px; text-align: right;">REMAINING BALANCE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="total_remaining" t-value="0.0"/>
+                        <t t-foreach="o.trucking_load_ids" t-as="load">
+                            <t t-set="total_remaining" t-value="total_remaining + load.customer_balance"/>
+                            <tr style="border-bottom: 1px solid #e6e6e6; background-color: #ffffff; font-size: 11px;">
+                                <td style="padding: 5px;"><span t-esc="load.vehicle_id.name or load.vehicle_id.license_plate"/></td>
+                                <td style="padding: 5px;"><span t-field="load.trailer_1_id.name"/></td>
+                                <td style="padding: 5px;"><span t-field="load.name"/></td>
+                                <td style="padding: 5px;"><span t-field="load.pod"/></td>
+                                <td style="padding: 5px; text-align: center;"><span t-field="load.qty_tonnes" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td style="padding: 5px; text-align: right;"><span t-field="load.customer_rate" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td style="padding: 5px; text-align: right;"><span t-field="load.total_per_load" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td style="padding: 5px; text-align: right;"><span t-field="load.paid" t-options='{"widget": "float", "precision": 2}'/></td>
+                                <td style="padding: 5px; text-align: right;"><span t-field="load.customer_balance" t-options='{"widget": "float", "precision": 2}'/></td>
+                            </tr>
                         </t>
-                        <t t-if="line.display_type == 'line_section'">
-                            <td colspan="7" style="padding: 5px; font-weight: bold; background-color: #f2f2f2;">
-                                <span t-field="line.name"/>
-                            </td>
-                        </t>
-                        <t t-if="line.display_type == 'line_note'">
-                            <td colspan="7" style="padding: 5px; font-style: italic;">
-                                <span t-field="line.name"/>
-                            </td>
-                        </t>
-                    </tr>
-                </tbody>
+                        <tr style="border-bottom: 1px solid black; font-weight: bold; background-color: #f2f2f2; font-size: 11px;">
+                            <td colspan="4" style="padding: 5px; text-align: left;">TOTAL LOADS: <span t-esc="len(o.trucking_load_ids)"/></td>
+                            <td style="padding: 5px;"></td>
+                            <td style="padding: 5px;"></td>
+                            <td style="padding: 5px;"></td>
+                            <td style="padding: 5px;"></td>
+                            <td style="padding: 5px; text-align: right;"><span t-esc="total_remaining" t-options='{"widget": "float", "precision": 2}'/></td>
+                        </tr>
+                    </tbody>
+                </t>
+                <t t-else="">
+                    <thead>
+                        <tr style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #f2f2f2; font-weight: bold;">
+                            <th style="padding: 5px; text-align: left; width: 15%;">HS Code</th>
+                            <th style="padding: 5px; text-align: left; width: 45%;">Description</th>
+                            <th style="padding: 5px; text-align: center; width: 6%;">Units</th>
+                            <th style="padding: 5px; text-align: center; width: 6%;">Qty</th>
+                            <th style="padding: 5px; text-align: right; width: 10%;">Price INCL</th>
+                            <th style="padding: 5px; text-align: right; width: 8%;">VAT</th>
+                            <th style="padding: 5px; text-align: right; width: 10%;">Total INCL</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="lines" t-value="o.invoice_line_ids if doc_model == 'account.move' else o.order_line"/>
+                        <tr t-foreach="lines" t-as="line" style="border-bottom: 1px solid transparent; background-color: #ffffff;">
+                            <t t-if="line.display_type in ['product', False, '']">
+                                <td style="padding: 5px;">
+                                    <t t-if="'l10n_zw_hs_code' in line.product_id">
+                                        <span t-field="line.product_id.l10n_zw_hs_code"/>
+                                    </t>
+                                    <t t-else="">
+                                        <span t-field="line.product_id.default_code"/>
+                                    </t>
+                                </td>
+                                <td style="padding: 5px;"><span t-field="line.name"/></td>
+                                <td style="padding: 5px; text-align: center;">
+                                    <span t-field="line.product_uom_id.name"/>
+                                </td>
+                                <td style="padding: 5px; text-align: center;">
+                                    <span t-if="doc_model == 'account.move'" t-field="line.quantity"/>
+                                    <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty"/>
+                                </td>
+                                <!-- Price INCL -->
+                                <t t-set="qty" t-value="line.quantity if doc_model == 'account.move' else line.product_uom_qty"/>
+                                <t t-set="line_taxes" t-value="line.tax_ids"/>
+                                <t t-set="taxes" t-value="line_taxes.compute_all(line.price_unit, o.currency_id, qty, product=line.product_id, partner=o.partner_id)"/>
+                                <t t-set="price_incl" t-value="taxes['total_included'] / qty if qty else 0.0"/>
+                                <td style="padding: 5px; text-align: right;">
+                                    <span t-esc="price_incl" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <!-- VAT amount for this line -->
+                                <t t-set="vat_amount" t-value="taxes['total_included'] - taxes['total_excluded']"/>
+                                <td style="padding: 5px; text-align: right;">
+                                    <span t-esc="vat_amount" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <!-- Total INCL -->
+                                <td style="padding: 5px; text-align: right;">
+                                    <span t-esc="taxes['total_included']" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                            </t>
+                            <t t-if="line.display_type == 'line_section'">
+                                <td colspan="7" style="padding: 5px; font-weight: bold; background-color: #f2f2f2;">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                            <t t-if="line.display_type == 'line_note'">
+                                <td colspan="7" style="padding: 5px; font-style: italic;">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </tbody>
+                </t>
             </table>
 
             <!-- Totals and Signature Section -->
