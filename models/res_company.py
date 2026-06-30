@@ -9,7 +9,8 @@ class ResCompany(models.Model):
                    ('modern', 'Modern'),
                    ('normal', 'Normal'),
                    ('old', 'Old Standard'),
-                   ('fresh', 'Fresh Company (Fiscal Tax Invoice)')],
+                   ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
+                   ('trucking', 'Trucking (Fiscal Tax Invoice)')],
         string="Invoice Document Layout", default="default",
         help="base layout selection")
     hao_document_layout_id = fields.Many2one("havano.invoice.template",

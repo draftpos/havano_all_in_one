@@ -80,6 +80,8 @@ class HavanoInvoiceTemplate(models.Model):
                     template.preview = ir_ui_view._render_template('havano_all_in_one.report_preview_old', values)
                 elif template.base_layout == 'fresh':
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Preview not available here</h4><p>The Fresh Company layout requires a real invoice or quotation to accurately calculate inclusive taxes and line items. Please print a test document to see the exact design.</p></div>"
+                elif template.base_layout == 'trucking':
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Preview not available here</h4><p>The Trucking layout requires a real invoice linked to Trucking Loads to accurately display the load details and POD information. Please print a test document to see the exact design.</p></div>"
                 else:
                     template.preview = False
             except Exception as e:
