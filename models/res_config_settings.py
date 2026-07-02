@@ -109,7 +109,22 @@ class ResConfigSettings(models.TransientModel):
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
         params = self.env['ir.config_parameter'].sudo()
-        res.update(hao_login_image=params.get_param('havano_all_in_one.login_image'))
+        
+        # Manually parse boolean config parameters that use default=True
+        # because Odoo's default boolean casting evaluates bool("False") to True.
+        res.update(
+            hao_check_name_exact=params.get_param('havano_all_in_one.contact_check_name_exact', 'True') == 'True',
+            hao_check_email_only=params.get_param('havano_all_in_one.contact_check_email_only', 'True') == 'True',
+            hao_check_email_name=params.get_param('havano_all_in_one.contact_check_email_name', 'True') == 'True',
+            hao_check_phone_only=params.get_param('havano_all_in_one.contact_check_phone_only', 'True') == 'True',
+            hao_check_phone_name=params.get_param('havano_all_in_one.contact_check_phone_name', 'True') == 'True',
+            hao_check_name_address=params.get_param('havano_all_in_one.contact_check_name_address', 'True') == 'True',
+            hao_product_check_name=params.get_param('havano_all_in_one.product_check_name', 'True') == 'True',
+            hao_product_check_default_code=params.get_param('havano_all_in_one.product_check_default_code', 'True') == 'True',
+            hao_show_only_customers_in_sales=params.get_param('havano_all_in_one.show_only_customers_in_sales', 'True') == 'True',
+            hao_show_only_suppliers_in_purchases=params.get_param('havano_all_in_one.show_only_suppliers_in_purchases', 'True') == 'True',
+            hao_login_image=params.get_param('havano_all_in_one.login_image')
+        )
         return res
 
     def set_values(self):
