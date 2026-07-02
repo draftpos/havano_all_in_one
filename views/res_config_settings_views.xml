@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//form" position="inside">
-                <app string="Havano All In One" name="havano_all_in_one_app">
+                <app string="Havano All In One" name="havano_all_in_one" logo="/havano_all_in_one/static/description/icon.png">
                     <block title="Disallow Duplicate Contacts">
                         <setting><field name="hao_check_name_exact"/></setting>
                         <setting><field name="hao_check_email_only"/></setting>
