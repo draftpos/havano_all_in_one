@@ -130,6 +130,20 @@ class ResConfigSettings(models.TransientModel):
     def set_values(self):
         super(ResConfigSettings, self).set_values()
         params = self.env['ir.config_parameter'].sudo()
+        
+        # Odoo's default set_values deletes the parameter if the boolean is False.
+        # We must explicitly save it as the string "False" so that get_values knows it was unchecked.
+        params.set_param('havano_all_in_one.contact_check_name_exact', str(self.hao_check_name_exact))
+        params.set_param('havano_all_in_one.contact_check_email_only', str(self.hao_check_email_only))
+        params.set_param('havano_all_in_one.contact_check_email_name', str(self.hao_check_email_name))
+        params.set_param('havano_all_in_one.contact_check_phone_only', str(self.hao_check_phone_only))
+        params.set_param('havano_all_in_one.contact_check_phone_name', str(self.hao_check_phone_name))
+        params.set_param('havano_all_in_one.contact_check_name_address', str(self.hao_check_name_address))
+        params.set_param('havano_all_in_one.product_check_name', str(self.hao_product_check_name))
+        params.set_param('havano_all_in_one.product_check_default_code', str(self.hao_product_check_default_code))
+        params.set_param('havano_all_in_one.show_only_customers_in_sales', str(self.hao_show_only_customers_in_sales))
+        params.set_param('havano_all_in_one.show_only_suppliers_in_purchases', str(self.hao_show_only_suppliers_in_purchases))
+        
         params.set_param('havano_all_in_one.login_image', self.hao_login_image)
 
     @api.onchange('hao_login_orientation')
