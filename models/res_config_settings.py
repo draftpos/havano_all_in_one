@@ -138,7 +138,6 @@ class ResConfigSettings(models.TransientModel):
         help="When enabled, products can use Order 1–5 flags on the Inventory tab.",
     )
 
-
     hao_rebrand_customers = fields.Char(string="Rename 'Customers' To", related="company_id.hao_rebrand_customers", readonly=False)
     hao_rebrand_vendors = fields.Char(string="Rename 'Vendors' To", related="company_id.hao_rebrand_vendors", readonly=False)
 
