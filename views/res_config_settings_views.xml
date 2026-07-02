@@ -47,14 +47,6 @@
                         </div>
                         <button type="action" class="btn btn-secondary" name="%(action_havano_invoice_template)d" string="Manage Invoice Templates"/>
                     </block>
-                    <block title="Payroll">
-                        <setting help="Maximum insurable earnings ceiling for NSSA calculation.">
-                            <field name="hao_nssa_cap"/>
-                        </setting>
-                        <setting help="Percentage used for NSSA deduction calculation.">
-                            <field name="hao_nssa_percentage"/>
-                        </setting>
-                    </block>
                     <block title="Rebranding">
                         <div class="text-muted mb-2">
                             Rename standard terminology to match your business needs.

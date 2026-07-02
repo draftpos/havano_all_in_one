@@ -138,19 +138,6 @@ class ResConfigSettings(models.TransientModel):
         help="When enabled, products can use Order 1–5 flags on the Inventory tab.",
     )
 
-    # Payroll specific
-    hao_nssa_cap = fields.Float(
-        string="NSSA Cap Amount ($)",
-        config_parameter="havano_all_in_one.nssa_cap",
-        default=700.0,
-        help="Maximum insurable earnings ceiling for NSSA calculation."
-    )
-    hao_nssa_percentage = fields.Float(
-        string="NSSA Percentage (%)",
-        config_parameter="havano_all_in_one.nssa_percentage",
-        default=4.5,
-        help="Percentage used for NSSA deduction calculation (e.g. 4.5)."
-    )
 
     hao_rebrand_customers = fields.Char(string="Rename 'Customers' To", related="company_id.hao_rebrand_customers", readonly=False)
     hao_rebrand_vendors = fields.Char(string="Rename 'Vendors' To", related="company_id.hao_rebrand_vendors", readonly=False)
