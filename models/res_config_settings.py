@@ -135,6 +135,55 @@ class ResConfigSettings(models.TransientModel):
         params.set_param('havano_all_in_one.show_only_suppliers_in_purchases', str(self.hao_show_only_suppliers_in_purchases))
         
         params.set_param('havano_all_in_one.login_image', self.hao_login_image)
+        
+        # Menu visibility toggles (Customers)
+        self._toggle_menu('account.menu_action_move_out_invoice_type', self.hao_show_cust_invoices)
+        self._toggle_menu('account.menu_action_move_out_refund_type', self.hao_show_cust_credit_notes)
+        self._toggle_menu('account.menu_action_account_payments_receivable', self.hao_show_cust_payments)
+        self._toggle_menu('account.product_product_menu_sellable', self.hao_show_cust_products)
+        self._toggle_menu('account.menu_account_customer', self.hao_show_cust_customers)
+
+        # Menu visibility toggles (Vendors)
+        self._toggle_menu('account.menu_action_move_in_invoice_type', self.hao_show_vend_bills)
+        self._toggle_menu('account.menu_action_move_in_refund_type', self.hao_show_vend_refunds)
+        self._toggle_menu('account.menu_action_account_payments_payable', self.hao_show_vend_payments)
+        self._toggle_menu('hr_expense.menu_hr_expense_account_employee_expenses', self.hao_show_vend_expenses)
+        self._toggle_menu('account.product_product_menu_purchasable', self.hao_show_vend_products)
+        self._toggle_menu('account.menu_account_supplier', self.hao_show_vend_vendors)
+
+        # Rebranding logic for Customers
+        if self.hao_rebrand_customers:
+            cust_label = self.hao_rebrand_customers
+            cust_menu_ids = [
+                self.env.ref('account.menu_finance_receivables', raise_if_not_found=False).id if self.env.ref('account.menu_finance_receivables', raise_if_not_found=False) else False,
+                self.env.ref('account.menu_account_customer', raise_if_not_found=False).id if self.env.ref('account.menu_account_customer', raise_if_not_found=False) else False,
+            ]
+            cust_menus = self.env['ir.ui.menu'].search([('id', 'in', [m for m in cust_menu_ids if m])])
+            for menu in cust_menus:
+                menu.name = cust_label
+
+            cust_action_id = self.env.ref('account.res_partner_action_customer', raise_if_not_found=False)
+            if cust_action_id:
+                cust_actions = self.env['ir.actions.act_window'].search([('id', '=', cust_action_id.id)])
+                for action in cust_actions:
+                    action.name = cust_label
+
+        # Rebranding logic for Vendors
+        if self.hao_rebrand_vendors:
+            vend_label = self.hao_rebrand_vendors
+            vend_menu_ids = [
+                self.env.ref('account.menu_finance_payables', raise_if_not_found=False).id if self.env.ref('account.menu_finance_payables', raise_if_not_found=False) else False,
+                self.env.ref('account.menu_account_supplier', raise_if_not_found=False).id if self.env.ref('account.menu_account_supplier', raise_if_not_found=False) else False,
+            ]
+            vend_menus = self.env['ir.ui.menu'].search([('id', 'in', [m for m in vend_menu_ids if m])])
+            for menu in vend_menus:
+                menu.name = vend_label
+
+            vend_action_id = self.env.ref('account.res_partner_action_supplier', raise_if_not_found=False)
+            if vend_action_id:
+                vend_actions = self.env['ir.actions.act_window'].search([('id', '=', vend_action_id.id)])
+                for action in vend_actions:
+                    action.name = vend_label
 
     @api.onchange('hao_login_orientation')
     def onchange_hao_login_orientation(self):
