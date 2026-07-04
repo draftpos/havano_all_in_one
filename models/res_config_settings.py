@@ -279,3 +279,114 @@ class ResConfigSettings(models.TransientModel):
         menu = self.env.ref(xml_id, raise_if_not_found=False)
         if menu:
             menu.active = active
+
+    def action_clear_transactions(self):
+        # Clear transient models that might hold foreign keys
+        try:
+            self.env.cr.execute("DELETE FROM account_payment_register")
+            self.env.cr.execute("DELETE FROM sale_advance_payment_inv")
+            self.env.cr.execute("DELETE FROM stock_backorder_confirmation")
+            self.env.cr.execute("DELETE FROM stock_immediate_transfer")
+            self.env.cr.execute("DELETE FROM account_move_reversal")
+            self.env.cr.commit()
+        except Exception:
+            self.env.cr.rollback()
+
+        models_to_clear = [
+            'account.move', 'account.payment', 'account.bank.statement',
+            'sale.order', 'purchase.order', 'stock.picking', 'stock.move',
+            'stock.valuation.layer', 'stock.quant', 'pos.order', 'pos.session',
+            'pos.payment', 'hr.expense', 'hr.expense.sheet', 'hr.payslip', 'hr.payslip.run',
+            'trucking.load', 'trucking.load.expense', 'management.job',
+            'management.marketing', 'management.sales.performance',
+            'management.activity.performance', 'management.client.followup',
+            'helpdesk.ticket', 'crm.lead', 'project.project', 'project.task',
+            'mrp.production', 'mrp.workorder', 'fleet.vehicle.log.services',
+            'fleet.vehicle.log.contract', 'hr.leave', 'hr.leave.allocation',
+            'job.card', 'estimate', 'medical.prescription.order',
+            'medical.appointment', 'medical.inpatient.registration', 'medical.lab',
+            'hr.contract'
+        ]
+        self._clear_models_data(models_to_clear)
+        return self._logout_action()
+
+    def action_clear_all_data(self):
+        self.action_clear_transactions()
+        master_models = [
+            'product.template', 'product.product',
+            'trucking.vehicle', 'trucking.trailer', 'trucking.route',
+            'management.activity.type', 'fleet.vehicle', 'vehicle',
+            'medical.patient', 'medical.newborn', 'hr.employee'
+        ]
+        self._clear_models_data(master_models)
+        
+        # Safely wipe contacts using ORM to handle any remaining soft dependencies
+        try:
+            users = self.env['res.users'].sudo().search([])
+            companies = self.env['res.company'].sudo().search([])
+            excluded_partner_ids = users.mapped('partner_id').ids + companies.mapped('partner_id').ids
+            
+            partners = self.env['res.partner'].with_context(active_test=False).search([
+                ('id', 'not in', excluded_partner_ids)
+            ])
+            for p in partners:
+                try:
+                    p.unlink()
+                    self.env.cr.commit()
+                except Exception:
+                    self.env.cr.rollback()
+        except Exception:
+            self.env.cr.rollback()
+            
+        return self._logout_action()
+
+    def _safe_unlink(self, records):
+        for record in records:
+            try:
+                # Aggressively try to cancel records so unlink constraints are bypassed
+                if hasattr(record, 'action_cancel'):
+                    try:
+                        record.action_cancel()
+                    except Exception:
+                        pass
+                if hasattr(record, 'button_draft'):
+                    try:
+                        record.button_draft()
+                    except Exception:
+                        pass
+                if hasattr(record, 'button_cancel'):
+                    try:
+                        record.button_cancel()
+                    except Exception:
+                        pass
+                
+                # Force state to cancel if field exists
+                if 'state' in record._fields:
+                    try:
+                        self.env.cr.execute(f"UPDATE {record._table} SET state='cancel' WHERE id=%s", (record.id,))
+                    except Exception:
+                        pass
+
+                record.unlink()
+                self.env.cr.commit()
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).error("Failed to safely unlink %s %s: %s", record._name, record.id, e)
+                self.env.cr.rollback()
+
+    def _clear_models_data(self, models_list):
+        for model_name in models_list:
+            if model_name in self.env:
+                try:
+                    records = self.env[model_name].with_context(active_test=False).search([])
+                    self._safe_unlink(records)
+                except Exception:
+                    self.env.cr.rollback()
+
+    def _logout_action(self):
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/web/session/logout',
+            'target': 'self',
+        }
+

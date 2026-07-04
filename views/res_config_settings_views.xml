@@ -103,6 +103,15 @@
                             </div>
                         </setting>
                     </block>
+                    <block title="Database Management">
+                        <div class="text-muted mb-2">
+                            Permanently wipe data from your database. These actions cannot be undone.
+                        </div>
+                        <div class="mt-3">
+                            <button name="action_clear_transactions" type="object" string="Clear All Transactions" class="btn btn-warning me-2" confirm="Are you absolutely sure you want to permanently clear all transaction data? This cannot be undone!"/>
+                            <button name="action_clear_all_data" type="object" string="Clear All Data and Transactions" class="btn btn-danger" confirm="Are you absolutely sure you want to permanently clear all transactions AND master data (customers, suppliers, products)? This cannot be undone!"/>
+                        </div>
+                    </block>
                 </app>
             </xpath>
         </field>
