@@ -11,6 +11,9 @@ class ResPartner(models.Model):
     doctor_reg_no = fields.Char(string="REG Number")
     doctor_certificate = fields.Binary(string="Certificate", attachment=True)
     doctor_certificate_filename = fields.Char(string="Certificate Filename")
+    hao_activate_pharmacy = fields.Boolean(
+        compute='_compute_hao_activate_pharmacy'
+    )
     contact_type = fields.Selection(
         [
             ("customer", "Customer"),
@@ -23,6 +26,11 @@ class ResPartner(models.Model):
         store=True,
         string="Contact Type",
     )
+
+    def _compute_hao_activate_pharmacy(self):
+        for partner in self:
+            company = partner.company_id or self.env.company
+            partner.hao_activate_pharmacy = company.hao_activate_pharmacy
 
     @api.depends("is_customer", "is_supplier", "is_doctor")
     def _compute_contact_type(self):

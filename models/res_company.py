@@ -20,7 +20,7 @@ class ResCompany(models.Model):
 
     hao_activate_pharmacy = fields.Boolean(
         string="Activate Pharmacy",
-        default=True,
+        default=False,
         help="Show pharmacy fields on products and expose pharmacy data via API.",
     )
     hao_rebrand_customers = fields.Char(string="Rename 'Customers' To", default="Customers", help="Rename the Customers menu and UI throughout Accounting.")

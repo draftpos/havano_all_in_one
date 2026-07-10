@@ -41,7 +41,27 @@ CREDENTIAL_PARAMS = ['login', 'password', 'type']
 
 class Home(WebHome):
 
-    @http.route('/', type='http', auth="none")
+    def _login_redirect(self, uid, redirect=None):
+        """Override post-login redirect to use the configured base URL path instead of /odoo."""
+        from odoo.addons.web.controllers.utils import is_user_internal
+        if request.session.uid:
+            if redirect:
+                # Swap /odoo with our custom base if the redirect starts with /odoo
+                conf_param = request.env['ir.config_parameter'].sudo()
+                base = conf_param.get_param('havano_whitelabel.web_base_url',
+                       conf_param.get_param('havanoposdesk.web_base_url', 'havano'))
+                if redirect.startswith('/odoo'):
+                    redirect = '/' + base + redirect[len('/odoo'):]
+                return redirect
+            if is_user_internal(request.session.uid):
+                conf_param = request.env['ir.config_parameter'].sudo()
+                base = conf_param.get_param('havano_whitelabel.web_base_url',
+                       conf_param.get_param('havanoposdesk.web_base_url', 'havano'))
+                return '/' + base
+            return '/web/login_successful'
+        return super()._login_redirect(uid, redirect=redirect)
+
+    @http.route('/', type='http', auth="public")
     def index(self, s_action=None, db=None, **kw):
         conf_param = request.env['ir.config_parameter'].sudo()
         redirect_home_to_login = conf_param.get_param('havano_all_in_one.redirect_home_to_login')
@@ -132,6 +152,8 @@ class Home(WebHome):
         image = conf_param.get_param('havano_all_in_one.login_image')
         url = conf_param.get_param('havano_all_in_one.login_url')
         background_type = conf_param.get_param('havano_all_in_one.login_background')
+        # Always hide the default "Powered by Odoo" footer link
+        values['disable_footer'] = True
         if orientation:
             values['orientation'] = orientation
         if background_type == 'color':

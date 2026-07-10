@@ -49,6 +49,9 @@ class ResUsers(models.Model):
         string="Auto-post vendor bill",
         default=False,
     )
+    hao_activate_pharmacy = fields.Boolean(
+        related='company_id.hao_activate_pharmacy'
+    )
     is_pharmacist = fields.Boolean(
         string="Pharmacist",
         default=False,

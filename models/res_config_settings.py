@@ -143,6 +143,10 @@ class ResConfigSettings(models.TransientModel):
         self._toggle_menu('account.product_product_menu_sellable', self.hao_show_cust_products)
         self._toggle_menu('account.menu_account_customer', self.hao_show_cust_customers)
 
+        # Menu visibility toggles (Pharmacy)
+        self._toggle_menu('havano_all_in_one.menu_hao_sale_doctors', self.hao_activate_pharmacy)
+        self._toggle_menu('havano_all_in_one.menu_pharmacy_dosage', self.hao_activate_pharmacy)
+
         # Menu visibility toggles (Vendors)
         self._toggle_menu('account.menu_action_move_in_invoice_type', self.hao_show_vend_bills)
         self._toggle_menu('account.menu_action_move_in_refund_type', self.hao_show_vend_refunds)

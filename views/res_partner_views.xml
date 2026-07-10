@@ -6,15 +6,16 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']" position="after">
+                <field name="hao_activate_pharmacy" invisible="1"/>
                 <field name="is_customer" readonly="is_doctor"/>
                 <field name="is_supplier" readonly="is_doctor"/>
-                <field name="is_doctor"/>
+                <field name="is_doctor" invisible="not hao_activate_pharmacy"/>
                 <field name="contact_type" readonly="1"/>
             </xpath>
             <xpath expr="//field[@name='is_doctor']" position="after">
-                <field name="doctor_reg_no" invisible="not is_doctor" required="is_doctor"/>
+                <field name="doctor_reg_no" invisible="not is_doctor or not hao_activate_pharmacy" required="is_doctor"/>
                 <field name="doctor_certificate_filename" invisible="1"/>
-                <field name="doctor_certificate" invisible="not is_doctor" filename="doctor_certificate_filename"/>
+                <field name="doctor_certificate" invisible="not is_doctor or not hao_activate_pharmacy" filename="doctor_certificate_filename"/>
             </xpath>
         </field>
     </record>

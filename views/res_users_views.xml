@@ -6,14 +6,15 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='access_rights']//field[@name='role']" position="after">
-                <label for="is_pharmacist" string="Additional roles" invisible="share"/>
-                <div class="o_row" invisible="share">
+                <field name="hao_activate_pharmacy" invisible="1"/>
+                <label for="is_pharmacist" string="Additional roles" invisible="share or not hao_activate_pharmacy"/>
+                <div class="o_row" invisible="share or not hao_activate_pharmacy">
                     <field name="is_pharmacist" nolabel="1"/>
                     <label for="is_pharmacist" string="Pharmacist"/>
                     <field name="is_cashier" nolabel="1" class="ms-3"/>
                     <label for="is_cashier" string="Cashier"/>
                 </div>
-                <div class="text-muted" invisible="share">
+                <div class="text-muted" invisible="share or not hao_activate_pharmacy">
                     Pharmacist and Cashier are additional roles on top of User
                     or Administrator (for example User + Pharmacist, or
                     Administrator + Cashier).

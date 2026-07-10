@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="module_category_havano_user_roles" model="ir.module.category">
-        <field name="name">Havano User Roles</field>
-        <field name="sequence">25</field>
-    </record>
-
-    <record id="res_groups_privilege_havano_user_roles" model="res.groups.privilege">
-        <field name="name">Havano Roles</field>
-        <field name="category_id" ref="module_category_havano_user_roles"/>
-    </record>
-
     <record id="group_havano_pharmacist" model="res.groups">
         <field name="name">Pharmacist</field>
-        <field name="privilege_id" ref="res_groups_privilege_havano_user_roles"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 
     <record id="group_havano_cashier" model="res.groups">
         <field name="name">Cashier</field>
-        <field name="privilege_id" ref="res_groups_privilege_havano_user_roles"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
     </record>
 </odoo>
