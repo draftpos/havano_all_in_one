@@ -8,6 +8,7 @@
     "depends": [
         "base",
         "web",
+        "website",
         "contacts",
         "product",
         "uom",

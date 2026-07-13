@@ -49,16 +49,16 @@ class Home(WebHome):
                 # Swap /odoo with our custom base if the redirect starts with /odoo
                 conf_param = request.env['ir.config_parameter'].sudo()
                 base = conf_param.get_param('havano_whitelabel.web_base_url',
-                       conf_param.get_param('havanoposdesk.web_base_url', 'havano'))
+                       conf_param.get_param('havanoposdesk.web_base_url', 'web'))
                 if redirect.startswith('/odoo'):
                     redirect = '/' + base + redirect[len('/odoo'):]
                 return redirect
             if is_user_internal(request.session.uid):
                 conf_param = request.env['ir.config_parameter'].sudo()
                 base = conf_param.get_param('havano_whitelabel.web_base_url',
-                       conf_param.get_param('havanoposdesk.web_base_url', 'havano'))
+                       conf_param.get_param('havanoposdesk.web_base_url', 'web'))
                 return '/' + base
-            return '/web/login_successful'
+            
         return super()._login_redirect(uid, redirect=redirect)
 
     @http.route('/', type='http', auth="public")
@@ -69,8 +69,8 @@ class Home(WebHome):
             return request.redirect('/web/login?redirect=' + (kw.get('redirect') or '%2Fweb'))
         return super(Home, self).index(s_action=s_action, db=db, **kw)
 
-    @http.route('/web/login', type='http', auth='none', readonly=False,
-                list_as_website_content=_lt("Login"))
+    @http.route('/web/login', type='http', auth='public', readonly=False,
+                list_as_website_content=_lt("Login"), website=True)
     def web_login(self, redirect=None, **kw):
         """
             Handle web login requests and render a customized login page.
@@ -111,6 +111,9 @@ class Home(WebHome):
 
         values = {k: v for k, v in request.params.items() if
                   k in SIGN_UP_REQUEST_PARAMS}
+        values.setdefault('login', '')
+        values.setdefault('error', '')
+        values.setdefault('disable_footer', True)
         try:
             values['databases'] = http.db_list()
         except odoo.exceptions.AccessDenied:
