@@ -48,8 +48,9 @@ class TruckingLoad(models.Model):
 
     def action_deliver(self):
         # Pre-capture draft charges to fix the bug where customer invoice marks them billed before transporter bill generation
+        pre_deliver_charges = {}
         for rec in self:
-            rec._pre_deliver_draft_charges = rec.charge_ids.filtered(lambda c: c.state == 'draft').ids
+            pre_deliver_charges[rec.id] = rec.charge_ids.filtered(lambda c: c.state == 'draft').ids
 
         res = super().action_deliver()
 
@@ -85,8 +86,8 @@ class TruckingLoad(models.Model):
                     if was_posted and bill.state == 'draft':
                         bill.action_post()
 
-            if rec.transporter_type == 'external' and hasattr(rec, '_pre_deliver_draft_charges'):
-                missing_charges = self.env['trucking.load.charge'].browse(rec._pre_deliver_draft_charges).filtered(lambda c: not c.vendor_bill_id)
+            if rec.transporter_type == 'external' and rec.id in pre_deliver_charges:
+                missing_charges = self.env['trucking.load.charge'].browse(pre_deliver_charges[rec.id]).filtered(lambda c: not c.vendor_bill_id)
                 if missing_charges and rec.transporter_bill_id:
                     bill = rec.transporter_bill_id
                     po = rec.purchase_order_id
