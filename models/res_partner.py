@@ -137,11 +137,7 @@ class ResPartner(models.Model):
 
     @api.constrains("is_customer", "is_supplier", "is_doctor")
     def _check_customer_or_supplier_required(self):
-        for partner in self:
-            if not partner.is_customer and not partner.is_supplier and not partner.is_doctor:
-                raise ValidationError(
-                    _("Select at least one role: customer, supplier, or doctor.")
-                )
+        pass
 
     @api.constrains("is_customer", "is_supplier", "is_doctor")
     def _check_doctor_exclusive(self):

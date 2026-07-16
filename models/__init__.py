@@ -1,4 +1,5 @@
 from . import pharmacy_dosage
+from . import hao_bank_detail
 from . import res_company
 from . import res_config_settings
 from . import res_partner
@@ -12,3 +13,4 @@ from . import sale_order_line
 from . import invoice_template
 from . import report_preview_pdf
 from . import ir_attachment
+from . import trucking_load_balance

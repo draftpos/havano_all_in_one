@@ -45,3 +45,12 @@ class ResCompany(models.Model):
         help="Show order checkboxes on product inventory tab and expose them via API.",
     )
    
+    hao_bank_account_name = fields.Char(string="Account Name")
+    hao_bank_name = fields.Char(string="Bank")
+    hao_bank_account_no = fields.Char(string="Account No")
+    hao_bank_branch = fields.Char(string="Branch")
+    hao_bank_branch_code = fields.Char(string="Branch Code")
+    hao_bank_swift_code = fields.Char(string="Swift Code")
+
+    hao_multi_bank = fields.Boolean(string="Allow Multi Bank Details", default=False)
+    hao_bank_detail_ids = fields.One2many('hao.bank.detail', 'company_id', string="Bank Details")

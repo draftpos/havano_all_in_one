@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_trucking_load_form_inherit_tabs" model="ir.ui.view">
+        <field name="name">trucking.load.form.inherit.tabs</field>
+        <field name="model">trucking.load</field>
+        <field name="inherit_id" ref="trucking.view_trucking_load_form"/>
+        <field name="arch" type="xml">
+            <!-- First move route_borders to be after load -->
+            <xpath expr="//page[@name='load']" position="after">
+                <page name="route_borders" position="move"/>
+            </xpath>
+            <!-- Then move extra_charges to be after expenses -->
+            <xpath expr="//page[@name='expenses']" position="after">
+                <page name="extra_charges" position="move"/>
+            </xpath>
+            <!-- Add balance display details -->
+            <xpath expr="//field[@name='transporter_balance']" position="after">
+                <field name="transporter_balance_display" nolabel="1" class="text-muted fst-italic" style="font-size: 0.9em;"/>
+            </xpath>
+            <xpath expr="//field[@name='customer_balance']" position="after">
+                <field name="customer_balance_display" nolabel="1" class="text-muted fst-italic" style="font-size: 0.9em;"/>
+            </xpath>
+            <xpath expr="//field[@name='delivered_qty']" position="attributes">
+                <attribute name="invisible">bill_customer_qty == 'per_load' and bill_transporter_qty == 'per_load'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='variance_qty']" position="attributes">
+                <attribute name="invisible">bill_customer_qty == 'per_load' and bill_transporter_qty == 'per_load'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='variance_value']" position="attributes">
+                <attribute name="invisible">bill_customer_qty == 'per_load' and bill_transporter_qty == 'per_load'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='shortages']" position="attributes">
+                <attribute name="invisible">bill_customer_qty == 'per_load' and bill_transporter_qty == 'per_load'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hao_bank_detail_tree" model="ir.ui.view">
+        <field name="name">hao.bank.detail.tree</field>
+        <field name="model">hao.bank.detail</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="account_name"/>
+                <field name="bank_name"/>
+                <field name="account_no"/>
+                <field name="branch"/>
+                <field name="branch_code"/>
+                <field name="swift_code"/>
+                <field name="print_on_invoice"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_company_form_inherit_hao_banking" model="ir.ui.view">
+        <field name="name">res.company.form.inherit.hao.banking</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Banking Details" name="hao_banking_details">
+                    <group>
+                        <field name="hao_multi_bank"/>
+                    </group>
+                    <group invisible="hao_multi_bank">
+                        <group>
+                            <field name="hao_bank_account_name"/>
+                            <field name="hao_bank_name"/>
+                            <field name="hao_bank_account_no"/>
+                        </group>
+                        <group>
+                            <field name="hao_bank_branch"/>
+                            <field name="hao_bank_branch_code"/>
+                            <field name="hao_bank_swift_code"/>
+                        </group>
+                    </group>
+                    <group invisible="not hao_multi_bank">
+                        <field name="hao_bank_detail_ids" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
