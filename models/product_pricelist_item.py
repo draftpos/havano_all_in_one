@@ -16,8 +16,14 @@ class ProductPricelistItem(models.Model):
             product = rule.product_id or rule.product_tmpl_id.product_variant_id
             if not product:
                 continue
-            rule_ref_uom = rule.uom_id.relative_uom_id or rule.uom_id
-            product_ref_uom = product.uom_id.relative_uom_id or product.uom_id
+            rule_ref_uom = rule.uom_id
+            while rule_ref_uom.relative_uom_id:
+                rule_ref_uom = rule_ref_uom.relative_uom_id
+                
+            product_ref_uom = product.uom_id
+            while product_ref_uom.relative_uom_id:
+                product_ref_uom = product_ref_uom.relative_uom_id
+                
             if rule_ref_uom != product_ref_uom:
                 raise ValidationError(
                     _(
