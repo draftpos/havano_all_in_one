@@ -179,10 +179,20 @@
                                 <td style="padding: 5px;"><span t-esc="load.trailer_1_id.reg_number"/></td>
                                 <td style="padding: 5px;"><span t-field="load.name"/></td>
                                 <td style="padding: 5px;"><span t-field="load.pod"/></td>
+                                <t t-set="inv_lines" t-value="o.invoice_line_ids.filtered(lambda l: load.name and load.name in (l.name or ''))"/>
                                 <t t-set="use_customer" t-value="not load.company_id.trucking_invoice_rate_source or load.company_id.trucking_invoice_rate_source == 'customer'"/>
-                                <t t-set="rate_val" t-value="load.customer_rate if use_customer else load.rate_per_tonne"/>
-                                <t t-set="amt_val" t-value="load.invoiced_amount if use_customer else load.total_per_load"/>
-                                <td style="padding: 5px; text-align: center;"><span t-field="load.qty_tonnes" t-options='{"widget": "float", "precision": 2}'/></td>
+                                
+                                <t t-if="inv_lines">
+                                    <t t-set="qty_val" t-value="sum(inv_lines.mapped('quantity'))"/>
+                                    <t t-set="amt_val" t-value="sum(inv_lines.mapped('price_subtotal'))"/>
+                                    <t t-set="rate_val" t-value="inv_lines[0].price_unit"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-set="qty_val" t-value="load.qty_tonnes"/>
+                                    <t t-set="rate_val" t-value="load.customer_rate if use_customer else load.rate_per_tonne"/>
+                                    <t t-set="amt_val" t-value="load.invoiced_amount if use_customer else load.total_per_load"/>
+                                </t>
+                                <td style="padding: 5px; text-align: center;"><span t-esc="qty_val" t-options='{"widget": "float", "precision": 2}'/></td>
                                 <td style="padding: 5px; text-align: right;"><span t-esc="rate_val" t-options='{"widget": "float", "precision": 2}'/></td>
                                 <td style="padding: 5px; text-align: right;"><span t-esc="amt_val" t-options='{"widget": "float", "precision": 2}'/></td>
                                 <td style="padding: 5px; text-align: right;"><span t-field="load.paid" t-options='{"widget": "float", "precision": 2}'/></td>
