@@ -97,7 +97,10 @@
                                 <t t-set="total_amount" t-value="0.0"/>
                                 <t t-foreach="o.trucking_load_ids" t-as="load">
                                     <t t-set="total_qty" t-value="total_qty + load.qty_tonnes"/>
-                                    <t t-set="total_amount" t-value="total_amount + load.total_per_load"/>
+                                    <t t-set="use_customer" t-value="not load.company_id.trucking_invoice_rate_source or load.company_id.trucking_invoice_rate_source == 'customer'"/>
+                                    <t t-set="rate_val" t-value="load.customer_rate if use_customer else load.rate_per_tonne"/>
+                                    <t t-set="amt_val" t-value="load.invoiced_amount if use_customer else load.total_per_load"/>
+                                    <t t-set="total_amount" t-value="total_amount + amt_val"/>
                                     <tr style="text-align: center; height: 25px;">
                                         <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="load.vehicle_id.reg_number"/></td>
                                         <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="load.trailer_1_id.reg_number"/></td>
@@ -105,8 +108,8 @@
                                         <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-field="load.pod"/></td>
                                         <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="load.route_id.name if load.route_id else ''"/></td>
                                         <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-field="load.qty_tonnes" t-options='{"widget": "float", "precision": 3}'/></td>
-                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-field="load.customer_rate" t-options='{"widget": "float", "precision": 2}'/></td>
-                                        <td style="border-bottom: 1px solid #000; padding: 4px;"><span t-field="load.total_per_load" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="rate_val" t-options='{"widget": "float", "precision": 2}'/></td>
+                                        <td style="border-bottom: 1px solid #000; padding: 4px;"><span t-esc="amt_val" t-options='{"widget": "float", "precision": 2}'/></td>
                                     </tr>
                                 </t>
                                 <!-- Empty rows to pad the table if few items -->
