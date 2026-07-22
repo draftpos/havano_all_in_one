@@ -95,7 +95,8 @@
                             <tbody>
                                 <t t-set="total_qty" t-value="0.0"/>
                                 <t t-set="total_amount" t-value="0.0"/>
-                                <t t-foreach="o.trucking_load_ids" t-as="load">
+                                <t t-set="all_loads" t-value="o.trucking_load_ids or o.trucking_bill_load_ids"/>
+                                <t t-foreach="all_loads" t-as="load">
                                     <t t-set="inv_lines" t-value="o.invoice_line_ids.filtered(lambda l: load.name and load.name in (l.name or ''))"/>
                                     <t t-set="use_customer" t-value="not load.company_id.trucking_invoice_rate_source or load.company_id.trucking_invoice_rate_source == 'customer'"/>
                                     
@@ -124,8 +125,8 @@
                                     </tr>
                                 </t>
                                 <!-- Empty rows to pad the table if few items -->
-                                <t t-if="len(o.trucking_load_ids) &lt; 10">
-                                    <t t-foreach="range(10 - len(o.trucking_load_ids))" t-as="i">
+                                <t t-if="len(all_loads) &lt; 10">
+                                    <t t-foreach="range(10 - len(all_loads))" t-as="i">
                                         <tr style="height: 25px;">
                                             <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
                                             <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;"></td>
