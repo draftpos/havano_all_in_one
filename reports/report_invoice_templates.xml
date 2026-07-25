@@ -28,8 +28,14 @@
                            t-lang="o.partner_id.lang"/>
                     </t>
                     <t t-if="o.company_id.base_layout == 'trucking'">
-                        <t t-call="havano_all_in_one.custom_template_report_invoice_trucking"
-                           t-lang="o.partner_id.lang"/>
+                        <t t-if="o.move_type in ('out_invoice', 'out_refund', 'out_receipt')">
+                            <t t-call="havano_all_in_one.custom_template_report_invoice_trucking"
+                               t-lang="o.partner_id.lang"/>
+                        </t>
+                        <t t-else="">
+                            <t t-call="havano_all_in_one.custom_template_report_bill_trucking"
+                               t-lang="o.partner_id.lang"/>
+                        </t>
                     </t>
                 </t>
             </t>

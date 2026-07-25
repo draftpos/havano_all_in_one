@@ -221,4 +221,226 @@
             </div>
         </t>
     </template>
+
+<template id="custom_template_report_bill_trucking">
+        <t t-call="web.basic_layout">
+            
+            <div class="header" style="font-family: 'Inter', 'Outfit', sans-serif; font-size: 11px; color: #111;">
+                <div class="row" style="margin-top: 30px; border-bottom: 2px solid #fff;">
+                    <div class="col-6">
+                        <h2 style="font-weight: 900; font-size: 28px; margin-bottom: 15px; color: #000; text-transform: uppercase; letter-spacing: 1px;">Remittance Advice</h2>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="width: 80px; vertical-align: top; color: #555; padding: 0;">FROM:</td>
+                                <td style="vertical-align: top; padding: 0;">
+                                    <strong><span t-field="o.partner_id.name" style="text-transform: uppercase; font-size: 12px;" /></strong><br />
+                                    <span t-field="o.partner_id.street" /><br />
+                                    <span t-field="o.partner_id.city" /><t t-if="o.partner_id.city and o.partner_id.country_id">, </t><span t-field="o.partner_id.country_id.name" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-5 offset-1 text-end">
+                        <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="max-height: 80px; margin-bottom: 10px;" alt="Logo" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="page" style="font-family: 'Inter', 'Outfit', sans-serif; font-size: 11px; color: #111; padding-top: 10px;">
+
+                
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <tr>
+                                <td style="width: 80px; vertical-align: top; font-weight: bold; color: #555; padding: 0;">INVOICE TO:</td>
+                                <td style="vertical-align: top; border: 1px solid #000; padding: 5px;">
+                                    <strong><span t-field="o.company_id.name" style="text-transform: uppercase;" /></strong><br />
+                                    <span t-field="o.company_id.street" /><br />
+                                    <span t-field="o.company_id.street2" /><t t-if="o.company_id.street2"><br /></t>
+                                    <span t-field="o.company_id.city" /><t t-if="o.company_id.city and o.company_id.country_id">, </t><span t-field="o.company_id.country_id.name" />
+                                </td>
+                            </tr>
+                        </table>
+                        <table style="width: 100%; margin-top: 15px; border-collapse: collapse;">
+                            <tr>
+                                <td style="width: 80px; font-weight: bold; color: #555; padding: 2px 0;">VAT NO:</td>
+                                <td style="padding: 2px 0;"><span t-field="o.company_id.vat" /></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; color: #555; padding: 2px 0;">TIN NO:</td>
+                                <td style="padding: 2px 0;"><span t-esc="o.company_id.company_registry or '0'" /></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; color: #555; padding: 2px 0;">TCC No:</td>
+                                <td style="padding: 2px 0;">0</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-5 offset-1">
+                        <table style="width: 100%; border-collapse: collapse; border: 1px solid #000; height: 100%;">
+                            <tr>
+                                <td style="padding: 10px; vertical-align: top;">
+                                    <span style="font-weight: bold; color: #555; display: inline-block; width: 60px;">NO:</span> <span t-field="o.name" /><br /><br /><br />
+                                    <span style="font-weight: bold; color: #555; display: inline-block; width: 60px;">DATE:</span> <span t-field="o.invoice_date" /><br />
+                                    <span style="font-weight: bold; color: #555; display: inline-block; width: 60px;">VAT NO:</span> <span t-field="o.company_id.vat" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mb-3 mt-4">
+                    <div class="col-12 text-center">
+                        <span style="font-weight: bold; font-size: 13px;">REGISTERED NAME: <span t-field="o.partner_id.name" style="text-transform: uppercase;" /></span>
+                    </div>
+                </div>
+
+                
+                <div class="row">
+                    <div class="col-12">
+                        <p style="margin-bottom: 5px;"><strong>Description:</strong> <span t-field="o.trucking_description" /></p>
+                        
+                        <table style="border: 2px solid #000; width: 100%; border-collapse: collapse; table-layout: fixed;">
+                            <thead>
+                                <tr style="text-align: center; font-weight: 700; background-color: #fcfcfc;">
+                                    <th style="border-right: 1px solid #000; border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle;">TRUCK REG<br />No.</th>
+                                    <th style="border-right: 1px solid #000; border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle;">TRAILER REG<br />NO.</th>
+                                    <th style="border-right: 1px solid #000; border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle;">ORDER</th>
+                                    <th style="border-right: 1px solid #000; border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle;">GRV NO.</th>
+                                    <th style="border-right: 1px solid #000; border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle;">ROUTE</th>
+                                    <th style="border-right: 1px solid #000; border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle; width: 60px;">QNTY<br />(MT)</th>
+                                    <th style="border-right: 1px solid #000; border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle; width: 70px;">RATE<br />(USD)</th>
+                                    <th style="border-bottom: 2px solid #000; padding: 8px 4px; vertical-align: middle; width: 90px;">AMOUNT (USD)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="total_qty" t-value="0.0" />
+                                <t t-set="total_amount" t-value="0.0" />
+                                <t t-set="all_loads" t-value="o.all_trucking_load_ids" />
+                                <t t-foreach="all_loads" t-as="load">
+                                    <t t-set="inv_lines" t-value="o.invoice_line_ids.filtered(lambda l: load.name and load.name in (l.name or ''))" />
+                                    <t t-set="use_customer" t-value="not load.company_id.trucking_invoice_rate_source or load.company_id.trucking_invoice_rate_source == 'customer'" />
+                                    
+                                    <t t-if="inv_lines">
+                                        <t t-set="qty_val" t-value="sum(inv_lines.mapped('quantity'))" />
+                                        <t t-set="amt_val" t-value="sum(inv_lines.mapped('price_subtotal'))" />
+                                        <t t-set="rate_val" t-value="inv_lines[0].price_unit" />
+                                    </t>
+                                    <t t-else="">
+                                        <t t-set="qty_val" t-value="load.qty_tonnes" />
+                                        <t t-set="rate_val" t-value="load.customer_rate if use_customer else load.rate_per_tonne" />
+                                        <t t-set="amt_val" t-value="load.invoiced_amount if use_customer else load.total_per_load" />
+                                    </t>
+                                    
+                                    <t t-set="total_qty" t-value="total_qty + qty_val" />
+                                    <t t-set="total_amount" t-value="total_amount + amt_val" />
+                                    <tr style="text-align: center; height: 25px;">
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="load.vehicle_id.reg_number" /></td>
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="load.trailer_1_id.reg_number" /></td>
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="load.name" /></td>
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-field="load.pod" /></td>
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="load.route_id.name if load.route_id else ''" /></td>
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="qty_val" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 3}" /></td>
+                                        <td style="border-right: 1px solid #000; border-bottom: 1px solid #000; padding: 4px;"><span t-esc="rate_val" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}" /></td>
+                                        <td style="border-bottom: 1px solid #000; padding: 4px;"><span t-esc="amt_val" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}" /></td>
+                                    </tr>
+                                </t>
+                                
+                                <t t-if="len(all_loads) &lt; 10">
+                                    <t t-foreach="range(10 - len(all_loads))" t-as="i">
+                                        <tr style="height: 25px;">
+                                            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;" />
+                                            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;" />
+                                            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;" />
+                                            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;" />
+                                            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;" />
+                                            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;" />
+                                            <td style="border-right: 1px solid #000; border-bottom: 1px solid #000;" />
+                                            <td style="border-bottom: 1px solid #000;" />
+                                        </tr>
+                                    </t>
+                                </t>
+                                <tr style="font-weight: 700; text-align: center; height: 30px;">
+                                    <td colspan="5" style="border-right: 1px solid #000; border-top: 2px solid #000; text-align: left; padding-left: 10px;">TOTAL</td>
+                                    <td style="border-right: 1px solid #000; border-top: 2px solid #000;"><span t-esc="total_qty" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 3}" /></td>
+                                    <td style="border-right: 1px solid #000; border-top: 2px solid #000;" />
+                                    <td style="border-top: 2px solid #000;"><span t-esc="total_amount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                
+                <div class="row mt-4 mb-5">
+                    <div class="col-12" style="padding-left: 30px;">
+                        <p style="text-decoration: underline; font-weight: 800; font-size: 12px; margin-bottom: 8px;">BANKING DETAILS</p>
+                        
+                        <t t-if="o.company_id.hao_multi_bank">
+                            <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                                <t t-foreach="o.company_id.hao_bank_detail_ids.filtered(lambda b: b.print_on_invoice)" t-as="bank">
+                                    <table style="font-size: 11px; font-weight: 600; min-width: 300px;">
+                                        <tr>
+                                            <td style="width: 110px; padding-bottom: 3px;">ACCOUNT NAME:</td>
+                                            <td style="padding-bottom: 3px;"><span t-esc="bank.account_name" style="text-transform: uppercase;" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 3px;">BANK:</td>
+                                            <td style="padding-bottom: 3px;"><span t-esc="bank.bank_name" style="text-transform: uppercase;" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 3px;">ACCOUNT NO:</td>
+                                            <td style="padding-bottom: 3px;"><span t-esc="bank.account_no" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 3px;">BRANCH:</td>
+                                            <td style="padding-bottom: 3px;"><span t-esc="bank.branch" style="text-transform: uppercase;" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 3px;">BRANCH CODE:</td>
+                                            <td style="padding-bottom: 3px;"><span t-esc="bank.branch_code" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding-bottom: 3px;">SWIFT CODE:</td>
+                                            <td style="padding-bottom: 3px;"><span t-esc="bank.swift_code" /></td>
+                                        </tr>
+                                    </table>
+                                </t>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            <table style="width: 100%; font-size: 11px; font-weight: 600;">
+                                <tr>
+                                    <td style="width: 130px; padding-bottom: 3px;">ACCOUNT NAME:</td>
+                                    <td style="padding-bottom: 3px;"><span t-esc="o.company_id.hao_bank_account_name" style="text-transform: uppercase;" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 3px;">BANK:</td>
+                                    <td style="padding-bottom: 3px;"><span t-esc="o.company_id.hao_bank_name" style="text-transform: uppercase;" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 3px;">ACCOUNT NO:</td>
+                                    <td style="padding-bottom: 3px;"><span t-esc="o.company_id.hao_bank_account_no" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 3px;">BRANCH:</td>
+                                    <td style="padding-bottom: 3px;"><span t-esc="o.company_id.hao_bank_branch" style="text-transform: uppercase;" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 3px;">BRANCH CODE:</td>
+                                    <td style="padding-bottom: 3px;"><span t-esc="o.company_id.hao_bank_branch_code" /></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-bottom: 3px;">SWIFT CODE:</td>
+                                    <td style="padding-bottom: 3px;"><span t-esc="o.company_id.hao_bank_swift_code" /></td>
+                                </tr>
+                            </table>
+                        </t>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
 </odoo>
