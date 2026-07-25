@@ -95,7 +95,7 @@
                             <tbody>
                                 <t t-set="total_qty" t-value="0.0"/>
                                 <t t-set="total_amount" t-value="0.0"/>
-                                <t t-set="all_loads" t-value="o.trucking_load_ids or o.trucking_bill_load_ids"/>
+                                <t t-set="all_loads" t-value="o.all_trucking_load_ids"/>
                                 <t t-foreach="all_loads" t-as="load">
                                     <t t-set="inv_lines" t-value="o.invoice_line_ids.filtered(lambda l: load.name and load.name in (l.name or ''))"/>
                                     <t t-set="use_customer" t-value="not load.company_id.trucking_invoice_rate_source or load.company_id.trucking_invoice_rate_source == 'customer'"/>
