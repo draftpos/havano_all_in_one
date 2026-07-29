@@ -9,6 +9,10 @@
                         <t t-call="havano_all_in_one.custom_template_report_fresh"
                            t-lang="o.partner_id.lang"/>
                     </t>
+                    <t t-elif="o.company_id.base_layout == 'custom_fiscal'">
+                        <t t-call="havano_all_in_one.custom_template_report_fiscal"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
                     <t t-else="">
                         <t t-call="sale.report_saleorder_document"
                            t-lang="o.partner_id.lang"/>
@@ -27,6 +31,10 @@
                     <t t-set="doc" t-value="o"/>
                     <t t-if="o.company_id.base_layout == 'fresh'">
                         <t t-call="havano_all_in_one.custom_template_report_fresh"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="o.company_id.base_layout == 'custom_fiscal'">
+                        <t t-call="havano_all_in_one.custom_template_report_fiscal"
                            t-lang="o.partner_id.lang"/>
                     </t>
                     <t t-else="">
