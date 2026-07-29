@@ -10,7 +10,8 @@ class ResCompany(models.Model):
             ('modern', 'Modern'),
             ('normal', 'Normal'),
             ('old', 'Old Standard'),
-            ('fresh', 'Fresh Company (Fiscal Tax Invoice)')
+            ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
+            ('custom_fiscal', 'Seller Buyer Layout')
         ]
         if 'trucking.load' in self.env:
             selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))

@@ -29,6 +29,10 @@
                         <t t-call="havano_all_in_one.custom_template_report_fresh"
                            t-lang="o.partner_id.lang"/>
                     </t>
+                    <t t-if="layout == 'custom_fiscal'">
+                        <t t-call="havano_all_in_one.custom_template_report_fiscal"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
                 </t>
             </t>
         </xpath>

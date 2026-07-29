@@ -26,5 +26,9 @@
             <field name="company_position">right</field>
             <field name="company_text_color">#17822f</field>
         </record>
+        <record id="custom_fiscal_template" model="havano.invoice.template">
+            <field name="name">Seller Buyer Layout</field>
+            <field name="base_layout">custom_fiscal</field>
+        </record>
     </data>
 </odoo>
