@@ -156,7 +156,7 @@
 
             <!-- Order Lines or Trucking Loads -->
             <table style="width: 100%; border-collapse: collapse; border-bottom: 1px solid black; margin-top: 0;">
-                <t t-if="doc_model == 'account.move' and o.trucking_load_ids">
+                <t t-if="doc_model == 'account.move' and getattr(o, 'trucking_load_ids', False)">
                     <thead>
                         <tr style="border-bottom: 1px solid black; border-top: 1px solid black; background-color: #f2f2f2; font-weight: bold; font-size: 11px;">
                             <th style="padding: 5px; text-align: left;">Truck Reg</th>

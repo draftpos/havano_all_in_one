@@ -10,13 +10,20 @@ class HavanoInvoiceTemplate(models.Model):
     note = fields.Text()
 
     # Layout fields
+    def _get_base_layout_selection(self):
+        selection = [
+            ('default', 'Default'),
+            ('modern', 'Modern'),
+            ('normal', 'Normal'),
+            ('old', 'Old Standard'),
+            ('fresh', 'Fresh Company (Fiscal Tax Invoice)')
+        ]
+        if 'trucking.load' in self.env:
+            selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))
+        return selection
+
     base_layout = fields.Selection(
-        selection=[('default', 'Default'),
-                   ('modern', 'Modern'),
-                   ('normal', 'Normal'),
-                   ('old', 'Old Standard'),
-                   ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
-                   ('trucking', 'Trucking (Fiscal Tax Invoice)')],
+        selection='_get_base_layout_selection',
         required=True, string="Base Layout", default="default")
     
     base_color = fields.Char(string="Base Color", default="#000000", help="Background color for the invoice")

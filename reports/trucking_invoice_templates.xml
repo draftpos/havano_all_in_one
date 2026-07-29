@@ -77,7 +77,7 @@
                 <!-- Table Section -->
                 <div class="row">
                     <div class="col-12">
-                        <p style="margin-bottom: 5px;"><strong>Description:</strong> <span t-field="o.trucking_description"/></p>
+                        <p style="margin-bottom: 5px;"><strong>Description:</strong> <span t-esc="getattr(o, 'trucking_description', '')"/></p>
                         
                         <table style="border: 2px solid #000; width: 100%; border-collapse: collapse; table-layout: fixed;">
                             <thead>
@@ -95,7 +95,7 @@
                             <tbody>
                                 <t t-set="total_qty" t-value="0.0"/>
                                 <t t-set="total_amount" t-value="0.0"/>
-                                <t t-set="all_loads" t-value="o.all_trucking_load_ids"/>
+                                <t t-set="all_loads" t-value="getattr(o, 'all_trucking_load_ids', [])"/>
                                 <t t-foreach="all_loads" t-as="load">
                                     <t t-set="inv_lines" t-value="o.invoice_line_ids.filtered(lambda l: load.name and load.name in (l.name or ''))"/>
                                     <t t-set="use_customer" t-value="not load.company_id.trucking_invoice_rate_source or load.company_id.trucking_invoice_rate_source == 'customer'"/>
@@ -299,7 +299,7 @@
                 
                 <div class="row">
                     <div class="col-12">
-                        <p style="margin-bottom: 5px;"><strong>Description:</strong> <span t-field="o.trucking_description" /></p>
+                        <p style="margin-bottom: 5px;"><strong>Description:</strong> <span t-esc="getattr(o, 'trucking_description', '')" /></p>
                         
                         <table style="border: 2px solid #000; width: 100%; border-collapse: collapse; table-layout: fixed;">
                             <thead>
@@ -317,7 +317,7 @@
                             <tbody>
                                 <t t-set="total_qty" t-value="0.0" />
                                 <t t-set="total_amount" t-value="0.0" />
-                                <t t-set="all_loads" t-value="o.all_trucking_load_ids" />
+                                <t t-set="all_loads" t-value="getattr(o, 'all_trucking_load_ids', [])" />
                                 <t t-foreach="all_loads" t-as="load">
                                     <t t-set="inv_lines" t-value="o.invoice_line_ids.filtered(lambda l: load.name and load.name in (l.name or ''))" />
                                     <t t-set="use_customer" t-value="not load.company_id.trucking_invoice_rate_source or load.company_id.trucking_invoice_rate_source == 'customer'" />

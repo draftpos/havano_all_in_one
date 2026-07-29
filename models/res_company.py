@@ -4,13 +4,20 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = "res.company"
 
+    def _get_base_layout_selection(self):
+        selection = [
+            ('default', 'Default'),
+            ('modern', 'Modern'),
+            ('normal', 'Normal'),
+            ('old', 'Old Standard'),
+            ('fresh', 'Fresh Company (Fiscal Tax Invoice)')
+        ]
+        if 'trucking.load' in self.env:
+            selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))
+        return selection
+
     base_layout = fields.Selection(
-        selection=[('default', 'Default'),
-                   ('modern', 'Modern'),
-                   ('normal', 'Normal'),
-                   ('old', 'Old Standard'),
-                   ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
-                   ('trucking', 'Trucking (Fiscal Tax Invoice)')],
+        selection='_get_base_layout_selection',
         string="Invoice Document Layout", default="default",
         help="base layout selection")
     hao_document_layout_id = fields.Many2one("havano.invoice.template",

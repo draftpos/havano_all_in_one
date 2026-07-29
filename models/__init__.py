@@ -13,4 +13,3 @@ from . import sale_order_line
 from . import invoice_template
 from . import report_preview_pdf
 from . import ir_attachment
-from . import trucking_load_balance
