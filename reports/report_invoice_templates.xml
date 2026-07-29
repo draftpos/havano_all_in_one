@@ -5,12 +5,10 @@
         <xpath expr="//t[@t-call='web.html_container']" position="replace">
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="o">
+                    <t t-set="doc" t-value="o"/>
                     <t t-set="lang"
                        t-value="o.invoice_user_id.sudo().lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
                     <t t-set="layout" t-value="o.company_id.base_layout"/>
-                    <t t-if="layout == 'trucking' and 'trucking.load' not in env">
-                        <t t-set="layout" t-value="'default'"/>
-                    </t>
                     <t t-if="layout == 'normal'">
                         <t t-call="havano_all_in_one.custom_template_report_invoice_normal"
                            t-lang="o.partner_id.lang"/>
@@ -30,16 +28,6 @@
                     <t t-if="layout == 'fresh'">
                         <t t-call="havano_all_in_one.custom_template_report_fresh"
                            t-lang="o.partner_id.lang"/>
-                    </t>
-                    <t t-if="layout == 'trucking'">
-                        <t t-if="o.move_type in ('out_invoice', 'out_refund', 'out_receipt')">
-                            <t t-call="havano_all_in_one.custom_template_report_invoice_trucking"
-                               t-lang="o.partner_id.lang"/>
-                        </t>
-                        <t t-else="">
-                            <t t-call="havano_all_in_one.custom_template_report_bill_trucking"
-                               t-lang="o.partner_id.lang"/>
-                        </t>
                     </t>
                 </t>
             </t>

@@ -33,7 +33,6 @@
         "reports/old_standard_invoice_templates.xml",
         "reports/preview_layout_report_templates.xml",
         "reports/report_invoice_templates.xml",
-        "reports/trucking_invoice_templates.xml",
         "reports/fresh_layout_templates.xml",
         "reports/report_sale_templates.xml",
         "views/invoice_template_views.xml",
