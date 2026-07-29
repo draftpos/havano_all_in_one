@@ -60,6 +60,16 @@ class ResConfigSettings(models.TransientModel):
         default=True,
     )
 
+    # Tax ID configuration
+    hao_allow_tin_contacts = fields.Boolean(
+        string="Allow TIN on Contacts",
+        config_parameter="havano_all_in_one.allow_tin_contacts",
+    )
+    hao_allow_vat_contacts = fields.Boolean(
+        string="Allow VAT on Contacts",
+        config_parameter="havano_all_in_one.allow_vat_contacts",
+    )
+
     # Login Page Customization
     hao_login_orientation = fields.Selection(
         selection=[('default', 'Default'), ('left', 'Left'), ('middle', 'Middle'), ('right', 'Right')],

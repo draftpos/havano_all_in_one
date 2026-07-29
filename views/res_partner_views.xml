@@ -7,6 +7,10 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='category_id']" position="after">
                 <field name="hao_activate_pharmacy" invisible="1"/>
+                <field name="hao_show_tin" invisible="1"/>
+                <field name="hao_show_vat" invisible="1"/>
+                <field name="hao_tin" invisible="not hao_show_tin"/>
+                <field name="hao_vat" invisible="not hao_show_vat"/>
                 <field name="is_customer" readonly="is_doctor"/>
                 <field name="is_supplier" readonly="is_doctor"/>
                 <field name="is_doctor" invisible="not hao_activate_pharmacy"/>

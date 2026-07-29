@@ -27,6 +27,21 @@ class ResPartner(models.Model):
         string="Contact Type",
     )
 
+    hao_tin = fields.Char(string="TIN")
+    hao_vat = fields.Char(string="VAT")
+    hao_show_tin = fields.Boolean(compute='_compute_hao_show_tin')
+    hao_show_vat = fields.Boolean(compute='_compute_hao_show_vat')
+
+    def _compute_hao_show_tin(self):
+        allow_tin = self.env['ir.config_parameter'].sudo().get_param('havano_all_in_one.allow_tin_contacts') == 'True'
+        for partner in self:
+            partner.hao_show_tin = allow_tin
+
+    def _compute_hao_show_vat(self):
+        allow_vat = self.env['ir.config_parameter'].sudo().get_param('havano_all_in_one.allow_vat_contacts') == 'True'
+        for partner in self:
+            partner.hao_show_vat = allow_vat
+
     def _compute_hao_activate_pharmacy(self):
         for partner in self:
             company = partner.company_id or self.env.company

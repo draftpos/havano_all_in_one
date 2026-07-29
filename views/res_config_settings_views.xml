@@ -30,6 +30,14 @@
                         <setting><field name="hao_auto_mark_customer_from_sales"/></setting>
                         <setting><field name="hao_auto_mark_supplier_from_purchase"/></setting>
                     </block>
+                    <block title="Tax ID Configuration">
+                        <setting help="Enable the TIN (Tax Identification Number) field on Contacts.">
+                            <field name="hao_allow_tin_contacts"/>
+                        </setting>
+                        <setting help="Enable the VAT field on Contacts.">
+                            <field name="hao_allow_vat_contacts"/>
+                        </setting>
+                    </block>
                     <block title="Global Operations Setting">
                         <setting help="Default Automation flow for Sales">
                             <field name="hao_global_sales_automation_method" widget="radio" />
