@@ -236,6 +236,11 @@ class ResConfigSettings(models.TransientModel):
     hao_show_vend_products = fields.Boolean(related="company_id.hao_show_vend_products", readonly=False)
     hao_show_vend_vendors = fields.Boolean(related="company_id.hao_show_vend_vendors", readonly=False)
 
+    group_show_advanced_sales_reports = fields.Boolean(
+        string="Show Advanced Sales Reports",
+        implied_group="havano_all_in_one.group_show_advanced_sales_reports",
+    )
+
     hao_global_sales_automation_method = fields.Selection([
         ('full', 'Full Automate'),
         ('quote_invoice', 'Quote - Sales Invoice')

@@ -13,3 +13,7 @@ from . import sale_order_line
 from . import invoice_template
 from . import report_preview_pdf
 from . import ir_attachment
+from . import item_profitability_report
+from . import category_profitability_report
+from . import daily_sales_report
+from . import sales_return_report

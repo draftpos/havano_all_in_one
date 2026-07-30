@@ -49,6 +49,7 @@
         "views/product_pricelist_views.xml",
         "views/res_users_views.xml",
         "views/preview_templates.xml",
+        "views/sales_reports_views.xml",
     ],
     "assets": {
         "web.assets_backend": [

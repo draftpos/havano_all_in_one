@@ -45,6 +45,9 @@
                         <setting help="Default Automation flow for Purchases">
                             <field name="hao_global_purchase_automation_method" widget="radio" />
                         </setting>
+                        <setting help="Enable advanced sales reports in the Sales app under Reporting">
+                            <field name="group_show_advanced_sales_reports"/>
+                        </setting>
                         <div class="mt-3">
                             <button name="action_apply_automation_methods_to_all_users" type="object" string="Apply to all users" class="btn btn-secondary"/>
                         </div>

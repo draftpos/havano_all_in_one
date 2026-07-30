@@ -3,3 +3,7 @@ access_havano_invoice_template_user,havano.invoice.template.user,model_havano_in
 access_pharmacy_dosage_user,pharmacy.dosage.user,model_pharmacy_dosage,stock.group_stock_user,1,1,1,1
 access_pharmacy_dosage_manager,pharmacy.dosage.manager,model_pharmacy_dosage,stock.group_stock_manager,1,1,1,1
 access_hao_bank_detail_user,hao.bank.detail.user,model_hao_bank_detail,base.group_user,1,1,1,1
+access_havano_item_profitability_report,havano.item.profitability.report,model_havano_item_profitability_report,base.group_user,1,0,0,0
+access_havano_category_profitability_report,havano.category.profitability.report,model_havano_category_profitability_report,base.group_user,1,0,0,0
+access_havano_daily_sales_report,havano.daily.sales.report,model_havano_daily_sales_report,base.group_user,1,0,0,0
+access_havano_sales_return_report,havano.sales.return.report,model_havano_sales_return_report,base.group_user,1,0,0,0

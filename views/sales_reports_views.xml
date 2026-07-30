@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Item Profitability Report -->
+    <record id="view_havano_item_profitability_tree" model="ir.ui.view">
+        <field name="name">havano.item.profitability.report.tree</field>
+        <field name="model">havano.item.profitability.report</field>
+        <field name="arch" type="xml">
+            <list string="Item Profitability Report" create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="product_id"/>
+                <field name="category_id"/>
+                <field name="qty"/>
+                <field name="cost_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="selling_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="total_sales" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="profit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="profit_margin" widget="progressbar"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_havano_item_profitability" model="ir.actions.act_window">
+        <field name="name">Item Profitability Report</field>
+        <field name="res_model">havano.item.profitability.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'search_default_group_by_date': 1}</field>
+    </record>
+
+    <!-- Category Profitability Report -->
+    <record id="view_havano_category_profitability_tree" model="ir.ui.view">
+        <field name="name">havano.category.profitability.report.tree</field>
+        <field name="model">havano.category.profitability.report</field>
+        <field name="arch" type="xml">
+            <list string="Category Profitability Report" create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="category_id"/>
+                <field name="qty"/>
+                <field name="cost_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="selling_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="total_sales" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="profit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="profit_margin" widget="progressbar"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_havano_category_profitability" model="ir.actions.act_window">
+        <field name="name">Category Profitability Report</field>
+        <field name="res_model">havano.category.profitability.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+    </record>
+
+    <!-- Daily Sales Report -->
+    <record id="view_havano_daily_sales_tree" model="ir.ui.view">
+        <field name="name">havano.daily.sales.report.tree</field>
+        <field name="model">havano.daily.sales.report</field>
+        <field name="arch" type="xml">
+            <list string="Daily Sales Report" create="false" edit="false" delete="false">
+                <field name="date"/>
+                <field name="qty"/>
+                <field name="cost_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="selling_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="total_sales" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="profit" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="profit_margin" widget="progressbar"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_havano_daily_sales" model="ir.actions.act_window">
+        <field name="name">Daily Sales Report</field>
+        <field name="res_model">havano.daily.sales.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+    </record>
+
+    <!-- Sales Returns Report -->
+    <record id="view_havano_sales_return_tree" model="ir.ui.view">
+        <field name="name">havano.sales.return.report.tree</field>
+        <field name="model">havano.sales.return.report</field>
+        <field name="arch" type="xml">
+            <list string="Sales Returns" create="false" edit="false" delete="false">
+                <field name="name"/>
+                <field name="payment_state" widget="badge" decoration-success="payment_state == 'paid'" decoration-info="payment_state == 'not_paid'"/>
+                <field name="partner_id"/>
+                <field name="date"/>
+                <field name="user_id"/>
+                <field name="amount_untaxed_signed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                <field name="state" widget="badge" decoration-success="state == 'posted'" decoration-muted="state == 'cancel'"/>
+                <field name="currency_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_havano_sales_return" model="ir.actions.act_window">
+        <field name="name">Sales Returns</field>
+        <field name="res_model">havano.sales.return.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+    </record>
+
+    <!-- Menus (Placed under Sales -> Reporting, governed by our new group) -->
+    <menuitem id="menu_havano_advanced_sales_reports" 
+              name="Advanced Sales Reports" 
+              parent="sale.menu_sale_report" 
+              groups="havano_all_in_one.group_show_advanced_sales_reports"
+              sequence="100"/>
+
+    <menuitem id="menu_havano_item_profitability" 
+              name="Item Profitability" 
+              parent="menu_havano_advanced_sales_reports" 
+              action="action_havano_item_profitability" 
+              sequence="10"/>
+
+    <menuitem id="menu_havano_category_profitability" 
+              name="Category Profitability" 
+              parent="menu_havano_advanced_sales_reports" 
+              action="action_havano_category_profitability" 
+              sequence="20"/>
+
+    <menuitem id="menu_havano_daily_sales" 
+              name="Daily Sales" 
+              parent="menu_havano_advanced_sales_reports" 
+              action="action_havano_daily_sales" 
+              sequence="30"/>
+
+    <menuitem id="menu_havano_sales_returns" 
+              name="Sales Returns" 
+              parent="menu_havano_advanced_sales_reports" 
+              action="action_havano_sales_return" 
+              sequence="40"/>
+
+</odoo>
