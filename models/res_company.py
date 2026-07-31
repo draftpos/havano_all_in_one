@@ -128,7 +128,7 @@ class ResCompany(models.Model):
                         if custom_format:
                             liab.name = "Equity and Liabilities"
                             if equity:
-                                equity.write({'parent_id': liab.id, 'sequence': -10})
+                                equity.write({'parent_id': liab.id, 'sequence': liab.sequence + 1})
                         else:
                             if liab.name == "Equity and Liabilities":
                                 liab.name = "Liability"
@@ -170,7 +170,7 @@ class ResCompany(models.Model):
                     if custom_format:
                         liab.name = "Equity and Liabilities"
                         if equity:
-                            equity.write({'parent_id': liab.id, 'sequence': -10})
+                            equity.write({'parent_id': liab.id, 'sequence': liab.sequence + 1})
                     else:
                         if liab.name == "Equity and Liabilities":
                             liab.name = "Liabilities"
