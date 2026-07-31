@@ -241,6 +241,13 @@ class ResConfigSettings(models.TransientModel):
         implied_group="havano_all_in_one.group_show_advanced_sales_reports",
     )
 
+    hao_custom_balance_sheet_format = fields.Boolean(
+        string="Custom Balance Sheet Format",
+        related="company_id.hao_custom_balance_sheet_format",
+        readonly=False,
+        help="Use a custom layout for the Balance Sheet: Assets -> Non-current/Current -> Total, Equity and Liabilities -> Equity/Non-current/Current -> Total.",
+    )
+
     hao_global_sales_automation_method = fields.Selection([
         ('full', 'Full Automate'),
         ('quote_invoice', 'Quote - Sales Invoice')

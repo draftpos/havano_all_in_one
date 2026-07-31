@@ -52,7 +52,12 @@
                             <button name="action_apply_automation_methods_to_all_users" type="object" string="Apply to all users" class="btn btn-secondary"/>
                         </div>
                     </block>
-                    <block title="Templates">
+                    <block title="Accounting Reports" name="accounting_reports_setting_container">
+                        <setting id="custom_balance_sheet_format_setting" string="Custom Balance Sheet Format" help="Change the balance sheet format to Assets -> Non-current/Current -> Total, Equity and Liabilities -> Equity/Non-current/Current -> Total">
+                            <field name="hao_custom_balance_sheet_format"/>
+                        </setting>
+                    </block>
+                    <block title="Templates" name="templates_setting_container">
                         <div class="text-muted mb-2">
                             Create and manage invoice templates for future automation.
                         </div>
