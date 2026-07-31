@@ -248,6 +248,13 @@ class ResConfigSettings(models.TransientModel):
         help="Use a custom layout for the Balance Sheet: Assets -> Non-current/Current -> Total, Equity and Liabilities -> Equity/Non-current/Current -> Total.",
     )
 
+    hao_custom_pnl_format = fields.Boolean(
+        string="Custom Profit or Loss Format",
+        related="company_id.hao_custom_pnl_format",
+        readonly=False,
+        help="Use a custom layout for the Profit and Loss report.",
+    )
+
     hao_global_sales_automation_method = fields.Selection([
         ('full', 'Full Automate'),
         ('quote_invoice', 'Quote - Sales Invoice')

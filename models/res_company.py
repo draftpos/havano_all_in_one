@@ -69,11 +69,20 @@ class ResCompany(models.Model):
         help="Use a custom layout for the Balance Sheet: Assets -> Non-current/Current -> Total, Equity and Liabilities -> Equity/Non-current/Current -> Total."
     )
 
+    hao_custom_pnl_format = fields.Boolean(
+        string="Custom Profit or Loss Format",
+        default=False,
+        help="Use a custom layout for the Profit and Loss report."
+    )
+
     def write(self, vals):
         res = super(ResCompany, self).write(vals)
         if 'hao_custom_balance_sheet_format' in vals:
             for company in self:
                 company._apply_custom_balance_sheet_format(company.hao_custom_balance_sheet_format)
+        if 'hao_custom_pnl_format' in vals:
+            for company in self:
+                company._apply_custom_pnl_format(company.hao_custom_pnl_format)
         return res
         
     @api.model_create_multi
@@ -82,6 +91,8 @@ class ResCompany(models.Model):
         for company in companies:
             if company.hao_custom_balance_sheet_format:
                 company._apply_custom_balance_sheet_format(company.hao_custom_balance_sheet_format)
+            if company.hao_custom_pnl_format:
+                company._apply_custom_pnl_format(company.hao_custom_pnl_format)
         return companies
         
     def _apply_custom_balance_sheet_format(self, custom_format):
@@ -169,3 +180,91 @@ class ResCompany(models.Model):
             except Exception as e:
                 import logging
                 logging.getLogger(__name__).warning("Could not format enterprise balance sheet: %s", e)
+
+    def _apply_custom_pnl_format(self, custom_format):
+        # Apply for Community (account.financial.report)
+        if 'account.financial.report' in self.env:
+            try:
+                reports = self.env['account.financial.report'].sudo().search([])
+                pnls = reports.filtered(lambda r: r.name and ('profit and loss' in r.name.lower() or 'compte de resultat' in r.name.lower()) and not r.parent_id)
+                for pnl in pnls:
+                    children = reports.filtered(lambda r: r.parent_id == pnl)
+                    
+                    if custom_format:
+                        revenue = children.filtered(lambda r: 'income' in r.name.lower() or 'revenue' in r.name.lower())
+                        if revenue:
+                            revenue[0].name = "Revenue"
+                            revenue[0].sequence = 1
+                            
+                        cost_of_sales = children.filtered(lambda r: 'cost of revenue' in r.name.lower() or 'cost of sales' in r.name.lower())
+                        if cost_of_sales:
+                            cost_of_sales[0].name = "Less Cost of Sales"
+                            cost_of_sales[0].sequence = 2
+                            
+                        gross_profit = children.filtered(lambda r: 'gross profit' in r.name.lower())
+                        if gross_profit:
+                            gross_profit[0].name = "Gross Profit"
+                            gross_profit[0].sequence = 3
+                            
+                        other_income = children.filtered(lambda r: 'other income' in r.name.lower() or 'unallocated' in r.name.lower())
+                        if other_income:
+                            other_income[0].name = "Other Income"
+                            other_income[0].sequence = 4
+                            
+                        operating_expense = children.filtered(lambda r: 'operating expense' in r.name.lower() or 'expense' in r.name.lower() and r not in cost_of_sales)
+                        if operating_expense:
+                            operating_expense[0].name = "Less Operating Expenses"
+                            operating_expense[0].sequence = 5
+
+                        net_profit = children.filtered(lambda r: 'net profit' in r.name.lower())
+                        if net_profit:
+                            net_profit[0].name = "Net Profit"
+                            net_profit[0].sequence = 10
+                            
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).warning("Could not format community P&L: %s", e)
+
+        # Apply for Enterprise (account.report.line)
+        if 'account.report.line' in self.env:
+            try:
+                lines = self.env['account.report.line'].sudo().search([])
+                
+                # Find lines belonging to P&L report
+                pnl_lines = lines.filtered(lambda r: r.report_id and ('profit and loss' in r.report_id.name.lower() or 'profit' in r.report_id.name.lower()))
+                
+                if pnl_lines:
+                    if custom_format:
+                        revenue = pnl_lines.filtered(lambda r: not r.parent_id and ('income' in r.name.lower() or 'revenue' in r.name.lower()))
+                        if revenue:
+                            revenue[0].name = "Revenue"
+                            revenue[0].sequence = 1
+                            
+                        cost_of_sales = pnl_lines.filtered(lambda r: not r.parent_id and ('cost of revenue' in r.name.lower() or 'cost of sales' in r.name.lower()))
+                        if cost_of_sales:
+                            cost_of_sales[0].name = "Less Cost of Sales"
+                            cost_of_sales[0].sequence = 2
+                            
+                        gross_profit = pnl_lines.filtered(lambda r: not r.parent_id and 'gross profit' in r.name.lower())
+                        if gross_profit:
+                            gross_profit[0].name = "Gross Profit"
+                            gross_profit[0].sequence = 3
+                            
+                        other_income = pnl_lines.filtered(lambda r: not r.parent_id and ('other income' in r.name.lower() or 'unallocated' in r.name.lower()))
+                        if other_income:
+                            other_income[0].name = "Other Income"
+                            other_income[0].sequence = 4
+                            
+                        operating_expense = pnl_lines.filtered(lambda r: not r.parent_id and ('operating expense' in r.name.lower() or 'expense' in r.name.lower()) and r not in cost_of_sales)
+                        if operating_expense:
+                            operating_expense[0].name = "Less Operating Expenses"
+                            operating_expense[0].sequence = 5
+
+                        net_profit = pnl_lines.filtered(lambda r: not r.parent_id and 'net profit' in r.name.lower())
+                        if net_profit:
+                            net_profit[0].name = "Net Profit"
+                            net_profit[0].sequence = 10
+                            
+            except Exception as e:
+                import logging
+                logging.getLogger(__name__).warning("Could not format enterprise P&L: %s", e)
