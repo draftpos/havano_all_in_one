@@ -56,7 +56,7 @@
                         <setting id="custom_balance_sheet_format_setting" string="Custom Balance Sheet Format" help="Change the balance sheet format to Assets -> Non-current/Current -> Total, Equity and Liabilities -> Equity/Non-current/Current -> Total">
                             <field name="hao_custom_balance_sheet_format"/>
                         </setting>
-                        <setting id="custom_pnl_format_setting" string="Custom Profit or Loss Format" help="Change the P&L format to Revenue, Less Cost of Sales, Gross Profit, Other Income, Less Operating Expenses, Less Investing Expenses, Less Financing Expenses, Profit from Continuing Operations, Gain/Loss from Discontinued Operations, Net Profit">
+                        <setting id="custom_pnl_format_setting" string="Custom Profit or Loss Format" help="Change the P&amp;L format to Revenue, Less Cost of Sales, Gross Profit, Other Income, Less Operating Expenses, Less Investing Expenses, Less Financing Expenses, Profit from Continuing Operations, Gain/Loss from Discontinued Operations, Net Profit">
                             <field name="hao_custom_pnl_format"/>
                         </setting>
                     </block>
