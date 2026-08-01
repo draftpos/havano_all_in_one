@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_hao_aged_receivable_tree" model="ir.ui.view">
+        <field name="name">hao.aged.receivable.report.tree</field>
+        <field name="model">hao.aged.receivable.report</field>
+        <field name="arch" type="xml">
+            <list string="Debtors Age Analysis" create="false" edit="false" delete="false">
+                <field name="partner_id" />
+                <field name="company_id" optional="show" />
+                <field name="user_id" optional="show" />
+                <field name="current" sum="Current" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="age_30_days" sum="1-30 Days" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="age_60_days" sum="31-60 Days" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="age_90_days" sum="61-90 Days" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="age_120_days" sum="91-120 Days" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="older" sum="121+ Days" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="amount_residual" sum="Total Outstanding" widget="monetary" options="{'currency_field': 'currency_id'}" />
+                <field name="currency_id" column_invisible="1" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hao_aged_receivable_pivot" model="ir.ui.view">
+        <field name="name">hao.aged.receivable.report.pivot</field>
+        <field name="model">hao.aged.receivable.report</field>
+        <field name="arch" type="xml">
+            <pivot string="Debtors Age Analysis" disable_linking="True">
+                <field name="partner_id" type="row" />
+                <field name="current" type="measure" />
+                <field name="age_30_days" type="measure" />
+                <field name="age_60_days" type="measure" />
+                <field name="age_90_days" type="measure" />
+                <field name="age_120_days" type="measure" />
+                <field name="older" type="measure" />
+                <field name="amount_residual" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Actions for Ageing Reports -->
+    <record id="action_hao_ageing_customer" model="ir.actions.act_window">
+        <field name="name">Debtors Age Analysis (by Customer)</field>
+        <field name="res_model">hao.aged.receivable.report</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="context">{'group_by': ['partner_id']}</field>
+    </record>
+
+    <record id="action_hao_ageing_branch" model="ir.actions.act_window">
+        <field name="name">Debtors Age Analysis (by Branch)</field>
+        <field name="res_model">hao.aged.receivable.report</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="context">{'group_by': ['company_id']}</field>
+    </record>
+
+    <record id="action_hao_ageing_sales_rep" model="ir.actions.act_window">
+        <field name="name">Debtors Age Analysis (by Sales Rep)</field>
+        <field name="res_model">hao.aged.receivable.report</field>
+        <field name="view_mode">list,pivot</field>
+        <field name="context">{'group_by': ['user_id']}</field>
+    </record>
+
+    <!-- Menus under Sales -> Reporting -->
+    <menuitem id="menu_hao_ageing_analysis" name="Age Analysis Reports" parent="menu_havano_advanced_sales_reports" sequence="70" />
+    <menuitem id="menu_hao_ageing_cust" name="Debtors Age Analysis (by Customer)" parent="menu_hao_ageing_analysis" action="action_hao_ageing_customer" sequence="10"/>
+    <menuitem id="menu_hao_ageing_branch" name="Debtors Age Analysis (by Branch)" parent="menu_hao_ageing_analysis" action="action_hao_ageing_branch" sequence="20"/>
+    <menuitem id="menu_hao_ageing_rep" name="Debtors Age Analysis (by Sales Rep)" parent="menu_hao_ageing_analysis" action="action_hao_ageing_sales_rep" sequence="30"/>
+
+</odoo>

@@ -131,5 +131,98 @@
               parent="menu_havano_advanced_sales_reports" 
               action="action_havano_sales_return" 
               sequence="40"/>
+    <!-- Sales Analysis Reports -->
+    <record id="action_hao_sales_by_company" model="ir.actions.act_window">
+        <field name="name">Sales by Company</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'group_by': ['company_id']}</field>
+    </record>
+
+    <record id="action_hao_sales_by_branch" model="ir.actions.act_window">
+        <field name="name">Sales by Branch</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'group_by': ['company_id']}</field>
+    </record>
+
+    <record id="action_hao_sales_by_exec" model="ir.actions.act_window">
+        <field name="name">Sales by Sales Executive</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'group_by': ['user_id']}</field>
+    </record>
+
+    <record id="action_hao_sales_by_customer" model="ir.actions.act_window">
+        <field name="name">Sales by Customer</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'group_by': ['partner_id']}</field>
+    </record>
+
+    <record id="action_hao_sales_by_product" model="ir.actions.act_window">
+        <field name="name">Sales by Product</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'group_by': ['product_id']}</field>
+    </record>
+
+    <record id="action_hao_sales_by_analytic" model="ir.actions.act_window">
+        <field name="name">Sales by Analytic Account</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'group_by': ['analytic_account_id']}</field>
+    </record>
+
+    <record id="action_hao_sales_by_sector" model="ir.actions.act_window">
+        <field name="name">Sales by Business Sector</field>
+        <field name="res_model">sale.report</field>
+        <field name="view_mode">list,pivot,graph</field>
+        <field name="context">{'group_by': ['hao_business_sector']}</field>
+    </record>
+
+    <!-- New & Dormant Customers -->
+    <record id="action_hao_new_customers" model="ir.actions.act_window">
+        <field name="name">New Customers (Jan 2026 - Present)</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('create_date', '&gt;=', '2026-01-01'), ('customer_rank', '&gt;', 0)]</field>
+    </record>
+
+    <record id="action_hao_dormant_customers" model="ir.actions.server">
+        <field name="name">Dormant Customers (June 2025 - 2026)</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+old_orders = env['sale.order'].search([('date_order', '&lt;', '2025-06-01'), ('state', 'in', ['sale', 'done'])])
+recent_orders = env['sale.order'].search([('date_order', '&gt;=', '2025-06-01'), ('date_order', '&lt;=', '2026-06-30'), ('state', 'in', ['sale', 'done'])])
+
+old_partner_ids = old_orders.mapped('partner_id').ids
+recent_partner_ids = recent_orders.mapped('partner_id').ids
+
+dormant_ids = list(set(old_partner_ids) - set(recent_partner_ids))
+
+action = {
+    'name': 'Dormant Customers (June 2025 - 2026)',
+    'type': 'ir.actions.act_window',
+    'res_model': 'res.partner',
+    'view_mode': 'list,form',
+    'domain': [('id', 'in', dormant_ids)],
+}
+        </field>
+    </record>
+
+    <menuitem id="menu_hao_sales_analysis" name="Sales Analysis Reports" parent="menu_havano_advanced_sales_reports" sequence="50" />
+    <menuitem id="menu_hao_sa_company" name="By Company" parent="menu_hao_sales_analysis" action="action_hao_sales_by_company" sequence="10"/>
+    <menuitem id="menu_hao_sa_branch" name="By Branch" parent="menu_hao_sales_analysis" action="action_hao_sales_by_branch" sequence="15"/>
+    <menuitem id="menu_hao_sa_exec" name="By Sales Executive" parent="menu_hao_sales_analysis" action="action_hao_sales_by_exec" sequence="20"/>
+    <menuitem id="menu_hao_sa_customer" name="By Customer" parent="menu_hao_sales_analysis" action="action_hao_sales_by_customer" sequence="30"/>
+    <menuitem id="menu_hao_sa_product" name="By Product" parent="menu_hao_sales_analysis" action="action_hao_sales_by_product" sequence="40"/>
+    <menuitem id="menu_hao_sa_analytic" name="By Analytic Account" parent="menu_hao_sales_analysis" action="action_hao_sales_by_analytic" sequence="50"/>
+    <menuitem id="menu_hao_sa_sector" name="By Business Sector" parent="menu_hao_sales_analysis" action="action_hao_sales_by_sector" sequence="60"/>
+    
+    <menuitem id="menu_hao_cust_analysis" name="Customer Analysis Reports" parent="menu_havano_advanced_sales_reports" sequence="60" />
+    <menuitem id="menu_hao_new_cust" name="New Customers" parent="menu_hao_cust_analysis" action="action_hao_new_customers" sequence="10"/>
+    <menuitem id="menu_hao_dormant_cust" name="Dormant Customers" parent="menu_hao_cust_analysis" action="action_hao_dormant_customers" sequence="20"/>
 
 </odoo>
