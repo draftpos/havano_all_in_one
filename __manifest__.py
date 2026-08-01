@@ -15,6 +15,7 @@
         "sale_management",
         "purchase",
         "account",
+        "account_reports",
         "stock",
     ],
     "data": [
@@ -22,6 +23,7 @@
         "security/ir.model.access.csv",
         "data/sequence_data.xml",
         "data/design_templates.xml",
+        "data/hao_balance_sheet.xml",
         "views/webclient_templates_left.xml",
         "views/webclient_templates_middle.xml",
         "views/webclient_templates_right.xml",

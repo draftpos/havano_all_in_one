@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo auto_sequence="1">
+    <record id="hao_balance_sheet" model="account.report">
+        <field name="name">Custom Balance Sheet</field>
+        <field name="root_report_id" ref="account_reports.balance_sheet"/>
+        <field name="sequence">999</field> <!-- Hidden by default, toggled to 1 via python -->
+        <field name="filter_date_range" eval="False"/>
+        <field name="filter_analytic_groupby" eval="True"/>
+        <field name="filter_unfold_all" eval="True"/>
+        <field name="filter_journals" eval="True"/>
+        <field name="filter_multi_company">selector</field>
+        <field name="allow_account_audit_status_on_lines" eval="True"/>
+        <field name="default_opening_date_filter">today</field>
+        <field name="custom_handler_model_id" ref="account_reports.model_account_balance_sheet_report_handler"/>
+        <field name="column_ids">
+            <record id="hao_balance_sheet_balance" model="account.report.column">
+                <field name="name">Balance</field>
+                <field name="expression_label">balance</field>
+            </record>
+        </field>
+        <field name="line_ids">
+            <record id="hao_account_financial_report_total_assets0" model="account.report.line">
+                <field name="name">ASSETS</field>
+                <field name="hierarchy_level">0</field>
+                <field name="code">HAO_TA</field>
+                <field name="horizontal_split_side">left</field>
+                <field name="aggregation_formula">HAO_FA.balance + HAO_PNCA.balance + HAO_CA.balance</field>
+                <field name="children_ids">
+                    <record id="hao_account_financial_report_fixed_assets_view0" model="account.report.line">
+                        <field name="name">Fixed Assets</field>
+                        <field name="code">HAO_FA</field>
+                        <field name="groupby">account_id</field>
+                        <field name="foldable" eval="True"/>
+                        <field name="domain_formula">sum([('account_id.account_type', '=', 'asset_fixed')])</field>
+                    </record>
+                    <record id="hao_account_financial_report_non_current_assets_view0" model="account.report.line">
+                        <field name="name">Non-current Assets</field>
+                        <field name="code">HAO_PNCA</field>
+                        <field name="groupby">account_id</field>
+                        <field name="foldable" eval="True"/>
+                        <field name="domain_formula">sum([('account_id.account_type', '=', 'asset_non_current')])</field>
+                    </record>
+                    <record id="hao_account_financial_report_current_assets_view0" model="account.report.line">
+                        <field name="name">Current Assets</field>
+                        <field name="code">HAO_CA</field>
+                        <field name="aggregation_formula">HAO_BA.balance + HAO_REC.balance + HAO_CAS.balance + HAO_PRE.balance</field>
+                        <field name="children_ids">
+                            <record id="hao_account_financial_report_bank_view0" model="account.report.line">
+                                <field name="name">Bank and Cash Accounts</field>
+                                <field name="code">HAO_BA</field>
+                                <field name="groupby">account_id</field>
+                                <field name="foldable" eval="True"/>
+                                <field name="domain_formula">sum([('account_id.account_type', '=', 'asset_cash')])</field>
+                            </record>
+                            <record id="hao_account_financial_report_receivable0" model="account.report.line">
+                                <field name="name">Receivables</field>
+                                <field name="code">HAO_REC</field>
+                                <field name="groupby">account_id</field>
+                                <field name="foldable" eval="True"/>
+                                <field name="domain_formula">sum([('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', False)])</field>
+                            </record>
+                            <record id="hao_account_financial_report_current_assets0" model="account.report.line">
+                                <field name="name">Current Assets</field>
+                                <field name="code">HAO_CAS</field>
+                                <field name="groupby">account_id</field>
+                                <field name="foldable" eval="True"/>
+                                <field name="domain_formula">sum(['|', ('account_id.account_type', '=', 'asset_current'), '&amp;', ('account_id.account_type', '=', 'asset_receivable'), ('account_id.non_trade', '=', True)])</field>
+                            </record>
+                            <record id="hao_account_financial_report_prepayements0" model="account.report.line">
+                                <field name="name">Prepayments</field>
+                                <field name="code">HAO_PRE</field>
+                                <field name="groupby">account_id</field>
+                                <field name="foldable" eval="True"/>
+                                <field name="domain_formula">sum([('account_id.account_type', '=', 'asset_prepayments')])</field>
+                            </record>
+                        </field>
+                    </record>
+                </field>
+            </record>
+            <!-- Merged Liabilities and Equity side -->
+            <record id="hao_account_financial_report_liabilities_and_equity_view0" model="account.report.line">
+                <field name="name">EQUITY AND LIABILITIES</field>
+                <field name="hierarchy_level">0</field>
+                <field name="code">HAO_LE</field>
+                <field name="horizontal_split_side">right</field>
+                <field name="expression_ids">
+                    <record id="hao_account_financial_report_liabilities_and_equity_view0_balance" model="account.report.expression">
+                        <field name="label">balance</field>
+                        <field name="engine">aggregation</field>
+                        <field name="formula">HAO_EQ.balance + HAO_NL.balance + HAO_CL.balance</field>
+                        <field name="green_on_positive" eval="False"/>
+                    </record>
+                </field>
+                <field name="children_ids">
+                    <record id="hao_account_financial_report_equity0" model="account.report.line">
+                        <field name="name">Equity</field>
+                        <field name="code">HAO_EQ</field>
+                        <field name="aggregation_formula">HAO_UNAFFECTED_EARNINGS.balance + HAO_RETAINED_EARNINGS.balance</field>
+                        <field name="children_ids">
+                            <record id="hao_account_financial_unaffected_earnings0" model="account.report.line">
+                                <field name="name">Unallocated Earnings</field>
+                                <field name="code">HAO_UNAFFECTED_EARNINGS</field>
+                                <field name="aggregation_formula">HAO_CURR_YEAR_EARNINGS.balance + HAO_PREV_YEAR_EARNINGS.balance</field>
+                                <field name="children_ids">
+                                    <record id="hao_account_financial_current_year_earnings0" model="account.report.line">
+                                        <field name="name">Current Year Unallocated Earnings</field>
+                                        <field name="code">HAO_CURR_YEAR_EARNINGS</field>
+                                        <field name="expression_ids">
+                                            <record id="hao_account_financial_current_year_earnings_pnl" model="account.report.expression">
+                                                <field name="label">pnl</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">NEP.balance</field>
+                                                <field name="date_scope">from_fiscalyear</field>
+                                                <field name="subformula">cross_report(account_reports.profit_and_loss)</field>
+                                            </record>
+                                            <record id="hao_account_financial_current_year_earnings_alloc" model="account.report.expression">
+                                                <field name="label">alloc</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
+                                                <field name="date_scope">from_fiscalyear</field>
+                                                <field name="subformula">-sum</field>
+                                            </record>
+                                            <record id="hao_account_financial_current_year_earnings_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">HAO_CURR_YEAR_EARNINGS.pnl + HAO_CURR_YEAR_EARNINGS.alloc</field>
+                                            </record>
+                                        </field>
+                                    </record>
+                                    <record id="hao_account_financial_previous_year_earnings0" model="account.report.line">
+                                        <field name="name">Previous Years Unallocated Earnings</field>
+                                        <field name="code">HAO_PREV_YEAR_EARNINGS</field>
+                                        <field name="expression_ids">
+                                            <record id="hao_account_financial_previous_year_earnings0_allocated_earnings" model="account.report.expression">
+                                                <field name="label">allocated_earnings</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula" eval="[('account_id.account_type', '=', 'equity_unaffected')]"/>
+                                                <field name="subformula">-sum</field>
+                                                <field name="date_scope">from_beginning</field>
+                                            </record>
+                                            <record id="hao_account_financial_previous_year_earnings0_balance_domain" model="account.report.expression">
+                                                <field name="label">balance_domain</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula" eval="[('account_id.account_type', 'in', ('income', 'income_other', 'expense_direct_cost', 'expense', 'expense_depreciation', 'expense_other'))]"/>
+                                                <field name="subformula">-sum</field>
+                                                <field name="date_scope">from_beginning</field>
+                                            </record>
+                                            <record id="hao_account_financial_previous_year_earnings0_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">HAO_PREV_YEAR_EARNINGS.balance_domain + HAO_PREV_YEAR_EARNINGS.allocated_earnings - HAO_CURR_YEAR_EARNINGS.balance</field>
+                                            </record>
+                                        </field>
+                                    </record>
+                                </field>
+                            </record>
+                            <record id="hao_account_financial_retained_earnings0" model="account.report.line">
+                                <field name="name">Retained Earnings</field>
+                                <field name="code">HAO_RETAINED_EARNINGS</field>
+                                <field name="aggregation_formula">HAO_CURR_RETAINED_EARNINGS.balance + HAO_PREV_RETAINED_EARNINGS.balance</field>
+                                <field name="groupby" eval="False"/>
+                                <field name="foldable" eval="False"/>
+                                <field name="children_ids">
+                                    <record id="hao_account_financial_retained_earnings_line_1" model="account.report.line">
+                                        <field name="name">Current Year Retained Earnings</field>
+                                        <field name="code">HAO_CURR_RETAINED_EARNINGS</field>
+                                        <field name="groupby">account_id</field>
+                                        <field name="foldable" eval="True"/>
+                                        <field name="expression_ids">
+                                            <record id="hao_account_financial_retained_earnings_current" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula" eval="[('account_id.account_type', '=', 'equity')]"/>
+                                                <field name="subformula">-sum</field>
+                                                <field name="date_scope">from_fiscalyear</field>
+                                            </record>
+                                        </field>
+                                    </record>
+                                    <record id="hao_account_financial_retained_earnings_line_2" model="account.report.line">
+                                        <field name="name">Previous Years Retained Earnings</field>
+                                        <field name="code">HAO_PREV_RETAINED_EARNINGS</field>
+                                        <field name="expression_ids">
+                                            <record id="hao_account_financial_retained_earnings_total" model="account.report.expression">
+                                                <field name="label">total</field>
+                                                <field name="engine">domain</field>
+                                                <field name="formula" eval="[('account_id.account_type', '=', 'equity')]"/>
+                                                <field name="subformula">-sum</field>
+                                            </record>
+                                            <record id="hao_account_financial_retained_earnings_balance" model="account.report.expression">
+                                                <field name="label">balance</field>
+                                                <field name="engine">aggregation</field>
+                                                <field name="formula">HAO_PREV_RETAINED_EARNINGS.total - HAO_CURR_RETAINED_EARNINGS.balance</field>
+                                            </record>
+                                        </field>
+                                    </record>
+                                </field>
+                            </record>
+                        </field>
+                    </record>
+                    <record id="hao_account_financial_report_non_current_liabilities0" model="account.report.line">
+                        <field name="name">Non-current Liabilities</field>
+                        <field name="code">HAO_NL</field>
+                        <field name="groupby">account_id</field>
+                        <field name="foldable" eval="True"/>
+                        <field name="expression_ids">
+                            <record id="hao_account_financial_report_non_current_liabilities0_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">domain</field>
+                                <field name="formula" eval="[('account_id.account_type', '=', 'liability_non_current')]"/>
+                                <field name="subformula">-sum</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
+                    </record>
+                    <record id="hao_account_financial_report_current_liabilities0" model="account.report.line">
+                        <field name="name">Current Liabilities</field>
+                        <field name="code">HAO_CL</field>
+                        <field name="expression_ids">
+                            <record id="hao_account_financial_report_current_liabilities0_balance" model="account.report.expression">
+                                <field name="label">balance</field>
+                                <field name="engine">aggregation</field>
+                                <field name="formula">HAO_CL1.balance + HAO_CL2.balance</field>
+                                <field name="green_on_positive" eval="False"/>
+                            </record>
+                        </field>
+                        <field name="children_ids">
+                            <record id="hao_account_financial_report_current_liabilities1" model="account.report.line">
+                                <field name="name">Current Liabilities</field>
+                                <field name="code">HAO_CL1</field>
+                                <field name="groupby">account_id</field>
+                                <field name="foldable" eval="True"/>
+                                <field name="expression_ids">
+                                    <record id="hao_account_financial_report_current_liabilities1_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">domain</field>
+                                        <field name="formula" eval="['|', ('account_id.account_type', 'in', ('liability_current', 'liability_credit_card')), '&amp;', ('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', True)]"/>
+                                        <field name="subformula">-sum</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
+                            </record>
+                            <record id="hao_account_financial_report_current_liabilities_payable" model="account.report.line">
+                                <field name="name">Payables</field>
+                                <field name="code">HAO_CL2</field>
+                                <field name="groupby">account_id</field>
+                                <field name="foldable" eval="True"/>
+                                <field name="expression_ids">
+                                    <record id="hao_account_financial_report_current_liabilities_payable_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">domain</field>
+                                        <field name="formula" eval="[('account_id.account_type', '=', 'liability_payable'), ('account_id.non_trade', '=', False)]"/>
+                                        <field name="subformula">-sum</field>
+                                        <field name="green_on_positive" eval="False"/>
+                                    </record>
+                                </field>
+                            </record>
+                        </field>
+                    </record>
+                </field>
+            </record>
+            <record id="hao_account_financial_report_off_sheet" model="account.report.line">
+                <field name="name">OFF BALANCE SHEET ACCOUNTS</field>
+                <field name="hierarchy_level">0</field>
+                <field name="code">HAO_OS</field>
+                <field name="groupby">account_id</field>
+                <field name="foldable" eval="True"/>
+                <field name="hide_if_zero" eval="1"/>
+                <field name="domain_formula">-sum([('account_id.account_type', '=', 'off_balance')])</field>
+            </record>
+        </field>
+    </record>
+</odoo>

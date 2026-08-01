@@ -96,90 +96,22 @@ class ResCompany(models.Model):
         return companies
         
     def _apply_custom_balance_sheet_format(self, custom_format):
-        # Apply for Community (account.financial.report)
-        if 'account.financial.report' in self.env:
-            try:
-                reports = self.env['account.financial.report'].sudo().search([])
-                bs_roots = reports.filtered(lambda r: r.name and r.name.lower() in ['balance sheet', 'bilan'] and not r.parent_id)
-                for bs in bs_roots:
-                    children = reports.filtered(lambda r: r.parent_id == bs)
-                    
-                    # Assets Rearrangement
-                    assets = children.filtered(lambda r: r.name and ('asset' in r.name.lower() or 'actif' in r.name.lower()))
-                    if assets:
-                        asset_node = assets[0]
-                        asset_children = reports.filtered(lambda r: r.parent_id == asset_node)
-                        current_assets = asset_children.filtered(lambda r: r.name and 'current' in r.name.lower() and 'non' not in r.name.lower())
-                        non_current_assets = asset_children.filtered(lambda r: r.name and ('non-current' in r.name.lower() or 'non current' in r.name.lower() or 'fixed' in r.name.lower()))
-                        if current_assets and non_current_assets:
-                            if custom_format:
-                                non_current_assets.write({'sequence': 1})
-                                current_assets.write({'sequence': 10})
-                            else:
-                                current_assets.write({'sequence': 1})
-                                non_current_assets.write({'sequence': 10})
-                    
-                    # Liabilities & Equity Rearrangement
-                    liabilities = children.filtered(lambda r: r.name and ('liabilit' in r.name.lower() or 'passif' in r.name.lower() or 'equity and liabilities' in r.name.lower()))
-                    equity = children.filtered(lambda r: r.name and 'equity' in r.name.lower() and r not in liabilities)
-                    
-                    if liabilities:
-                        liab = liabilities[0]
-                        if custom_format:
-                            liab.name = "Equity and Liabilities"
-                            if equity:
-                                equity.write({'parent_id': liab.id, 'sequence': liab.sequence + 1})
-                        else:
-                            if liab.name == "Equity and Liabilities":
-                                liab.name = "Liability"
-                            
-                            sub_equity = reports.filtered(lambda r: r.parent_id == liab and r.name and 'equity' in r.name.lower())
-                            if sub_equity:
-                                sub_equity.write({'parent_id': bs.id, 'sequence': liab.sequence + 1})
-            except Exception as e:
-                import logging
-                logging.getLogger(__name__).warning("Could not format community balance sheet: %s", e)
+        if 'account.report' not in self.env:
+            return
 
-        # Apply for Enterprise (account.report.line)
-        if 'account.report.line' in self.env:
-            try:
-                lines = self.env['account.report.line'].sudo().search([])
-                
-                # Check for Assets
-                assets = lines.filtered(lambda r: not r.parent_id and r.name and ('asset' in r.name.lower() or 'actif' in r.name.lower()))
-                if assets:
-                    asset_node = assets[0]
-                    asset_children = lines.filtered(lambda r: r.parent_id == asset_node)
-                    current_assets = asset_children.filtered(lambda r: r.name and 'current' in r.name.lower() and 'non' not in r.name.lower())
-                    non_current_assets = asset_children.filtered(lambda r: r.name and ('non-current' in r.name.lower() or 'non current' in r.name.lower() or 'fixed' in r.name.lower()))
-                    
-                    if current_assets and non_current_assets:
-                        if custom_format:
-                            non_current_assets.write({'sequence': 1})
-                            current_assets.write({'sequence': 10})
-                        else:
-                            current_assets.write({'sequence': 1})
-                            non_current_assets.write({'sequence': 10})
-                            
-                # Check for Liabilities and Equity
-                liabilities = lines.filtered(lambda r: not r.parent_id and r.name and ('liabilit' in r.name.lower() or 'passif' in r.name.lower() or 'equity and liabilities' in r.name.lower()))
-                equity = lines.filtered(lambda r: not r.parent_id and r.name and 'equity' in r.name.lower() and r not in liabilities)
-                
-                if liabilities:
-                    liab = liabilities[0]
-                    if custom_format:
-                        liab.name = "Equity and Liabilities"
-                        if equity:
-                            equity.write({'parent_id': liab.id, 'sequence': liab.sequence + 1})
-                    else:
-                        if liab.name == "Equity and Liabilities":
-                            liab.name = "Liabilities"
-                        sub_equity = lines.filtered(lambda r: r.parent_id == liab and r.name and 'equity' in r.name.lower())
-                        if sub_equity:
-                            sub_equity.write({'parent_id': False, 'sequence': liab.sequence + 1})
-            except Exception as e:
-                import logging
-                logging.getLogger(__name__).warning("Could not format enterprise balance sheet: %s", e)
+        custom = self.env.ref('havano_all_in_one.hao_balance_sheet', raise_if_not_found=False)
+        base = self.env.ref('account_reports.balance_sheet', raise_if_not_found=False)
+
+        try:
+            if custom_format:
+                if custom: custom.sudo().sequence = 1
+                if base: base.sudo().sequence = 999
+            else:
+                if custom: custom.sudo().sequence = 999
+                if base: base.sudo().sequence = 10
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).warning("Could not toggle enterprise balance sheet format: %s", e)
 
     def _apply_custom_pnl_format(self, custom_format):
         # Apply for Community (account.financial.report)
