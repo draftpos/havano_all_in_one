@@ -21,7 +21,7 @@
         <field name="line_ids">
             <record id="hao_account_financial_report_total_assets0" model="account.report.line">
                 <field name="name">Assets</field>
-                <field name="sequence">1</field>
+                <field name="sequence">10</field>
                 <field name="hierarchy_level">0</field>
                 <field name="code">HAO_TA</field>
                 <field name="horizontal_split_side">left</field>
@@ -29,7 +29,7 @@
                 <field name="children_ids">
                     <record id="hao_account_financial_report_non_current_assets_view0" model="account.report.line">
                         <field name="name">Non-current Assets</field>
-                        <field name="sequence">1</field>
+                        <field name="sequence">20</field>
                         <field name="code">HAO_PNCA</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -37,12 +37,13 @@
                     </record>
                     <record id="hao_account_financial_report_current_assets_view0" model="account.report.line">
                         <field name="name">Current Assets</field>
-                        <field name="sequence">2</field>
+                        <field name="sequence">30</field>
                         <field name="code">HAO_CA</field>
                         <field name="aggregation_formula">HAO_BA.balance + HAO_REC.balance + HAO_CAS.balance + HAO_PRE.balance</field>
                         <field name="children_ids">
                             <record id="hao_account_financial_report_bank_view0" model="account.report.line">
                                 <field name="name">Bank and Cash Accounts</field>
+                                <field name="sequence">31</field>
                                 <field name="code">HAO_BA</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -50,6 +51,7 @@
                             </record>
                             <record id="hao_account_financial_report_receivable0" model="account.report.line">
                                 <field name="name">Receivables</field>
+                                <field name="sequence">32</field>
                                 <field name="code">HAO_REC</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -57,6 +59,7 @@
                             </record>
                             <record id="hao_account_financial_report_current_assets0" model="account.report.line">
                                 <field name="name">Current Assets</field>
+                                <field name="sequence">33</field>
                                 <field name="code">HAO_CAS</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -64,6 +67,7 @@
                             </record>
                             <record id="hao_account_financial_report_prepayements0" model="account.report.line">
                                 <field name="name">Prepayments</field>
+                                <field name="sequence">34</field>
                                 <field name="code">HAO_PRE</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -76,7 +80,7 @@
             <!-- Merged Liabilities and Equity side -->
             <record id="hao_account_financial_report_liabilities_and_equity_view0" model="account.report.line">
                 <field name="name">Equity and Liabilities</field>
-                <field name="sequence">2</field>
+                <field name="sequence">40</field>
                 <field name="hierarchy_level">0</field>
                 <field name="code">HAO_LE</field>
                 <field name="horizontal_split_side">right</field>
@@ -91,17 +95,19 @@
                 <field name="children_ids">
                     <record id="hao_account_financial_report_equity0" model="account.report.line">
                         <field name="name">Equity</field>
-                        <field name="sequence">1</field>
+                        <field name="sequence">50</field>
                         <field name="code">HAO_EQ</field>
                         <field name="aggregation_formula">HAO_UNAFFECTED_EARNINGS.balance + HAO_RETAINED_EARNINGS.balance</field>
                         <field name="children_ids">
                             <record id="hao_account_financial_unaffected_earnings0" model="account.report.line">
                                 <field name="name">Unallocated Earnings</field>
+                                <field name="sequence">51</field>
                                 <field name="code">HAO_UNAFFECTED_EARNINGS</field>
                                 <field name="aggregation_formula">HAO_CURR_YEAR_EARNINGS.balance + HAO_PREV_YEAR_EARNINGS.balance</field>
                                 <field name="children_ids">
                                     <record id="hao_account_financial_current_year_earnings0" model="account.report.line">
                                         <field name="name">Current Year Unallocated Earnings</field>
+                                        <field name="sequence">52</field>
                                         <field name="code">HAO_CURR_YEAR_EARNINGS</field>
                                         <field name="expression_ids">
                                             <record id="hao_account_financial_current_year_earnings_pnl" model="account.report.expression">
@@ -127,6 +133,7 @@
                                     </record>
                                     <record id="hao_account_financial_previous_year_earnings0" model="account.report.line">
                                         <field name="name">Previous Years Unallocated Earnings</field>
+                                        <field name="sequence">53</field>
                                         <field name="code">HAO_PREV_YEAR_EARNINGS</field>
                                         <field name="expression_ids">
                                             <record id="hao_account_financial_previous_year_earnings0_allocated_earnings" model="account.report.expression">
@@ -154,6 +161,7 @@
                             </record>
                             <record id="hao_account_financial_retained_earnings0" model="account.report.line">
                                 <field name="name">Retained Earnings</field>
+                                <field name="sequence">54</field>
                                 <field name="code">HAO_RETAINED_EARNINGS</field>
                                 <field name="aggregation_formula">HAO_CURR_RETAINED_EARNINGS.balance + HAO_PREV_RETAINED_EARNINGS.balance</field>
                                 <field name="groupby" eval="False"/>
@@ -161,6 +169,7 @@
                                 <field name="children_ids">
                                     <record id="hao_account_financial_retained_earnings_line_1" model="account.report.line">
                                         <field name="name">Current Year Retained Earnings</field>
+                                        <field name="sequence">55</field>
                                         <field name="code">HAO_CURR_RETAINED_EARNINGS</field>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
@@ -176,6 +185,7 @@
                                     </record>
                                     <record id="hao_account_financial_retained_earnings_line_2" model="account.report.line">
                                         <field name="name">Previous Years Retained Earnings</field>
+                                        <field name="sequence">56</field>
                                         <field name="code">HAO_PREV_RETAINED_EARNINGS</field>
                                         <field name="expression_ids">
                                             <record id="hao_account_financial_retained_earnings_total" model="account.report.expression">
@@ -197,7 +207,7 @@
                     </record>
                     <record id="hao_account_financial_report_non_current_liabilities0" model="account.report.line">
                         <field name="name">Non-current Liabilities</field>
-                        <field name="sequence">2</field>
+                        <field name="sequence">60</field>
                         <field name="code">HAO_NL</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -213,7 +223,7 @@
                     </record>
                     <record id="hao_account_financial_report_current_liabilities0" model="account.report.line">
                         <field name="name">Current Liabilities</field>
-                        <field name="sequence">3</field>
+                        <field name="sequence">70</field>
                         <field name="code">HAO_CL</field>
                         <field name="expression_ids">
                             <record id="hao_account_financial_report_current_liabilities0_balance" model="account.report.expression">
@@ -226,6 +236,7 @@
                         <field name="children_ids">
                             <record id="hao_account_financial_report_current_liabilities1" model="account.report.line">
                                 <field name="name">Current Liabilities</field>
+                                <field name="sequence">71</field>
                                 <field name="code">HAO_CL1</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
@@ -241,6 +252,7 @@
                             </record>
                             <record id="hao_account_financial_report_current_liabilities_payable" model="account.report.line">
                                 <field name="name">Payables</field>
+                                <field name="sequence">72</field>
                                 <field name="code">HAO_CL2</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_dynamic_balance_sheet" model="ir.actions.server">
+        <field name="name">Dynamic Balance Sheet</field>
+        <field name="model_id" ref="account.model_account_report"/>
+        <field name="state">code</field>
+        <field name="code">
+            <![CDATA[
+# Default to the standard action
+action = env.ref('account_reports.action_account_report_bs').read()[0]
+
+if env.company.hao_custom_balance_sheet_format:
+    custom_report = env.ref('havano_all_in_one.hao_balance_sheet', raise_if_not_found=False)
+    if custom_report:
+        action['context'] = {'report_id': custom_report.id}
+
+action_id = action
+            ]]>
+        </field>
+    </record>
+
+    <!-- Override standard balance sheet menu to use our dynamic server action -->
+    <record id="account_reports.menu_action_account_report_balance_sheet" model="ir.ui.menu">
+        <field name="action" eval="'ir.actions.server,%d' % ref('havano_all_in_one.action_dynamic_balance_sheet')"/>
+    </record>
+
+    <record id="action_dynamic_pnl" model="ir.actions.server">
+        <field name="name">Dynamic Profit and Loss</field>
+        <field name="model_id" ref="account.model_account_report"/>
+        <field name="state">code</field>
+        <field name="code">
+            <![CDATA[
+# Default to the standard action
+action = env.ref('account_reports.action_account_report_pl').read()[0]
+
+if env.company.hao_custom_pnl_format:
+    custom_report = env.ref('havano_all_in_one.hao_profit_and_loss', raise_if_not_found=False)
+    if custom_report:
+        action['context'] = {'report_id': custom_report.id}
+
+action_id = action
+            ]]>
+        </field>
+    </record>
+
+    <!-- Override standard pnl menu to use our dynamic server action -->
+    <record id="account_reports.menu_action_account_report_profit_and_loss" model="ir.ui.menu">
+        <field name="action" eval="'ir.actions.server,%d' % ref('havano_all_in_one.action_dynamic_pnl')"/>
+    </record>
+</odoo>

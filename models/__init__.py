@@ -2,6 +2,7 @@ from . import pharmacy_dosage
 from . import hao_bank_detail
 from . import res_company
 from . import res_config_settings
+from . import account_account
 from . import res_partner
 from . import res_users
 from . import sale_order
