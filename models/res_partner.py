@@ -242,6 +242,8 @@ class ResPartner(models.Model):
         return False, False
 
     def _raise_if_duplicate_for_values(self, data, current_id=False):
+        if self.env.context.get('skip_duplicate_check'):
+            return
         duplicate, reason = self._find_duplicate_candidate(data, current_id=current_id)
         if duplicate:
             action = self.env.ref("havano_all_in_one.action_hao_open_duplicate_partner")

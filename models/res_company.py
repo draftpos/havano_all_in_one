@@ -75,6 +75,9 @@ class ResCompany(models.Model):
         help="Use a custom layout for the Profit and Loss report."
     )
 
+    custom_vat = fields.Char(string="VAT Number")
+    custom_tin = fields.Char(string="TIN Number")
+
     def write(self, vals):
         res = super(ResCompany, self).write(vals)
         if 'hao_custom_balance_sheet_format' in vals:
