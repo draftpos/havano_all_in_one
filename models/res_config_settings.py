@@ -1,3 +1,4 @@
+print("LOADING HAVANO CONFIG SETTINGS")
 from odoo import _, api, fields, models
 
 
