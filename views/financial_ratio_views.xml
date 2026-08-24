@@ -6,19 +6,30 @@
         <field name="model">havano.financial.ratio</field>
         <field name="arch" type="xml">
             <list string="Financial Ratios" create="false" edit="false" delete="false">
-                <field name="name" string="Ratio Name"/>
-                <field name="value" string="Calculated Value"/>
+                <field name="name" string="Ratio Name" optional="show"/>
+                <field name="category" string="Category" optional="hide"/>
+                <field name="value" string="Calculated Value" widget="badge" decoration-success="True" optional="show"/>
+                <field name="create_date" string="Calculation Date" optional="hide"/>
             </list>
         </field>
     </record>
 
-    <!-- Search View (just to hide it or give basic grouping) -->
+    <!-- Search View -->
     <record id="view_havano_financial_ratio_search" model="ir.ui.view">
         <field name="name">havano.financial.ratio.search</field>
         <field name="model">havano.financial.ratio</field>
         <field name="arch" type="xml">
             <search string="Financial Ratios">
                 <field name="name"/>
+                <field name="category"/>
+                <separator/>
+                <filter string="Today" name="today" domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter string="This Week" name="this_week" domain="[('create_date', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="This Month" name="this_month" domain="[('create_date', '&gt;=', context_today().replace(day=1).strftime('%Y-%m-%d'))]"/>
+                <group>
+                    <filter string="Category" name="group_by_category" context="{'group_by': 'category'}"/>
+                    <filter string="Calculation Date" name="group_by_date" context="{'group_by': 'create_date'}"/>
+                </group>
             </search>
         </field>
     </record>
