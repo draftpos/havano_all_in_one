@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="hao_statement_of_changes_in_equity_report" model="account.report">
+        <field name="name">Statement of Changes in Equity</field>
+        <field name="root_report_id" ref="account_reports.balance_sheet"/>
+        <field name="sequence">4</field>
+        <field name="filter_date_range" eval="True"/>
+        <field name="filter_journals" eval="True"/>
+        <field name="filter_multi_company">selector</field>
+        <field name="line_ids">
+            <record id="hao_soce_line_OPEN" model="account.report.line">
+                <field name="name">Opening Balance</field>
+                <field name="sequence">10</field>
+                <field name="code">SOCE_OPEN</field>
+            </record>
+            <record id="hao_soce_line_PROFIT" model="account.report.line">
+                <field name="name">Profit for the Year</field>
+                <field name="sequence">20</field>
+                <field name="code">SOCE_PROFIT</field>
+            </record>
+            <record id="hao_soce_line_MOVEMENTS" model="account.report.line">
+                <field name="name">Other Movements</field>
+                <field name="sequence">30</field>
+                <field name="code">SOCE_MOVEMENTS</field>
+            </record>
+            <record id="hao_soce_line_CLOSE" model="account.report.line">
+                <field name="name">Closing Balance</field>
+                <field name="sequence">40</field>
+                <field name="code">SOCE_CLOSE</field>
+            </record>
+        </field>
+    </record>
+
+    <record id="action_dynamic_statement_of_changes_in_equity" model="ir.actions.server">
+        <field name="name">Statement of Changes in Equity</field>
+        <field name="model_id" ref="account.model_account_report"/>
+        <field name="state">code</field>
+        <field name="code">
+            <![CDATA[
+# Sync columns on report open to ensure they are up to date!
+custom_report = env.ref('havano_all_in_one.hao_statement_of_changes_in_equity_report', raise_if_not_found=False)
+if custom_report:
+    env['account.report']._sync_soce_columns()
+    action = env.ref('account_reports.action_account_report_bs').read()[0]
+    action['context'] = {'report_id': custom_report.id}
+    action['name'] = 'Statement of Changes in Equity'
+    action_id = action
+            ]]>
+        </field>
+    </record>
+
+    <!-- Update Standard Menu Sequences to insert SOCE between P&L and Cash Flow -->
+    <record id="account_reports.menu_action_account_report_balance_sheet" model="ir.ui.menu">
+        <field name="sequence">10</field>
+    </record>
+    <record id="account_reports.menu_action_account_report_profit_and_loss" model="ir.ui.menu">
+        <field name="sequence">20</field>
+    </record>
+    <record id="account_reports.menu_action_account_report_cash_flow" model="ir.ui.menu">
+        <field name="sequence">40</field>
+    </record>
+
+    <!-- Menu item for Statement of Changes in Equity -->
+    <record id="menu_soce_report" model="ir.ui.menu">
+        <field name="name">Statement of Changes in Equity</field>
+        <field name="parent_id" ref="account.account_reports_legal_statements_menu"/>
+        <field name="action" eval="'ir.actions.server,%d' % ref('havano_all_in_one.action_dynamic_statement_of_changes_in_equity')"/>
+        <field name="sequence">30</field>
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

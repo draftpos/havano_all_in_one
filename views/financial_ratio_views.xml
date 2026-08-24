@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_havano_financial_ratio_tree" model="ir.ui.view">
+        <field name="name">havano.financial.ratio.tree</field>
+        <field name="model">havano.financial.ratio</field>
+        <field name="arch" type="xml">
+            <list string="Financial Ratios" create="false" edit="false" delete="false">
+                <field name="name" string="Ratio Name"/>
+                <field name="value" string="Calculated Value"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Search View (just to hide it or give basic grouping) -->
+    <record id="view_havano_financial_ratio_search" model="ir.ui.view">
+        <field name="name">havano.financial.ratio.search</field>
+        <field name="model">havano.financial.ratio</field>
+        <field name="arch" type="xml">
+            <search string="Financial Ratios">
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Root Menu for Financial Ratios -->
+    <record id="menu_hao_financial_ratios_root" model="ir.ui.menu">
+        <field name="name">Financial Ratios</field>
+        <field name="parent_id" ref="account.account_reports_management_menu"/>
+        <field name="sequence">150</field>
+        <field name="active" eval="False"/>
+    </record>
+
+    <!-- Investment Ratios Server Action & Menu -->
+    <record id="action_investment_ratios" model="ir.actions.server">
+        <field name="name">Investment Ratios</field>
+        <field name="model_id" ref="model_havano_financial_ratio"/>
+        <field name="state">code</field>
+        <field name="code">
+res = model.action_compute_and_open_ratios('inv')
+res['view_mode'] = 'list'
+action = res
+        </field>
+    </record>
+    <record id="menu_hao_financial_ratios_inv" model="ir.ui.menu">
+        <field name="name">Investment Ratios</field>
+        <field name="parent_id" ref="menu_hao_financial_ratios_root"/>
+        <field name="action" ref="action_investment_ratios"/>
+        <field name="sequence">10</field>
+    </record>
+
+    <!-- Solvency Ratios Server Action & Menu -->
+    <record id="action_solvency_ratios" model="ir.actions.server">
+        <field name="name">Solvency Ratios</field>
+        <field name="model_id" ref="model_havano_financial_ratio"/>
+        <field name="state">code</field>
+        <field name="code">
+res = model.action_compute_and_open_ratios('sol')
+res['view_mode'] = 'list'
+action = res
+        </field>
+    </record>
+    <record id="menu_hao_financial_ratios_sol" model="ir.ui.menu">
+        <field name="name">Solvency Ratios</field>
+        <field name="parent_id" ref="menu_hao_financial_ratios_root"/>
+        <field name="action" ref="action_solvency_ratios"/>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Liquidity Ratios Server Action & Menu -->
+    <record id="action_liquidity_ratios" model="ir.actions.server">
+        <field name="name">Liquidity Ratios</field>
+        <field name="model_id" ref="model_havano_financial_ratio"/>
+        <field name="state">code</field>
+        <field name="code">
+res = model.action_compute_and_open_ratios('liq')
+res['view_mode'] = 'list'
+action = res
+        </field>
+    </record>
+    <record id="menu_hao_financial_ratios_liq" model="ir.ui.menu">
+        <field name="name">Liquidity Ratios</field>
+        <field name="parent_id" ref="menu_hao_financial_ratios_root"/>
+        <field name="action" ref="action_liquidity_ratios"/>
+        <field name="sequence">30</field>
+    </record>
+
+    <!-- Efficiency Ratios Server Action & Menu -->
+    <record id="action_efficiency_ratios" model="ir.actions.server">
+        <field name="name">Efficiency Ratios</field>
+        <field name="model_id" ref="model_havano_financial_ratio"/>
+        <field name="state">code</field>
+        <field name="code">
+res = model.action_compute_and_open_ratios('eff')
+res['view_mode'] = 'list'
+action = res
+        </field>
+    </record>
+    <record id="menu_hao_financial_ratios_eff" model="ir.ui.menu">
+        <field name="name">Efficiency Ratios</field>
+        <field name="parent_id" ref="menu_hao_financial_ratios_root"/>
+        <field name="action" ref="action_efficiency_ratios"/>
+        <field name="sequence">40</field>
+    </record>
+
+    <!-- Profitability Ratios Server Action & Menu -->
+    <record id="action_profitability_ratios" model="ir.actions.server">
+        <field name="name">Profitability Ratios</field>
+        <field name="model_id" ref="model_havano_financial_ratio"/>
+        <field name="state">code</field>
+        <field name="code">
+res = model.action_compute_and_open_ratios('prof')
+res['view_mode'] = 'list'
+action = res
+        </field>
+    </record>
+    <record id="menu_hao_financial_ratios_prof" model="ir.ui.menu">
+        <field name="name">Profitability Ratios</field>
+        <field name="parent_id" ref="menu_hao_financial_ratios_root"/>
+        <field name="action" ref="action_profitability_ratios"/>
+        <field name="sequence">50</field>
+    </record>
+</odoo>

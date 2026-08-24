@@ -59,6 +59,12 @@
                         <setting id="custom_pnl_format_setting" string="Custom Profit or Loss Format" help="Change the P&amp;L format to Revenue, Less Cost of Sales, Gross Profit, Other Income, Less Operating Expenses, Less Investing Expenses, Less Financing Expenses, Profit from Continuing Operations, Gain/Loss from Discontinued Operations, Net Profit">
                             <field name="hao_custom_pnl_format"/>
                         </setting>
+                        <setting id="custom_statement_of_changes_in_equity_setting" string="Statement of Changes in Equity" help="Enable the custom Statement of Changes in Equity report. Accounts must be categorized appropriately using the Equity Category field.">
+                            <field name="hao_statement_of_changes_in_equity"/>
+                        </setting>
+                        <setting id="custom_financial_ratios_setting" string="Financial Ratios" help="Enable the Financial Ratios report.">
+                            <field name="hao_financial_ratios"/>
+                        </setting>
                     </block>
                     <block title="Templates" name="templates_setting_container">
                         <div class="text-muted mb-2">

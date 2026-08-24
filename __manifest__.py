@@ -25,6 +25,7 @@
         "data/design_templates.xml",
         "data/hao_balance_sheet.xml",
         "data/hao_profit_and_loss.xml",
+        "data/hao_statement_of_changes_in_equity.xml",
         "data/dynamic_reports_action.xml",
         "views/webclient_templates_left.xml",
         "views/webclient_templates_middle.xml",
@@ -56,6 +57,7 @@
         "views/res_users_views.xml",
         "views/preview_templates.xml",
         "views/sales_reports_views.xml",
+        "views/financial_ratio_views.xml",
     ],
     "assets": {
         "web.assets_backend": [

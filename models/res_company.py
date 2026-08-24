@@ -75,6 +75,18 @@ class ResCompany(models.Model):
         help="Use a custom layout for the Profit and Loss report."
     )
 
+    hao_statement_of_changes_in_equity = fields.Boolean(
+        string="Enable Statement of Changes in Equity",
+        default=False,
+        help="Enable the custom Statement of Changes in Equity report."
+    )
+
+    hao_financial_ratios = fields.Boolean(
+        string="Enable Financial Ratios",
+        default=False,
+        help="Enable the Financial Ratios report."
+    )
+
     custom_vat = fields.Char(string="VAT Number")
     custom_tin = fields.Char(string="TIN Number")
 

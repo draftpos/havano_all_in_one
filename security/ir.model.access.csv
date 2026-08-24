@@ -8,3 +8,4 @@ access_havano_category_profitability_report,havano.category.profitability.report
 access_havano_daily_sales_report,havano.daily.sales.report,model_havano_daily_sales_report,base.group_user,1,0,0,0
 access_havano_sales_return_report,havano.sales.return.report,model_havano_sales_return_report,base.group_user,1,0,0,0
 
+access_havano_financial_ratio,access_havano_financial_ratio,model_havano_financial_ratio,,1,1,1,1

@@ -158,6 +158,10 @@ class ResConfigSettings(models.TransientModel):
         self._toggle_menu('havano_all_in_one.menu_hao_sale_doctors', self.hao_activate_pharmacy)
         self._toggle_menu('havano_all_in_one.menu_pharmacy_dosage', self.hao_activate_pharmacy)
 
+        # Menu visibility toggles (Accounting Reports)
+        self._toggle_menu('havano_all_in_one.menu_soce_report', self.hao_statement_of_changes_in_equity)
+        self._toggle_menu('havano_all_in_one.menu_hao_financial_ratios_root', self.hao_financial_ratios)
+
         # Menu visibility toggles (Vendors)
         self._toggle_menu('account.menu_action_move_in_invoice_type', self.hao_show_vend_bills)
         self._toggle_menu('account.menu_action_move_in_refund_type', self.hao_show_vend_refunds)
@@ -254,6 +258,20 @@ class ResConfigSettings(models.TransientModel):
         related="company_id.hao_custom_pnl_format",
         readonly=False,
         help="Use a custom layout for the Profit and Loss report.",
+    )
+
+    hao_statement_of_changes_in_equity = fields.Boolean(
+        string="Enable Statement of Changes in Equity",
+        related="company_id.hao_statement_of_changes_in_equity",
+        readonly=False,
+        help="Enable the custom Statement of Changes in Equity report.",
+    )
+
+    hao_financial_ratios = fields.Boolean(
+        string="Enable Financial Ratios",
+        related="company_id.hao_financial_ratios",
+        readonly=False,
+        help="Enable the Financial Ratios report.",
     )
 
     hao_global_sales_automation_method = fields.Selection([
