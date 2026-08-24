@@ -124,7 +124,12 @@ class ResConfigSettings(models.TransientModel):
             hao_product_check_default_code=params.get_param('havano_all_in_one.product_check_default_code', 'True') == 'True',
             hao_show_only_customers_in_sales=params.get_param('havano_all_in_one.show_only_customers_in_sales', 'True') == 'True',
             hao_show_only_suppliers_in_purchases=params.get_param('havano_all_in_one.show_only_suppliers_in_purchases', 'True') == 'True',
-            hao_login_image=params.get_param('havano_all_in_one.login_image')
+            hao_login_image=params.get_param('havano_all_in_one.login_image'),
+            # Explicitly load company related fields to prevent them from showing as unchecked on reload
+            hao_custom_balance_sheet_format=self.env.company.hao_custom_balance_sheet_format,
+            hao_custom_pnl_format=self.env.company.hao_custom_pnl_format,
+            hao_statement_of_changes_in_equity=self.env.company.hao_statement_of_changes_in_equity,
+            hao_financial_ratios=self.env.company.hao_financial_ratios,
         )
         return res
 
