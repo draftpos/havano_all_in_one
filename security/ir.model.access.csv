@@ -7,4 +7,4 @@ access_havano_item_profitability_report,havano.item.profitability.report,model_h
 access_havano_category_profitability_report,havano.category.profitability.report,model_havano_category_profitability_report,base.group_user,1,0,0,0
 access_havano_daily_sales_report,havano.daily.sales.report,model_havano_daily_sales_report,base.group_user,1,0,0,0
 access_havano_sales_return_report,havano.sales.return.report,model_havano_sales_return_report,base.group_user,1,0,0,0
-access_hao_aged_receivable_report,hao.aged.receivable.report,model_hao_aged_receivable_report,base.group_user,1,0,0,0
+

@@ -1,4 +1,6 @@
-<t t-name="havano_all_in_one.custom_template_report_bill_trucking">
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_template_report_bill_trucking">
         <t t-call="web.basic_layout">
             
             <div class="header" style="font-family: 'Inter', 'Outfit', sans-serif; font-size: 11px; color: #111;">
@@ -218,4 +220,5 @@
 
             </div>
         </t>
-    </t>
+    </template>
+</odoo>
