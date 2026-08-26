@@ -1,8 +1,17 @@
-from odoo import _, api, models
+from odoo import _, api, fields, models
 
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
+
+    sheets = fields.Float(string='Sheets', default=1.0)
+    length = fields.Float(string='Length', default=1.0)
+
+    @api.onchange('sheets', 'length')
+    def _onchange_sheets_length(self):
+        for line in self:
+            if line.sheets or line.length:
+                line.product_uom_qty = line.sheets * line.length
 
     @api.depends("product_id", "order_id.pricelist_id")
     def _compute_allowed_uom_ids(self):
@@ -93,3 +102,5 @@ class SaleOrderLine(models.Model):
         if template.allow_multi_uom:
             self.product_uom_id = self.product_id.uom_id
         return res
+
+

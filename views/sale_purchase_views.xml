@@ -30,6 +30,10 @@
                 <field name="hao_delivery_location_id" />
                 <field name="hao_custom_status" invisible="1" />
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+                <field name="sheets"/>
+                <field name="length"/>
+            </xpath>
         </field>
     </record>
 
@@ -113,3 +117,5 @@
     <menuitem id="menu_hao_sales_reporting" name="Sales Invoices by Item" parent="sale.menu_sale_report" action="action_hao_sales_invoice_lines" sequence="10"/>
 
 </odoo>
+
+
