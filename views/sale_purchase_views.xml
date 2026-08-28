@@ -30,7 +30,7 @@
                 <field name="hao_delivery_location_id" />
                 <field name="hao_custom_status" invisible="1" />
             </xpath>
-            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
                 <field name="sheets"/>
                 <field name="length"/>
             </xpath>

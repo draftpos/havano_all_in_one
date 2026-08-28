@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tripple Fresh Template View -->
+    <template id="custom_template_report_invoice_tripple_fresh">
+        <t t-set="o" t-value="o.with_context({'lang':o.partner_id.lang})"/>
+        <t t-set="model" t-value="'account.move'"/>
+        
+        <!-- Top Letterhead -->
+        <div class="header" style="width: 100%; margin: 0; padding: 0;">
+            <img src="/havano_all_in_one/static/src/img/tripple_fresh/word/media/header.png" 
+                 style="width: 100%; height: auto; display: block;"/>
+        </div>
+
+        <!-- Main Invoice Content -->
+        <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+            <style type="text/css">
+                @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap');
+                .page {
+                    font-family: 'Poppins', sans-serif !important;
+                }
+                .invoice_tbody td {
+                    font-size: 14px;
+                }
+                th {
+                    font-size: 15px;
+                }
+            </style>
+            <div class="page" style="margin-top: 10px; padding: 0 15px;">
+                
+                <!-- Invoice details -->
+                <div class="row">
+                    <div class="col-6">
+                        <h2 style="color: #2e7d32; font-weight: bold;">
+                            <span t-if="o.move_type == 'out_invoice' and (o.state == 'draft' or o.state == 'posted')">
+                                Invoice
+                            </span>
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'proforma2'">
+                                PRO-FORMA
+                            </span>
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">
+                                Draft Invoice
+                            </span>
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">
+                                Cancelled Invoice
+                            </span>
+                            <span t-if="o.move_type == 'out_refund'">
+                                Refund
+                            </span>
+                            <span t-if="o.move_type == 'in_refund'">
+                                Vendor Refund
+                            </span>
+                            <span t-if="o.move_type == 'in_invoice'">
+                                Vendor Bill
+                            </span>
+                            <span t-field="o.name"/>
+                        </h2>
+                    </div>
+                    
+                    <!-- Customer Address -->
+                    <div class="col-6 text-end">
+                        <div t-if="o.partner_id" style="font-size: 16px;">
+                            <strong>Bill To:</strong><br/>
+                            <span t-field="o.partner_id.name"/><br/>
+                            <span t-if="o.partner_id.street" t-field="o.partner_id.street"/><br/>
+                            <span t-if="o.partner_id.street2" t-field="o.partner_id.street2"/><br t-if="o.partner_id.street2"/>
+                            <span t-if="o.partner_id.city" t-field="o.partner_id.city"/> 
+                            <span t-if="o.partner_id.country_id" t-field="o.partner_id.country_id.name"/><br/>
+                            <span t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt32 mb32" id="informations">
+                    <div class="col-auto col-3 mw-100 mb-2" t-if="o.invoice_date" name="invoice_date">
+                        <strong style="color: #e65100;">Invoice Date:</strong>
+                        <p class="m-0" t-field="o.invoice_date"/>
+                    </div>
+                    <div class="col-auto col-3 mw-100 mb-2" t-if="o.invoice_date_due and o.move_type == 'out_invoice' and o.state == 'posted'" name="due_date">
+                        <strong style="color: #e65100;">Due Date:</strong>
+                        <p class="m-0" t-field="o.invoice_date_due"/>
+                    </div>
+                    <div class="col-auto col-3 mw-100 mb-2" t-if="o.invoice_payment_term_id" name="payment_term">
+                        <strong style="color: #e65100;">Payment Term:</strong>
+                        <p class="m-0" t-field="o.invoice_payment_term_id.name"/>
+                    </div>
+                    <div class="col-auto col-3 mw-100 mb-2" t-if="o.ref">
+                        <strong style="color: #e65100;">Reference:</strong>
+                        <p class="m-0" t-field="o.ref"/>
+                    </div>
+                </div>
+
+                <!-- Product Table -->
+                <t t-set="display_discount" t-value="any([l.discount for l in o.invoice_line_ids])"/>
+                <table class="table table-sm table-borderless mt-4">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #2e7d32; color: #2e7d32;">
+                            <th class="text-left">Product</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-end">Quantity</th>
+                            <th class="text-end">Unit Price</th>
+                            <th t-if="display_discount" class="text-end">Disc.(%)</th>
+                            <th class="text-end">Taxes</th>
+                            <th class="text-end">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="invoice_tbody">
+                        <tr t-foreach="o.invoice_line_ids" t-as="l" style="border-bottom: 1px solid #eee;">
+                            <td><span t-field="l.product_id.name"/></td>
+                            <td><span t-field="l.name"/></td>
+                            <td class="text-end"><span t-field="l.quantity"/></td>
+                            <td class="text-end"><span t-field="l.price_unit" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                            <td t-if="display_discount" class="text-end"><span t-field="l.discount"/></td>
+                            <td class="text-end">
+                                <t t-foreach="l.tax_ids" t-as="tax">
+                                    <t t-set="tax_label" t-value="(tax.description or tax.name).replace('&lt;div&gt;', '').replace('&lt;/div&gt;', '').replace('&lt;p&gt;', '').replace('&lt;/p&gt;', '').replace('&lt;br&gt;', '')"/>
+                                    <span t-esc="tax_label"/>
+                                    <t t-if="not tax_last">, </t>
+                                </t>
+                            </td>
+                            <td class="text-end"><span t-field="l.price_subtotal" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Total -->
+                <div class="clearfix mb-4">
+                    <div id="total" class="row">
+                        <div class="col-6 ms-auto">
+                            <table class="table table-sm table-borderless" style="page-break-inside: avoid;">
+                                <tbody>
+                                    <tr class="border-black o_subtotal">
+                                        <td><strong>Tax Exclusive</strong></td>
+                                        <td class="text-end">
+                                            <span t-field="o.amount_untaxed" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black">
+                                        <td><strong>Total Tax</strong></td>
+                                        <td class="text-end">
+                                            <span t-field="o.amount_tax" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-black o_total" style="border-top: 2px solid #2e7d32; font-size: 1.2em;">
+                                        <td><strong style="color: #2e7d32;">Tax Inclusive</strong></td>
+                                        <td class="text-end">
+                                            <strong style="color: #2e7d32;" t-field="o.amount_total" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <t t-if="o.amount_residual &lt; o.amount_total">
+                                        <tr>
+                                            <td><strong>Amount Due</strong></td>
+                                            <td class="text-end"><span t-field="o.amount_residual" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <p t-if="o.narration" class="text-muted mt-3">
+                    <strong>Terms and Conditions:</strong><br/>
+                    <span t-field="o.narration"/>
+                </p>
+            </div>
+        </div>
+    </template>
+</odoo>

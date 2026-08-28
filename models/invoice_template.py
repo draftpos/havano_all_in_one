@@ -17,7 +17,8 @@ class HavanoInvoiceTemplate(models.Model):
             ('normal', 'Normal'),
             ('old', 'Old Standard'),
             ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
-            ('custom_fiscal', 'Seller Buyer Layout')
+            ('custom_fiscal', 'Seller Buyer Layout'),
+            ('tripple_fresh', 'Tripple Fresh Letterhead')
         ]
         if 'trucking.load' in self.env:
             selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))
@@ -70,6 +71,8 @@ class HavanoInvoiceTemplate(models.Model):
                     self.report_footer = "Report Footer"
                     self.external_report_layout_id = False
                     self.id = 1
+                    self._fields = {}
+                    self._name = "res.company"
 
             mock_company = MockCompany(template)
 
@@ -93,6 +96,8 @@ class HavanoInvoiceTemplate(models.Model):
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Preview not available here</h4><p>The Seller Buyer Layout requires a real invoice. Please print a test document to see the exact design.</p></div>"
                 elif template.base_layout == 'trucking':
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Preview not available here</h4><p>The Trucking layout requires a real invoice linked to Trucking Loads to accurately display the load details and POD information. Please print a test document to see the exact design.</p></div>"
+                elif template.base_layout == 'tripple_fresh':
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Tripple Fresh Letterhead</h4><p>This layout uses a full-page custom letterhead background. Please print a test document to see the exact design.</p></div>"
                 else:
                     template.preview = False
             except Exception as e:
