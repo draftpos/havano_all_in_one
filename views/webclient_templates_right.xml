@@ -4,12 +4,11 @@
     <template id="login_template_right" name="Login">
         <div class="background"
              t-attf-style="background-image: url('#{bg_img}'); background-color: #{color}; height: 100vh; background-size: cover;">
+            <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
+            <t t-set="body_classname" t-value="'bg-100'"/>
+            <t t-set="no_header" t-value="True"/>
+            <t t-set="no_footer" t-value="True"/>
             <t t-call="web.frontend_layout">
-                <t t-set="html_data" t-value="{'style': 'height: 100%;'}"/>
-                <t t-set="body_classname" t-value="'bg-100'"/>
-                <t t-set="no_header" t-value="True"/>
-                <t t-set="no_footer" t-value="True"/>
-
                 <div class="container py-5">
                     <div t-attf-class="card border-0 mx-auto bg-100 {{login_card_classes}} o_database_list"
                          style="max-width: 300px; float:right;">

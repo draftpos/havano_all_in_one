@@ -157,6 +157,8 @@ class Home(WebHome):
         background_type = conf_param.get_param('havano_all_in_one.login_background')
         # Always hide the default "Powered by Odoo" footer link
         values['disable_footer'] = True
+        values['opt_no_header'] = True
+        values['opt_no_footer'] = True
         if orientation:
             values['orientation'] = orientation
         if background_type == 'color':
