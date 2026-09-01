@@ -18,7 +18,8 @@ class HavanoInvoiceTemplate(models.Model):
             ('old', 'Old Standard'),
             ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
             ('custom_fiscal', 'Seller Buyer Layout'),
-            ('tripple_fresh', 'Tripple Fresh Letterhead')
+            ('tripple_fresh', 'Tripple Fresh Letterhead'),
+            ('puremetrix', 'Puremetrix Layout')
         ]
         if 'trucking.load' in self.env:
             selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))
@@ -98,6 +99,8 @@ class HavanoInvoiceTemplate(models.Model):
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Preview not available here</h4><p>The Trucking layout requires a real invoice linked to Trucking Loads to accurately display the load details and POD information. Please print a test document to see the exact design.</p></div>"
                 elif template.base_layout == 'tripple_fresh':
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Tripple Fresh Letterhead</h4><p>This layout uses a full-page custom letterhead background. Please print a test document to see the exact design.</p></div>"
+                elif template.base_layout == 'puremetrix':
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Puremetrix Layout</h4><p>This layout uses a custom Puremetrix header and footer. Please print a test document to see the exact design.</p></div>"
                 else:
                     template.preview = False
             except Exception as e:

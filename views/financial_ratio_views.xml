@@ -131,4 +131,22 @@ action = res
         <field name="action" ref="action_profitability_ratios"/>
         <field name="sequence">50</field>
     </record>
+
+    <!-- Insurance Ratios Server Action & Menu -->
+    <record id="action_insurance_ratios" model="ir.actions.server">
+        <field name="name">Insurance Ratios</field>
+        <field name="model_id" ref="model_havano_financial_ratio"/>
+        <field name="state">code</field>
+        <field name="code">
+res = model.action_compute_and_open_ratios('ins')
+res['view_mode'] = 'list'
+action = res
+        </field>
+    </record>
+    <record id="menu_hao_financial_ratios_ins" model="ir.ui.menu">
+        <field name="name">Insurance Ratios</field>
+        <field name="parent_id" ref="menu_hao_financial_ratios_root"/>
+        <field name="action" ref="action_insurance_ratios"/>
+        <field name="sequence">60</field>
+    </record>
 </odoo>

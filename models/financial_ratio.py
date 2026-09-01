@@ -10,7 +10,8 @@ class HavanoFinancialRatio(models.Model):
         ('sol', 'Solvency Ratios'),
         ('liq', 'Liquidity Ratios'),
         ('eff', 'Efficiency Ratios'),
-        ('prof', 'Profitability Ratios')
+        ('prof', 'Profitability Ratios'),
+        ('ins', 'Insurance Ratios')
     ], string='Category', required=True)
     value = fields.Float(string='Value', required=True, digits=(16, 2))
     
@@ -63,6 +64,16 @@ class HavanoFinancialRatio(models.Model):
         eps = 5.0 # Mock value since it requires external input
         market_price = 50.0 # Mock value since it requires external input
         
+        # Insurance & Extra Efficiency Aggregates
+        claims = get_bal([('account_id.name', 'ilike', 'claim')]) or cost_of_sales
+        contributions = get_bal([('account_id.name', 'ilike', 'contribution')]) or revenue
+        contributions_collected = revenue * 0.95 if revenue else 0.0 # Default 95% collection rate if not distinctly tracked
+        active_members = self.env['res.partner'].search_count([('active', '=', True)]) or 1
+        new_members = self.env['res.partner'].search_count([('create_date', '>=', fields.Date.today().replace(month=1, day=1))]) or 1
+        marketing_costs = get_bal([('account_id.name', 'ilike', 'marketing')]) or (op_expense * 0.15)
+        avg_monthly_expenses = (op_expense / 12.0) if op_expense else 1.0
+        target_revenue = revenue * 1.10 if revenue else 100000.0
+        
         # Populate based on category
         ratios = []
         if category == 'inv':
@@ -92,7 +103,11 @@ class HavanoFinancialRatio(models.Model):
                 ('Asset Turnover Ratio', revenue / avg_assets),
                 ('Inventory Turnover Ratio', cost_of_sales / (inventory or 1.0)),
                 ('Receivables Turnover Ratio', revenue / avg_assets), # Simplified
-                ('Payables Turnover Ratio', cost_of_sales / (current_liabilities or 1.0))
+                ('Payables Turnover Ratio', cost_of_sales / (current_liabilities or 1.0)),
+                ('Conversion Rate (%)', (revenue / (target_revenue or 1.0)) * 100),
+                ('Average Subscription', revenue / (active_members or 1.0)),
+                ('CAC - Customer Acquisition Cost', marketing_costs / (new_members or 1.0)),
+                ('Cash Reserve Coverage (Months)', cash / (avg_monthly_expenses or 1.0))
             ]
         elif category == 'prof':
             ratios = [
@@ -100,6 +115,12 @@ class HavanoFinancialRatio(models.Model):
                 ('Operating Profit Margin (%)', (op_profit / (revenue or 1.0)) * 100),
                 ('Net Profit Margin (%)', (net_profit / (revenue or 1.0)) * 100),
                 ('EBITDA Margin (%)', (ebitda / (revenue or 1.0)) * 100)
+            ]
+        elif category == 'ins':
+            ratios = [
+                ('Claims Ratio (%)', (claims / (contributions or 1.0)) * 100),
+                ('Loss Ratio (%)', (claims / (contributions or 1.0)) * 100),
+                ('Collection Efficiency Ratio (%)', (contributions_collected / (contributions or 1.0)) * 100)
             ]
             
         records = []
@@ -118,7 +139,8 @@ class HavanoFinancialRatio(models.Model):
             'sol': 'Solvency Ratios',
             'liq': 'Liquidity Ratios',
             'eff': 'Efficiency Ratios',
-            'prof': 'Profitability Ratios'
+            'prof': 'Profitability Ratios',
+            'ins': 'Insurance Ratios'
         }
         
         return {

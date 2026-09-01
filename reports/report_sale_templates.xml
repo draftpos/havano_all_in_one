@@ -13,6 +13,10 @@
                         <t t-call="havano_all_in_one.custom_template_report_fiscal"
                            t-lang="o.partner_id.lang"/>
                     </t>
+                    <t t-elif="o.company_id.base_layout == 'puremetrix'">
+                        <t t-call="havano_all_in_one.custom_template_report_puremetrix"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
                     <t t-else="">
                         <t t-call="sale.report_saleorder_document"
                            t-lang="o.partner_id.lang"/>
@@ -35,6 +39,10 @@
                     </t>
                     <t t-elif="o.company_id.base_layout == 'custom_fiscal'">
                         <t t-call="havano_all_in_one.custom_template_report_fiscal"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="o.company_id.base_layout == 'puremetrix'">
+                        <t t-call="havano_all_in_one.custom_template_report_puremetrix"
                            t-lang="o.partner_id.lang"/>
                     </t>
                     <t t-else="">

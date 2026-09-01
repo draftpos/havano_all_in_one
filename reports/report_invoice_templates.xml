@@ -41,6 +41,10 @@
                         <t t-call="havano_all_in_one.custom_template_report_invoice_tripple_fresh"
                            t-lang="o.partner_id.lang"/>
                     </t>
+                    <t t-if="layout == 'puremetrix'">
+                        <t t-call="havano_all_in_one.custom_template_report_puremetrix"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
                 </t>
             </t>
         </xpath>
