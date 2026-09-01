@@ -52,7 +52,7 @@
 
     <!-- Also override report_invoice_document when called directly -->
     <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
-        <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+        <xpath expr="/*" position="replace">
             <t t-set="doc" t-value="o"/>
             <t t-set="layout" t-value="o.company_id.base_layout"/>
             <t t-if="layout == 'normal'">
@@ -81,6 +81,7 @@
             </t>
             <t t-else="">
                 <t t-call="web.external_layout">
+                    <t t-set="o" t-value="o.with_context(lang=lang)"/>
                     <div class="page">
                         <h2><span>Invoice</span> <span t-field="o.name"/></h2>
                     </div>
