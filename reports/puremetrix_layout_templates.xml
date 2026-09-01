@@ -8,8 +8,8 @@
         <!-- Page Body -->
         <div class="article page" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" style="font-family: 'Aptos Narrow', sans-serif; font-size: 13px; color: #000; width: 100%;">
             
-            <!-- Header Image placed in body to prevent cropping by paperformat margins -->
-            <div style="width: 100%; margin-top: -10px; margin-bottom: 20px;">
+            <!-- Header Image placed at top of page -->
+            <div style="width: 100%; margin-top: -75px; margin-bottom: 15px;">
                 <img src="/havano_all_in_one/static/src/img/puremetrix_letterhead.png" style="width: 100%; display: block;" alt="Puremetrix Header"/>
             </div>
 
