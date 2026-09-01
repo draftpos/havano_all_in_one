@@ -8,7 +8,7 @@
             <list string="Financial Ratios" create="false" edit="false" delete="false">
                 <field name="name" string="Ratio Name" optional="show"/>
                 <field name="category" string="Category" optional="hide"/>
-                <field name="value" string="Calculated Value" widget="badge" decoration-success="True" optional="show"/>
+                <field name="value" string="Calculated Value" optional="show"/>
                 <field name="create_date" string="Calculation Date" optional="hide"/>
             </list>
         </field>
