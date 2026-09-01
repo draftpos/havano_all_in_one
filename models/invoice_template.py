@@ -7,7 +7,41 @@ class HavanoInvoiceTemplate(models.Model):
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
     is_default = fields.Boolean(string="Default Template")
+    is_applied = fields.Boolean(
+        string="Applied",
+        compute="_compute_is_applied",
+        inverse="_inverse_is_applied",
+        search="_search_is_applied",
+        help="Indicates whether this template is currently applied to the company."
+    )
     note = fields.Text()
+
+    @api.depends_context('company')
+    def _compute_is_applied(self):
+        current_layout_id = self.env.company.hao_document_layout_id.id
+        current_base_layout = self.env.company.base_layout
+        for rec in self:
+            if current_layout_id:
+                rec.is_applied = (rec.id == current_layout_id)
+            else:
+                rec.is_applied = (rec.base_layout == current_base_layout)
+
+    def _inverse_is_applied(self):
+        for rec in self:
+            if rec.is_applied:
+                rec.action_apply_layout()
+
+    def _search_is_applied(self, operator, value):
+        current_layout_id = self.env.company.hao_document_layout_id.id
+        current_base_layout = self.env.company.base_layout
+        if (operator == '=' and value) or (operator == '!=' and not value):
+            if current_layout_id:
+                return [('id', '=', current_layout_id)]
+            return [('base_layout', '=', current_base_layout)]
+        else:
+            if current_layout_id:
+                return [('id', '!=', current_layout_id)]
+            return [('base_layout', '!=', current_base_layout)]
 
     # Layout fields
     def _get_base_layout_selection(self):
