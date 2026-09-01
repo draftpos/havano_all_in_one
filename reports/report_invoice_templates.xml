@@ -13,36 +13,86 @@
                         <t t-call="havano_all_in_one.custom_template_report_invoice_normal"
                            t-lang="o.partner_id.lang"/>
                     </t>
-                    <t t-if="layout == 'old'">
+                    <t t-elif="layout == 'old'">
                         <t t-call="havano_all_in_one.old_std_report_invoice_document"
                            t-lang="o.partner_id.lang"/>
                     </t>
-                    <t t-if="layout == 'modern'">
+                    <t t-elif="layout == 'modern'">
                         <t t-call="havano_all_in_one.custom_template_report_invoice_modern"
                            t-lang="o.partner_id.lang"/>
                     </t>
-                    <t t-if="layout == 'default' or not layout">
-                        <t t-call="account.report_invoice_document"
-                           t-lang="o.partner_id.lang"/>
-                    </t>
-                    <t t-if="layout == 'fresh'">
+                    <t t-elif="layout == 'fresh'">
                         <t t-call="havano_all_in_one.custom_template_report_fresh"
                            t-lang="o.partner_id.lang"/>
                     </t>
-                    <t t-if="layout == 'custom_fiscal'">
+                    <t t-elif="layout == 'custom_fiscal'">
                         <t t-call="havano_all_in_one.custom_template_report_fiscal"
                            t-lang="o.partner_id.lang"/>
                     </t>
-                    <t t-if="layout == 'trucking'">
+                    <t t-elif="layout == 'trucking'">
                         <t t-call="havano_all_in_one.custom_template_report_bill_trucking"
                            t-lang="o.partner_id.lang"/>
                     </t>
-                    <t t-if="layout == 'tripple_fresh'">
+                    <t t-elif="layout == 'tripple_fresh'">
                         <t t-call="havano_all_in_one.custom_template_report_invoice_tripple_fresh"
                            t-lang="o.partner_id.lang"/>
                     </t>
-                    <t t-if="layout == 'puremetrix'">
+                    <t t-elif="layout == 'puremetrix'">
                         <t t-call="havano_all_in_one.custom_template_report_puremetrix"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-else="">
+                        <t t-call="account.report_invoice_document"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <!--Report invoice template with payments (Main Print button)-->
+    <template id="report_invoice_with_payments_inherit" inherit_id="account.report_invoice_with_payments">
+        <xpath expr="//t[@t-call='web.html_container']" position="replace">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-set="doc" t-value="o"/>
+                    <t t-set="lang"
+                       t-value="o.invoice_user_id.sudo().lang if o.move_type in ('in_invoice', 'in_refund') else o.partner_id.lang"/>
+                    <t t-set="layout" t-value="o.company_id.base_layout"/>
+                    <t t-if="layout == 'normal'">
+                        <t t-call="havano_all_in_one.custom_template_report_invoice_normal"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="layout == 'old'">
+                        <t t-call="havano_all_in_one.old_std_report_invoice_document"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="layout == 'modern'">
+                        <t t-call="havano_all_in_one.custom_template_report_invoice_modern"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="layout == 'fresh'">
+                        <t t-call="havano_all_in_one.custom_template_report_fresh"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="layout == 'custom_fiscal'">
+                        <t t-call="havano_all_in_one.custom_template_report_fiscal"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="layout == 'trucking'">
+                        <t t-call="havano_all_in_one.custom_template_report_bill_trucking"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="layout == 'tripple_fresh'">
+                        <t t-call="havano_all_in_one.custom_template_report_invoice_tripple_fresh"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-elif="layout == 'puremetrix'">
+                        <t t-call="havano_all_in_one.custom_template_report_puremetrix"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
+                    <t t-else="">
+                        <t t-call="account.report_invoice_document"
                            t-lang="o.partner_id.lang"/>
                     </t>
                 </t>
