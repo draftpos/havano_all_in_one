@@ -52,41 +52,5 @@
 
     <!-- Also override report_invoice_document when called directly -->
     <template id="report_invoice_document_inherit" inherit_id="account.report_invoice_document">
-        <xpath expr="/*" position="replace">
-            <t t-set="doc" t-value="o"/>
-            <t t-set="layout" t-value="o.company_id.base_layout"/>
-            <t t-if="layout == 'normal'">
-                <t t-call="havano_all_in_one.custom_template_report_invoice_normal" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-elif="layout == 'old'">
-                <t t-call="havano_all_in_one.old_std_report_invoice_document" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-elif="layout == 'modern'">
-                <t t-call="havano_all_in_one.custom_template_report_invoice_modern" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-elif="layout == 'fresh'">
-                <t t-call="havano_all_in_one.custom_template_report_fresh" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-elif="layout == 'custom_fiscal'">
-                <t t-call="havano_all_in_one.custom_template_report_fiscal" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-elif="layout == 'trucking'">
-                <t t-call="havano_all_in_one.custom_template_report_bill_trucking" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-elif="layout == 'tripple_fresh'">
-                <t t-call="havano_all_in_one.custom_template_report_invoice_tripple_fresh" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-elif="layout == 'puremetrix'">
-                <t t-call="havano_all_in_one.custom_template_report_puremetrix" t-lang="o.partner_id.lang"/>
-            </t>
-            <t t-else="">
-                <t t-call="web.external_layout">
-                    <t t-set="o" t-value="o.with_context(lang=lang)"/>
-                    <div class="page">
-                        <h2><span>Invoice</span> <span t-field="o.name"/></h2>
-                    </div>
-                </t>
-            </t>
-        </xpath>
     </template>
 </odoo>

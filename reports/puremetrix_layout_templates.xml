@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record id="paperformat_puremetrix" model="report.paperformat">
+        <field name="name">Puremetrix Zero Margin A4</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">6.0</field>
+        <field name="margin_bottom">12.0</field>
+        <field name="margin_left">6.0</field>
+        <field name="margin_right">6.0</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
     <template id="custom_template_report_puremetrix">
         <t t-set="doc_model" t-value="o._name"/>
         <t t-set="company" t-value="o.company_id"/>
@@ -9,7 +22,7 @@
         <div class="article page" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" style="font-family: 'Aptos Narrow', sans-serif; font-size: 13px; color: #000; width: 100%;">
             
             <!-- Header Image placed at top of page -->
-            <div style="width: 100%; margin-top: -75px; margin-bottom: 15px;">
+            <div style="width: 100%; margin-top: 0px; margin-bottom: 15px;">
                 <img src="/havano_all_in_one/static/src/img/puremetrix_letterhead.png" style="width: 100%; display: block;" alt="Puremetrix Header"/>
             </div>
 
