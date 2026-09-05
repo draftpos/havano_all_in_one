@@ -32,7 +32,7 @@
                         <div style="font-weight: bold; margin-bottom: 15px; font-size: 15px;">
                             Customer Name: <span t-field="o.partner_id.name"/>
                         </div>
-                        <div style="font-weight: bold; margin-bottom: 5px;">Address, VAT Number, TIN Number</div>
+
                         <div style="line-height: 1.4;">
                             <span t-field="o.partner_id.street"/>
                             <t t-if="o.partner_id.street2">, <span t-field="o.partner_id.street2"/></t>
@@ -201,7 +201,27 @@
                 </table>
 
                 <div style="margin-top: 25px; border: 1px solid #000; width: 45%; padding: 8px; font-size: 11px; float: left; line-height: 1.4;">
-                    <div>Quote Prepared by: Melissa Kubvoruno (+263 784 363 722)</div>
+                    <!-- Dynamic: use salesperson from sale order or invoice -->
+                    <t t-if="doc_model == 'sale.order'">
+                        <t t-set="prepared_by" t-value="o.user_id"/>
+                    </t>
+                    <t t-elif="doc_model == 'account.move'">
+                        <t t-set="prepared_by" t-value="o.invoice_user_id"/>
+                    </t>
+                    <t t-else="">
+                        <t t-set="prepared_by" t-value="False"/>
+                    </t>
+                    <div>
+                        <t t-if="doc_model == 'sale.order'">Quote</t>
+                        <t t-else="">Invoice</t>
+                        Prepared by:
+                        <t t-if="prepared_by">
+                            <span t-field="prepared_by.name"/>
+                            <t t-set="phone" t-value="prepared_by.partner_id.mobile or prepared_by.partner_id.phone"/>
+                            <t t-if="phone"> (<span t-esc="phone"/>)</t>
+                        </t>
+                        <t t-else="">N/A</t>
+                    </div>
                     <div style="margin-top: 3px;">Approved by: Ziviso Mhere (+263 772 294 967)</div>
                 </div>
 
