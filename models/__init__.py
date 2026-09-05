@@ -20,3 +20,4 @@ from . import daily_sales_report
 from . import sales_return_report
 from . import account_report
 from . import financial_ratio
+from . import ir_actions_report
