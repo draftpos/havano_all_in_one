@@ -74,6 +74,17 @@ class HavanoFinancialRatio(models.Model):
         avg_monthly_expenses = (op_expense / 12.0) if op_expense else 1.0
         target_revenue = revenue * 1.10 if revenue else 100000.0
         
+        # Staff Costs (accounts with staff, salary, wage, or payroll in name)
+        staff_costs = get_bal([
+            ('account_id.internal_group', '=', 'expense'),
+            '|', '|', '|',
+            ('account_id.name', 'ilike', 'staff'),
+            ('account_id.name', 'ilike', 'salary'),
+            ('account_id.name', 'ilike', 'wage'),
+            ('account_id.name', 'ilike', 'payroll'),
+        ])
+        op_expense_total = op_expense or get_bal([('account_id.internal_group', '=', 'expense')])
+        
         # Populate based on category
         ratios = []
         if category == 'inv':
@@ -114,13 +125,17 @@ class HavanoFinancialRatio(models.Model):
                 ('Gross Profit Margin (%)', (gross_profit / (revenue or 1.0)) * 100),
                 ('Operating Profit Margin (%)', (op_profit / (revenue or 1.0)) * 100),
                 ('Net Profit Margin (%)', (net_profit / (revenue or 1.0)) * 100),
-                ('EBITDA Margin (%)', (ebitda / (revenue or 1.0)) * 100)
+                ('EBITDA Margin (%)', (ebitda / (revenue or 1.0)) * 100),
+                ('Opex Ratio (%)', (op_expense_total / (revenue or 1.0)) * 100),
+                ('Staff Cost Ratio (%)', (staff_costs / (revenue or 1.0)) * 100),
             ]
         elif category == 'ins':
             ratios = [
                 ('Claims Ratio (%)', (claims / (contributions or 1.0)) * 100),
                 ('Loss Ratio (%)', (claims / (contributions or 1.0)) * 100),
-                ('Collection Efficiency Ratio (%)', (contributions_collected / (contributions or 1.0)) * 100)
+                ('Collection Efficiency Ratio (%)', (contributions_collected / (contributions or 1.0)) * 100),
+                ('Opex Ratio (%)', (op_expense_total / (contributions or revenue or 1.0)) * 100),
+                ('Staff Cost Ratio (%)', (staff_costs / (contributions or revenue or 1.0)) * 100),
             ]
             
         records = []
