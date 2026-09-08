@@ -11,7 +11,8 @@ class HavanoFinancialRatio(models.Model):
         ('liq', 'Liquidity Ratios'),
         ('eff', 'Efficiency Ratios'),
         ('prof', 'Profitability Ratios'),
-        ('ins', 'Insurance Ratios')
+        ('ins', 'Insurance Ratios'),
+        ('opex', 'Opex Ratio')
     ], string='Category', required=True)
     value = fields.Float(string='Value', required=True, digits=(16, 2))
     
@@ -137,6 +138,11 @@ class HavanoFinancialRatio(models.Model):
                 ('Opex Ratio (%)', (op_expense_total / (contributions or revenue or 1.0)) * 100),
                 ('Staff Cost Ratio (%)', (staff_costs / (contributions or revenue or 1.0)) * 100),
             ]
+        elif category == 'opex':
+            ratios = [
+                ('Opex Ratio (%)', (op_expense_total / (revenue or 1.0)) * 100),
+                ('Staff Cost Ratio (%)', (staff_costs / (revenue or 1.0)) * 100),
+            ]
             
         records = []
         for name, val in ratios:
@@ -155,7 +161,8 @@ class HavanoFinancialRatio(models.Model):
             'liq': 'Liquidity Ratios',
             'eff': 'Efficiency Ratios',
             'prof': 'Profitability Ratios',
-            'ins': 'Insurance Ratios'
+            'ins': 'Insurance Ratios',
+            'opex': 'Opex Ratio',
         }
         
         return {
