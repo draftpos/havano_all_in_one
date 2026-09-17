@@ -6,13 +6,13 @@
         <t t-set="partner" t-value="o.partner_id"/>
         <t t-set="accent_color" t-value="company.hao_document_layout_id.base_color or '#c07d38'"/>
 
-        <div class="article page" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #222222; width: 100%; line-height: 1.45; margin-top: 0px; padding-top: 0px;">
+        <div class="article page" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #222222; width: 100%; line-height: 1.45; margin-top: 0px !important; padding-top: 0px !important;">
 
             <!-- ================= HEADER SECTION ================= -->
-            <table style="width: 100%; border-collapse: collapse; margin-top: 0px; margin-bottom: 18px;">
-                <tr>
+            <table style="width: 100%; border-collapse: collapse; border: none !important; margin-top: 0px !important; margin-bottom: 18px;">
+                <tr style="border: none !important;">
                     <!-- Top-Left: Company Logo, Name & Address -->
-                    <td style="width: 50%; vertical-align: top; padding-right: 15px; padding-top: 0px;">
+                    <td style="width: 50%; vertical-align: top; padding-right: 15px; padding-top: 0px !important; border: none !important;">
                         <div t-if="company.logo" style="margin-bottom: 8px;">
                             <img t-att-src="image_data_uri(company.logo)" style="max-height: 75px; max-width: 200px; object-fit: contain;" alt="Company Logo"/>
                         </div>
@@ -30,7 +30,7 @@
                     </td>
 
                     <!-- Top-Right: Clean Company Details (No Box / No Border) -->
-                    <td style="width: 50%; vertical-align: top; padding-left: 20px; padding-top: 0px; text-align: left;">
+                    <td style="width: 50%; vertical-align: top; padding-left: 20px; padding-top: 0px !important; text-align: left; border: none !important;">
                         <div style="font-size: 11px; line-height: 1.55; color: #444444;">
                             <t t-if="company.company_details">
                                 <div t-field="company.company_details"/>
@@ -48,7 +48,7 @@
             </table>
 
             <!-- ================= CUSTOMER DETAILS SECTION ================= -->
-            <div style="margin-top: 15px; margin-bottom: 22px; width: 55%; font-size: 12px; line-height: 1.45; color: #333333;">
+            <div style="margin-top: 15px; margin-bottom: 22px; width: 55%; font-size: 12px; line-height: 1.45; color: #333333; border: none !important;">
                 <div style="font-weight: bold; font-size: 14px; color: #111111; margin-bottom: 4px;" t-field="partner.name"/>
                 
                 <div style="color: #444444;">
@@ -79,7 +79,7 @@
             </div>
 
             <!-- ================= DOCUMENT TITLE ================= -->
-            <div style="margin-top: 10px; margin-bottom: 16px;">
+            <div style="margin-top: 10px; margin-bottom: 16px; border: none !important;">
                 <h2 t-attf-style="margin: 0; font-size: 24px; font-weight: bold; color: {{ accent_color }}; letter-spacing: -0.3px;">
                     <t t-if="doc_model == 'sale.order'">
                         <t t-if="is_pro_forma">Pro-Forma Invoice # <span t-field="o.name"/></t>
@@ -98,10 +98,10 @@
             </div>
 
             <!-- ================= METADATA ROW ================= -->
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                <tr>
+            <table style="width: 100%; border-collapse: collapse; border: none !important; margin-bottom: 24px;">
+                <tr style="border: none !important;">
                     <!-- Col 1: Date -->
-                    <td style="width: 30%; vertical-align: top;">
+                    <td style="width: 30%; vertical-align: top; border: none !important; padding: 0;">
                         <div style="font-weight: bold; font-size: 12px; color: #111111; margin-bottom: 3px;">
                             <t t-if="doc_model == 'sale.order'">
                                 <t t-if="o.state in ['draft', 'sent']">Quotation Date</t>
@@ -120,7 +120,7 @@
                     </td>
 
                     <!-- Col 2: Expiration / Due Date -->
-                    <td style="width: 30%; vertical-align: top;">
+                    <td style="width: 30%; vertical-align: top; border: none !important; padding: 0;">
                         <div style="font-weight: bold; font-size: 12px; color: #111111; margin-bottom: 3px;">
                             <t t-if="doc_model == 'sale.order'">Expiration</t>
                             <t t-else="">Due Date</t>
@@ -140,7 +140,7 @@
                     </td>
 
                     <!-- Col 3: Salesperson -->
-                    <td style="width: 40%; vertical-align: top;">
+                    <td style="width: 40%; vertical-align: top; border: none !important; padding: 0;">
                         <div style="font-weight: bold; font-size: 12px; color: #111111; margin-bottom: 3px;">
                             Salesperson
                         </div>
@@ -159,13 +159,13 @@
             </table>
 
             <!-- ================= LINE ITEMS TABLE ================= -->
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 12px;">
+            <table style="width: 100%; border-collapse: collapse; border: none !important; margin-bottom: 12px;">
                 <thead>
-                    <tr style="border-bottom: 1px solid #111111;">
-                        <th style="padding: 8px 6px; text-align: left; font-weight: bold; font-size: 12px; color: #111111; width: 50%;">Description</th>
-                        <th style="padding: 8px 6px; text-align: right; font-weight: bold; font-size: 12px; color: #111111; width: 18%;">Quantity</th>
-                        <th style="padding: 8px 6px; text-align: right; font-weight: bold; font-size: 12px; color: #111111; width: 16%;">Unit Price</th>
-                        <th style="padding: 8px 6px; text-align: right; font-weight: bold; font-size: 12px; color: #111111; width: 16%;">Amount</th>
+                    <tr style="border-bottom: 1px solid #111111 !important; border-top: none !important; border-left: none !important; border-right: none !important;">
+                        <th style="padding: 8px 4px; text-align: left; font-weight: bold; font-size: 12px; color: #111111; width: 50%; border: none !important;">Description</th>
+                        <th style="padding: 8px 4px; text-align: right; font-weight: bold; font-size: 12px; color: #111111; width: 18%; border: none !important;">Quantity</th>
+                        <th style="padding: 8px 4px; text-align: right; font-weight: bold; font-size: 12px; color: #111111; width: 16%; border: none !important;">Unit Price</th>
+                        <th style="padding: 8px 4px; text-align: right; font-weight: bold; font-size: 12px; color: #111111; width: 16%; border: none !important;">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -173,35 +173,35 @@
                     <t t-foreach="lines" t-as="line">
                         <!-- Section -->
                         <t t-if="line.display_type == 'line_section'">
-                            <tr style="background-color: #f7f7f7; font-weight: bold;">
-                                <td colspan="4" style="padding: 8px 6px; color: #111111;">
+                            <tr style="background-color: #f7f7f7; font-weight: bold; border: none !important;">
+                                <td colspan="4" style="padding: 8px 4px; color: #111111; border: none !important;">
                                     <span t-field="line.name"/>
                                 </td>
                             </tr>
                         </t>
                         <!-- Note -->
                         <t t-elif="line.display_type == 'line_note'">
-                            <tr style="font-style: italic; color: #666666;">
-                                <td colspan="4" style="padding: 6px;">
+                            <tr style="font-style: italic; color: #666666; border: none !important;">
+                                <td colspan="4" style="padding: 6px 4px; border: none !important;">
                                     <span t-field="line.name"/>
                                 </td>
                             </tr>
                         </t>
                         <!-- Standard Product Line -->
                         <t t-elif="line.display_type in ['product', False, '']">
-                            <tr style="border-bottom: 1px solid #f2f2f2;">
-                                <td style="padding: 9px 6px; text-align: left; vertical-align: top; color: #222222;">
+                            <tr style="border-bottom: 1px solid #f2f2f2 !important; border-top: none !important; border-left: none !important; border-right: none !important;">
+                                <td style="padding: 9px 4px; text-align: left; vertical-align: top; color: #222222; border: none !important;">
                                     <span t-field="line.name"/>
                                 </td>
-                                <td style="padding: 9px 6px; text-align: right; vertical-align: top; color: #333333; white-space: nowrap;">
+                                <td style="padding: 9px 4px; text-align: right; vertical-align: top; color: #333333; white-space: nowrap; border: none !important;">
                                     <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty" t-options='{"widget": "float", "precision": 2}'/>
                                     <span t-if="doc_model == 'account.move'" t-field="line.quantity" t-options='{"widget": "float", "precision": 2}'/>
                                     <span t-if="line.product_uom_id" style="color: #666666; margin-left: 2px;" t-field="line.product_uom_id.name"/>
                                 </td>
-                                <td style="padding: 9px 6px; text-align: right; vertical-align: top; color: #333333; white-space: nowrap;">
+                                <td style="padding: 9px 4px; text-align: right; vertical-align: top; color: #333333; white-space: nowrap; border: none !important;">
                                     <span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                 </td>
-                                <td style="padding: 9px 6px; text-align: right; vertical-align: top; font-weight: 500; color: #111111; white-space: nowrap;">
+                                <td style="padding: 9px 4px; text-align: right; vertical-align: top; font-weight: 500; color: #111111; white-space: nowrap; border: none !important;">
                                     <span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                 </td>
                             </tr>
@@ -211,13 +211,13 @@
             </table>
 
             <!-- Divider Line Above Totals -->
-            <div style="border-top: 1px solid #111111; width: 100%; margin-top: 4px; margin-bottom: 16px;"></div>
+            <div style="border-top: 1px solid #111111 !important; width: 100%; margin-top: 4px; margin-bottom: 16px;"></div>
 
             <!-- ================= TOTALS & SUMMARY ================= -->
-            <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
-                <tr>
+            <table style="width: 100%; border-collapse: collapse; border: none !important; margin-bottom: 25px;">
+                <tr style="border: none !important;">
                     <!-- Left: Notes / Bank Details -->
-                    <td style="width: 55%; vertical-align: top; padding-right: 20px;">
+                    <td style="width: 55%; vertical-align: top; padding-right: 20px; border: none !important;">
                         <!-- Payment terms & Notes -->
                         <div t-if="doc_model == 'sale.order' and o.note" style="margin-bottom: 12px; font-size: 11px; color: #555555;">
                             <strong>Note: </strong><span t-field="o.note"/>
@@ -251,25 +251,25 @@
                     </td>
 
                     <!-- Right: Subtotal, Taxes, Total -->
-                    <td style="width: 45%; vertical-align: top;">
-                        <table style="width: 100%; border-collapse: collapse; line-height: 1.6;">
+                    <td style="width: 45%; vertical-align: top; border: none !important;">
+                        <table style="width: 100%; border-collapse: collapse; border: none !important; line-height: 1.6;">
                             <t t-if="o.amount_tax &gt; 0">
-                                <tr>
-                                    <td style="padding: 3px 6px; text-align: right; color: #555555; font-size: 12px;">Subtotal</td>
-                                    <td style="padding: 3px 6px; text-align: right; font-weight: 500; font-size: 12px; color: #222222; width: 45%;">
+                                <tr style="border: none !important;">
+                                    <td style="padding: 3px 6px; text-align: right; color: #555555; font-size: 12px; border: none !important;">Subtotal</td>
+                                    <td style="padding: 3px 6px; text-align: right; font-weight: 500; font-size: 12px; color: #222222; width: 45%; border: none !important;">
                                         <span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td style="padding: 3px 6px; text-align: right; color: #555555; font-size: 12px;">Taxes</td>
-                                    <td style="padding: 3px 6px; text-align: right; font-weight: 500; font-size: 12px; color: #222222;">
+                                <tr style="border: none !important;">
+                                    <td style="padding: 3px 6px; text-align: right; color: #555555; font-size: 12px; border: none !important;">Taxes</td>
+                                    <td style="padding: 3px 6px; text-align: right; font-weight: 500; font-size: 12px; color: #222222; border: none !important;">
                                         <span t-field="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                     </td>
                                 </tr>
                             </t>
-                            <tr>
-                                <td style="padding: 6px; text-align: right; font-weight: bold; font-size: 15px; color: #111111;">Total</td>
-                                <td t-attf-style="padding: 6px; text-align: right; font-weight: bold; font-size: 15px; color: {{ accent_color }};">
+                            <tr style="border: none !important;">
+                                <td style="padding: 6px; text-align: right; font-weight: bold; font-size: 15px; color: #111111; border: none !important;">Total</td>
+                                <td t-attf-style="padding: 6px; text-align: right; font-weight: bold; font-size: 15px; color: {{ accent_color }}; border: none !important;">
                                     <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                                 </td>
                             </tr>
