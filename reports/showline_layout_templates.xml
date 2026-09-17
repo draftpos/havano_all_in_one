@@ -69,11 +69,11 @@
                     <div t-if="partner.email">
                         <strong>Email: </strong><span t-field="partner.email"/>
                     </div>
-                    <div t-if="partner.vat or getattr(partner, 'hao_vat', False)">
-                        <strong>VAT: </strong><span t-esc="partner.vat or getattr(partner, 'hao_vat', False)"/>
+                    <div t-if="partner.vat or partner.hao_vat">
+                        <strong>VAT: </strong><span t-esc="partner.vat or partner.hao_vat"/>
                     </div>
-                    <div t-if="partner.company_registry or getattr(partner, 'hao_tin', False)">
-                        <strong>TIN: </strong><span t-esc="partner.company_registry or getattr(partner, 'hao_tin', False)"/>
+                    <div t-if="partner.company_registry or partner.hao_tin">
+                        <strong>TIN: </strong><span t-esc="partner.company_registry or partner.hao_tin"/>
                     </div>
                 </div>
             </div>
