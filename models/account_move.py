@@ -7,6 +7,7 @@ PUREMETRIX_PAPERFORMAT_LAYOUTS = {'puremetrix'}
 # Layouts that have their own custom paperformat (not the default A4)
 LAYOUT_PAPERFORMAT_MAP = {
     'puremetrix': 'havano_all_in_one.paperformat_puremetrix',
+    'showline': 'havano_all_in_one.paperformat_puremetrix',
 }
 
 
