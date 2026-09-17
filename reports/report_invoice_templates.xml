@@ -41,6 +41,10 @@
                         <t t-call="havano_all_in_one.custom_template_report_puremetrix"
                            t-lang="o.partner_id.lang"/>
                     </t>
+                    <t t-elif="layout == 'showline'">
+                        <t t-call="havano_all_in_one.custom_template_report_showline"
+                           t-lang="o.partner_id.lang"/>
+                    </t>
                     <t t-else="">
                         <t t-call="account.report_invoice_document"
                            t-lang="o.partner_id.lang"/>

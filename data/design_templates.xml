@@ -30,5 +30,12 @@
             <field name="name">Seller Buyer Layout</field>
             <field name="base_layout">custom_fiscal</field>
         </record>
+        <record id="showline_template" model="havano.invoice.template">
+            <field name="name">Showline</field>
+            <field name="base_layout">showline</field>
+            <field name="base_color">#c07d38</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#222222</field>
+        </record>
     </data>
 </odoo>
