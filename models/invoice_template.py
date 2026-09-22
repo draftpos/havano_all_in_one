@@ -53,7 +53,8 @@ class HavanoInvoiceTemplate(models.Model):
             ('fresh', 'Fresh Company (Fiscal Tax Invoice)'),
             ('custom_fiscal', 'Seller Buyer Layout'),
             ('tripple_fresh', 'Tripple Fresh Letterhead'),
-            ('puremetrix', 'Puremetrix Layout')
+            ('puremetrix', 'Puremetrix Layout'),
+            ('showline', 'Showline Layout')
         ]
         if 'trucking.load' in self.env:
             selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))
@@ -135,6 +136,8 @@ class HavanoInvoiceTemplate(models.Model):
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Tripple Fresh Letterhead</h4><p>This layout uses a full-page custom letterhead background. Please print a test document to see the exact design.</p></div>"
                 elif template.base_layout == 'puremetrix':
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Puremetrix Layout</h4><p>This layout uses a custom Puremetrix header and footer. Please print a test document to see the exact design.</p></div>"
+                elif template.base_layout == 'showline':
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4 style='color: #c07d38;'>Showline Layout</h4><p>Modern minimalist layout featuring top-left logo, top-right company details card, middle-left customer block with VAT/TIN, and clear totals. Print or preview a real quotation or invoice to see the live document.</p></div>"
                 else:
                     template.preview = False
             except Exception as e:

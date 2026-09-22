@@ -15,7 +15,6 @@
         "sale_management",
         "purchase",
         "account",
-        "account_reports",
         "stock",
     ],
     "data": [
@@ -44,6 +43,7 @@
         "reports/custom_fiscal_layout_templates.xml",
         "reports/tripple_fresh_invoice_templates.xml",
         "reports/puremetrix_layout_templates.xml",
+        "reports/showline_layout_templates.xml",
         "reports/report_sale_templates.xml",
         "views/invoice_template_views.xml",
         "views/res_company_views.xml",

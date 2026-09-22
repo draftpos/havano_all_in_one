@@ -166,3 +166,56 @@ class AccountReport(models.Model):
                 exprs_to_unlink.unlink()
                 
         _logger.info("SOCE dynamic columns synchronization completed.")
+
+
+class AccountAgedPartnerBalanceReportHandler(models.AbstractModel):
+    _inherit = 'account.aged.partner.balance.report.handler'
+
+    def _custom_line_postprocessor(self, report, options, lines):
+        lines = super()._custom_line_postprocessor(report, options, lines)
+        
+        aml_lines_map = {}
+        for line in lines:
+            model, model_id = report._get_model_info_from_id(line['id'])
+            if model == 'account.move.line':
+                aml_lines_map[model_id] = line
+
+        if aml_lines_map:
+            amls = self.env['account.move.line'].browse(aml_lines_map.keys())
+            for aml in amls:
+                line_dict = aml_lines_map.get(aml.id)
+                if not line_dict:
+                    continue
+                
+                move = aml.move_id
+                labels = []
+                
+                # 1. Product / service line labels from invoice_line_ids
+                if move.invoice_line_ids:
+                    for inv_line in move.invoice_line_ids:
+                        name = (inv_line.name or '').strip()
+                        if name and name not in labels:
+                            labels.append(name)
+                
+                # 2. Other move lines (for manual journal entries / receipts / payments)
+                if not labels and move.line_ids:
+                    for l in move.line_ids:
+                        if l.id != aml.id and not l.tax_line_id:
+                            name = (l.name or '').strip()
+                            if name and name != move.name and name not in labels:
+                                labels.append(name)
+                
+                # 3. Fallback: aml own name if different from move.name
+                if not labels:
+                    name = (aml.name or '').strip()
+                    if name and name != move.name:
+                        labels.append(name)
+
+                if labels:
+                    label_desc = " | ".join(labels)
+                    orig_name = line_dict.get('name') or move.name or ''
+                    if label_desc not in orig_name and not any(lbl in orig_name for lbl in labels):
+                        line_dict['name'] = f"{orig_name}: {label_desc}"
+
+        return lines
+
