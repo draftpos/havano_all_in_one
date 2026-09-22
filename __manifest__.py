@@ -15,7 +15,6 @@
         "sale_management",
         "purchase",
         "account",
-        "account_reports",
         "stock",
     ],
     "data": [
