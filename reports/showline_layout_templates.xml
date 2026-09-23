@@ -39,15 +39,15 @@
             <!-- ══════════════════════════════════════════════════════════ -->
             <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
                 <!-- LEFT: Logo -->
-                <div style="float: left; width: 17%; text-align: left;">
+                <div style="float: left; width: 22%; text-align: left;">
                     <t t-if="company.logo">
                         <img t-att-src="'/web/image/res.company/%s/logo' % company.id"
-                             style="max-height: 85px; max-width: 130px; object-fit: contain;"/>
+                             style="max-height: 120px; max-width: 175px; object-fit: contain;"/>
                     </t>
                 </div>
 
                 <!-- MIDDLE: Full Company Details -->
-                <div style="float: left; width: 49%; padding-left: 10px;">
+                <div style="float: left; width: 44%; padding-left: 10px;">
                     <div t-attf-style="font-size: 18px; font-weight: 800; color: {{ theme_color }}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
                         <span t-field="company.name"/>
                     </div>
