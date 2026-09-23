@@ -7,13 +7,13 @@
         <t t-set="theme_color" t-value="'#0a1c40'"/>
 
         <div class="article page showline-wrap" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
-             style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 11px; color: #222; width: 100%; margin: 0; padding: 0;">
+             style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 9.5px; color: #2d3748; width: 100%; margin: 0; padding: 0;">
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- HEADER ROW 1: Centered Document Title                      -->
+            <!-- HEADER ROW 1: Document Title (Clean & Confident)           -->
             <!-- ══════════════════════════════════════════════════════════ -->
-            <div t-attf-style="text-align: center; font-size: 26px; font-weight: 800; letter-spacing: 6px; color: {{ theme_color }}; padding: 6px 0; text-transform: uppercase;">
-                <span style="font-size: 16px; opacity: 0.45; letter-spacing: 2px; margin-right: 8px;">&#9472;&#9472;</span>
+            <div t-attf-style="text-align: center; font-size: 22px; font-weight: 700; letter-spacing: 4px; color: {{ theme_color }}; padding: 4px 0 2px 0; text-transform: uppercase;">
+                <span style="font-size: 14px; opacity: 0.35; letter-spacing: 2px; margin-right: 8px;">&#9472;&#9472;</span>
                 <t t-if="doc_model == 'sale.order'">
                     <t t-if="is_pro_forma">PRO-FORMA</t>
                     <t t-elif="o.state in ['draft', 'sent']">QUOTATION</t>
@@ -27,30 +27,30 @@
                     <t t-elif="o.move_type == 'in_refund'">VENDOR CREDIT NOTE</t>
                     <t t-else="">DOCUMENT</t>
                 </t>
-                <span style="font-size: 16px; opacity: 0.45; letter-spacing: 2px; margin-left: 8px;">&#9472;&#9472;</span>
+                <span style="font-size: 14px; opacity: 0.35; letter-spacing: 2px; margin-left: 8px;">&#9472;&#9472;</span>
             </div>
 
-            <!-- Divider line under title -->
-            <div t-attf-style="height: 3px; background-color: {{ theme_color }}; border-radius: 2px; margin: 4px 0 14px 0;"/>
+            <!-- Subtle accent divider -->
+            <div t-attf-style="height: 2px; background-color: {{ theme_color }}; margin: 4px 0 14px 0;"/>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- HEADER ROW 2: Logo + Company Details + Registration (DIVs) -->
+            <!-- HEADER ROW 2: Company Header & Metadata (No Cards/Boxes)  -->
             <!-- ══════════════════════════════════════════════════════════ -->
             <div style="width: 100%; margin-bottom: 14px; overflow: hidden; clear: both;">
                 <!-- LEFT: Logo -->
-                <div style="float: left; width: 18%; text-align: left;">
+                <div style="float: left; width: 16%; text-align: left;">
                     <t t-if="company.logo">
                         <img t-att-src="'/web/image/res.company/%s/logo' % company.id"
-                             style="max-height: 70px; max-width: 120px; object-fit: contain;"/>
+                             style="max-height: 65px; max-width: 110px; object-fit: contain;"/>
                     </t>
                 </div>
 
-                <!-- MIDDLE: Company Details -->
-                <div style="float: left; width: 52%; padding-left: 10px;">
-                    <div t-attf-style="font-size: 15px; font-weight: 800; color: {{ theme_color }}; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">
+                <!-- MIDDLE: Company Information -->
+                <div style="float: left; width: 52%; padding-left: 8px;">
+                    <div t-attf-style="font-size: 15px; font-weight: 700; color: {{ theme_color }}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">
                         <span t-field="company.name"/>
                     </div>
-                    <div style="font-size: 9.5px; color: #444; line-height: 1.6;">
+                    <div style="font-size: 9.5px; font-weight: 400; color: #4a5568; line-height: 1.55;">
                         <t t-if="company.street">
                             <div>
                                 <span t-field="company.street"/><t t-if="company.street2">, <span t-field="company.street2"/></t><t t-if="company.city">, <span t-field="company.city"/></t><t t-if="company.state_id">, <span t-field="company.state_id.name"/></t><t t-if="company.country_id">, <span t-field="company.country_id.name"/></t>
@@ -68,97 +68,92 @@
                     </div>
                 </div>
 
-                <!-- RIGHT: Registration Card -->
-                <div style="float: right; width: 28%; text-align: right;">
-                    <div t-attf-style="display: inline-block; background: #f4f6fb; border: 1.5px solid {{ theme_color }}; border-radius: 6px; padding: 6px 12px; text-align: left; width: 100%; box-sizing: border-box;">
-                        <div t-attf-style="font-size: 9px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; color: {{ theme_color }}; margin-bottom: 4px; border-bottom: 1px solid #cbd5e0; padding-bottom: 3px;">Company Registration</div>
-                        <div style="font-size: 9.5px; line-height: 1.5;">
-                            <div style="overflow: hidden; clear: both; margin-bottom: 2px;">
-                                <span t-attf-style="float: left; font-weight: 800; color: {{ theme_color }};">TIN:</span>
-                                <span style="float: right; font-weight: 600; color: #333;"><span t-esc="company.company_registry or 'N/A'"/></span>
-                            </div>
-                            <div style="overflow: hidden; clear: both;">
-                                <span t-attf-style="float: left; font-weight: 800; color: {{ theme_color }};">VAT:</span>
-                                <span style="float: right; font-weight: 600; color: #333;"><span t-esc="company.vat or 'N/A'"/></span>
-                            </div>
-                        </div>
+                <!-- RIGHT: Company Registration & Tax Metadata (Natural Text, No Card) -->
+                <div style="float: right; width: 30%; text-align: right; font-size: 9.5px; line-height: 1.65; color: #4a5568; padding-top: 2px;">
+                    <div t-if="company.company_registry">
+                        <span style="color: #718096; font-weight: 500;">Registration No:</span>
+                        <span style="font-weight: 600; color: #1a202c; margin-left: 4px;"><t t-esc="company.company_registry"/></span>
+                    </div>
+                    <div t-if="company.vat">
+                        <span style="color: #718096; font-weight: 500;">VAT No:</span>
+                        <span style="font-weight: 600; color: #1a202c; margin-left: 4px;"><t t-esc="company.vat"/></span>
                     </div>
                 </div>
             </div>
 
-            <!-- Bottom divider -->
-            <div t-attf-style="height: 2px; background: linear-gradient(to right, {{ theme_color }}, #4a6fa5, #d4e0f7); border-radius: 2px; margin-bottom: 14px; clear: both;"/>
+            <!-- Subtle Section Divider -->
+            <div style="height: 1px; background-color: #e2e8f0; margin-bottom: 14px; clear: both;"/>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- DETAILS ROW: Customer + Invoice Info (Float Divs)          -->
+            <!-- DETAILS ROW: Customer + Invoice Info                       -->
             <!-- ══════════════════════════════════════════════════════════ -->
-            <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
+            <div style="width: 100%; margin-bottom: 14px; overflow: hidden; clear: both;">
                 <!-- CUSTOMER DETAILS -->
                 <div style="float: left; width: 48%;">
-                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 4px; overflow: hidden;">
                         <tr>
-                            <td colspan="2" t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 700; padding: 6px 12px; font-size: 11px; border: 0 !important;">
-                                <i class="fa fa-user" style="margin-right: 6px;"/> CUSTOMER DETAILS
+                            <td colspan="2" t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 600; padding: 5px 10px; font-size: 10px; letter-spacing: 0.4px; border: 0 !important;">
+                                <i class="fa fa-user" style="margin-right: 5px;"/> CUSTOMER DETAILS
                             </td>
                         </tr>
-                        <tr style="background: #f8f9fb; border-bottom: 1px solid #dee2e6;">
-                            <td style="font-weight: 700; padding: 5px 12px; width: 35%; color: #444; border: 0 !important;">Customer</td>
-                            <td style="padding: 5px 12px; font-weight: 600; color: #111; border: 0 !important;"><span t-field="partner.name"/></td>
+                        <tr style="background: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                            <td style="font-weight: 500; padding: 4px 10px; width: 32%; color: #4a5568; font-size: 9.5px; border: 0 !important;">Customer</td>
+                            <td style="padding: 4px 10px; font-weight: 600; color: #1a202c; font-size: 9.5px; border: 0 !important;"><span t-field="partner.name"/></td>
                         </tr>
-                        <tr style="background: #ffffff; border-bottom: 1px solid #dee2e6;">
-                            <td style="font-weight: 700; padding: 5px 12px; color: #444; border: 0 !important;">Address</td>
-                            <td style="padding: 5px 12px; color: #555; border: 0 !important;">
+                        <tr style="background: #ffffff; border-bottom: 1px solid #edf2f7;">
+                            <td style="font-weight: 500; padding: 4px 10px; color: #4a5568; font-size: 9.5px; border: 0 !important;">Address</td>
+                            <td style="padding: 4px 10px; color: #4a5568; font-size: 9.5px; border: 0 !important;">
                                 <span t-if="partner.street" t-field="partner.street"/>
                                 <span t-if="partner.street2">, <span t-field="partner.street2"/></span>
                                 <span t-if="partner.city">, <span t-field="partner.city"/></span>
                                 <span t-if="partner.country_id">, <span t-field="partner.country_id.name"/></span>
                             </td>
                         </tr>
-                        <tr style="background: #f8f9fb; border-bottom: 1px solid #dee2e6;">
-                            <td style="font-weight: 700; padding: 5px 12px; color: #444; border: 0 !important;">Phone</td>
-                            <td style="padding: 5px 12px; color: #333; border: 0 !important;"><span t-esc="partner.phone or 'N/A'"/></td>
+                        <tr style="background: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                            <td style="font-weight: 500; padding: 4px 10px; color: #4a5568; font-size: 9.5px; border: 0 !important;">Phone</td>
+                            <td style="padding: 4px 10px; color: #2d3748; font-size: 9.5px; border: 0 !important;"><span t-esc="partner.phone or 'N/A'"/></td>
                         </tr>
                         <tr style="background: #ffffff;">
-                            <td style="font-weight: 700; padding: 5px 12px; color: #444; border: 0 !important;">VAT / TIN</td>
-                            <td style="padding: 5px 12px; color: #333; border: 0 !important;"><span t-esc="partner.vat or 'N/A'"/></td>
+                            <td style="font-weight: 500; padding: 4px 10px; color: #4a5568; font-size: 9.5px; border: 0 !important;">VAT / TIN</td>
+                            <td style="padding: 4px 10px; color: #2d3748; font-size: 9.5px; border: 0 !important;"><span t-esc="partner.vat or 'N/A'"/></td>
                         </tr>
                     </table>
                 </div>
 
                 <!-- INVOICE / ORDER DETAILS -->
                 <div style="float: right; width: 48%;">
-                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden;">
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 4px; overflow: hidden;">
                         <tr>
-                            <td colspan="2" t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 700; padding: 6px 12px; font-size: 11px; border: 0 !important;">
-                                <i class="fa fa-file-text-o" style="margin-right: 6px;"/>
+                            <td colspan="2" t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 600; padding: 5px 10px; font-size: 10px; letter-spacing: 0.4px; border: 0 !important;">
+                                <i class="fa fa-file-text-o" style="margin-right: 5px;"/>
                                 <t t-if="doc_model == 'sale.order'">ORDER DETAILS</t>
                                 <t t-else="">INVOICE DETAILS</t>
                             </td>
                         </tr>
-                        <tr style="background: #f8f9fb; border-bottom: 1px solid #dee2e6;">
-                            <td style="font-weight: 700; padding: 5px 12px; width: 38%; color: #444; border: 0 !important;">
+                        <tr style="background: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                            <td style="font-weight: 500; padding: 4px 10px; width: 36%; color: #4a5568; font-size: 9.5px; border: 0 !important;">
                                 <t t-if="doc_model == 'sale.order'">Order No.</t>
                                 <t t-else="">Invoice No.</t>
                             </td>
-                            <td t-attf-style="padding: 5px 12px; font-weight: 800; color: {{ theme_color }}; border: 0 !important;"><span t-field="o.name"/></td>
+                            <td t-attf-style="padding: 4px 10px; font-weight: 700; color: {{ theme_color }}; font-size: 9.5px; border: 0 !important;"><span t-field="o.name"/></td>
                         </tr>
-                        <tr style="background: #ffffff; border-bottom: 1px solid #dee2e6;">
-                            <td style="font-weight: 700; padding: 5px 12px; color: #444; border: 0 !important;">Date</td>
-                            <td style="padding: 5px 12px; color: #333; border: 0 !important;">
+                        <tr style="background: #ffffff; border-bottom: 1px solid #edf2f7;">
+                            <td style="font-weight: 500; padding: 4px 10px; color: #4a5568; font-size: 9.5px; border: 0 !important;">Date</td>
+                            <td style="padding: 4px 10px; color: #2d3748; font-size: 9.5px; border: 0 !important;">
                                 <t t-if="doc_model == 'sale.order'"><span t-field="o.date_order" t-options='{"widget": "date"}'/></t>
                                 <t t-if="doc_model == 'account.move'"><span t-field="o.invoice_date" t-options='{"widget": "date"}'/></t>
                             </td>
                         </tr>
-                        <tr style="background: #f8f9fb; border-bottom: 1px solid #dee2e6;">
-                            <td style="font-weight: 700; padding: 5px 12px; color: #444; border: 0 !important;">Currency</td>
-                            <td style="padding: 5px 12px; color: #333; border: 0 !important;"><span t-field="o.currency_id.name"/></td>
+                        <tr style="background: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                            <td style="font-weight: 500; padding: 4px 10px; color: #4a5568; font-size: 9.5px; border: 0 !important;">Currency</td>
+                            <td style="padding: 4px 10px; color: #2d3748; font-size: 9.5px; border: 0 !important;"><span t-field="o.currency_id.name"/></td>
                         </tr>
                         <tr style="background: #ffffff;">
-                            <td style="font-weight: 700; padding: 5px 12px; color: #444; border: 0 !important;">
+                            <td style="font-weight: 500; padding: 4px 10px; color: #4a5568; font-size: 9.5px; border: 0 !important;">
                                 <t t-if="doc_model == 'sale.order'">Salesperson</t>
                                 <t t-else="">Due Date</t>
                             </td>
-                            <td style="padding: 5px 12px; color: #333; border: 0 !important;">
+                            <td style="padding: 4px 10px; color: #2d3748; font-size: 9.5px; border: 0 !important;">
                                 <t t-if="doc_model == 'sale.order'"><span t-field="o.user_id.name"/></t>
                                 <t t-if="doc_model == 'account.move'"><span t-field="o.invoice_date_due" t-options='{"widget": "date"}'/></t>
                             </td>
@@ -168,17 +163,17 @@
             </div>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- LINES TABLE (No vertical cell dividers)                    -->
+            <!-- LINES TABLE (Clean, Professional Typography)               -->
             <!-- ══════════════════════════════════════════════════════════ -->
-            <table style="width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; margin-bottom: 16px; border-radius: 6px; overflow: hidden; clear: both;">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; margin-bottom: 14px; border-radius: 4px; overflow: hidden; clear: both;">
                 <thead>
-                    <tr t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 700; font-size: 10.5px;">
-                        <th style="padding: 8px 6px; text-align: center; width: 5%; color: #ffffff; border: 0 !important;">#</th>
-                        <th style="padding: 8px 8px; text-align: left; width: 45%; color: #ffffff; border: 0 !important;">Description</th>
-                        <th style="padding: 8px 6px; text-align: center; width: 10%; color: #ffffff; border: 0 !important;">Qty</th>
-                        <th style="padding: 8px 8px; text-align: right; width: 14%; color: #ffffff; border: 0 !important;">Unit Price (<span t-field="o.currency_id.symbol"/>)</th>
-                        <th style="padding: 8px 8px; text-align: right; width: 12%; color: #ffffff; border: 0 !important;">Tax Amt (<span t-field="o.currency_id.symbol"/>)</th>
-                        <th style="padding: 8px 8px; text-align: right; width: 14%; color: #ffffff; border: 0 !important;">Total Amt (<span t-field="o.currency_id.symbol"/>)</th>
+                    <tr t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 600; font-size: 9.5px;">
+                        <th style="padding: 7px 6px; text-align: center; width: 5%; color: #ffffff; border: 0 !important;">#</th>
+                        <th style="padding: 7px 8px; text-align: left; width: 45%; color: #ffffff; border: 0 !important;">Description</th>
+                        <th style="padding: 7px 6px; text-align: center; width: 10%; color: #ffffff; border: 0 !important;">Qty</th>
+                        <th style="padding: 7px 8px; text-align: right; width: 14%; color: #ffffff; border: 0 !important;">Unit Price (<span t-field="o.currency_id.symbol"/>)</th>
+                        <th style="padding: 7px 8px; text-align: right; width: 12%; color: #ffffff; border: 0 !important;">Tax Amt (<span t-field="o.currency_id.symbol"/>)</th>
+                        <th style="padding: 7px 8px; text-align: right; width: 14%; color: #ffffff; border: 0 !important;">Total Amt (<span t-field="o.currency_id.symbol"/>)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -186,36 +181,36 @@
                     <t t-set="line_count" t-value="1"/>
                     <t t-foreach="lines" t-as="line">
                         <t t-if="line.display_type in ['product', False, '']">
-                            <tr t-attf-style="border-bottom: 1px solid #dee2e6; background: {{ '#f8f9fb' if line_index % 2 == 0 else '#ffffff' }};">
-                                <td t-attf-style="padding: 7px 6px; text-align: center; font-weight: 700; color: {{ theme_color }}; vertical-align: top; border: 0 !important;">
+                            <tr t-attf-style="border-bottom: 1px solid #edf2f7; background: {{ '#f8fafc' if line_index % 2 == 0 else '#ffffff' }};">
+                                <td t-attf-style="padding: 6px; text-align: center; font-weight: 600; color: {{ theme_color }}; vertical-align: top; border: 0 !important;">
                                     <span t-esc="line_count"/>
                                     <t t-set="line_count" t-value="line_count + 1"/>
                                 </td>
-                                <td style="padding: 7px 8px; text-align: left; vertical-align: top; border: 0 !important;">
+                                <td style="padding: 6px 8px; text-align: left; vertical-align: top; border: 0 !important;">
                                     <!-- Bullet points / HTML formatted description -->
                                     <t t-if="'&lt;' in (line.name or '')">
-                                        <div style="line-height: 1.4; font-size: 10px;" t-out="line.name"/>
+                                        <div style="line-height: 1.45; font-size: 9.5px; color: #2d3748;" t-out="line.name"/>
                                     </t>
                                     <t t-else="">
-                                        <div style="line-height: 1.4; font-size: 10px;">
+                                        <div style="line-height: 1.45; font-size: 9.5px; color: #2d3748;">
                                             <t t-foreach="(line.name or '').split('\n')" t-as="ln">
                                                 <span t-esc="ln"/><br t-if="not ln_last"/>
                                             </t>
                                         </div>
                                     </t>
                                 </td>
-                                <td style="padding: 7px 6px; text-align: center; vertical-align: top; font-weight: 600; border: 0 !important;">
+                                <td style="padding: 6px; text-align: center; vertical-align: top; font-weight: 500; border: 0 !important;">
                                     <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty" t-options='{"widget": "float", "precision": 1}'/>
                                     <span t-if="doc_model == 'account.move'" t-field="line.quantity" t-options='{"widget": "float", "precision": 1}'/>
                                 </td>
-                                <td style="padding: 7px 8px; text-align: right; vertical-align: top; border: 0 !important;">
+                                <td style="padding: 6px 8px; text-align: right; vertical-align: top; font-weight: 400; border: 0 !important;">
                                     <span t-field="line.price_unit" t-options='{"widget": "float", "precision": 2}'/>
                                 </td>
-                                <td style="padding: 7px 8px; text-align: right; vertical-align: top; border: 0 !important;">
+                                <td style="padding: 6px 8px; text-align: right; vertical-align: top; font-weight: 400; border: 0 !important;">
                                     <t t-set="tax_amt" t-value="line.price_total - line.price_subtotal"/>
                                     <span t-esc="tax_amt" t-options='{"widget": "float", "precision": 2}'/>
                                 </td>
-                                <td t-attf-style="padding: 7px 8px; text-align: right; vertical-align: top; font-weight: 700; color: {{ theme_color }}; border: 0 !important;">
+                                <td t-attf-style="padding: 6px 8px; text-align: right; vertical-align: top; font-weight: 600; color: {{ theme_color }}; border: 0 !important;">
                                     <span t-field="line.price_total" t-options='{"widget": "float", "precision": 2}'/>
                                 </td>
                             </tr>
@@ -225,26 +220,26 @@
             </table>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- TOTALS ROW (Float Right Div)                               -->
+            <!-- TOTALS ROW (Clean Alignment)                               -->
             <!-- ══════════════════════════════════════════════════════════ -->
-            <div style="width: 100%; margin-bottom: 18px; overflow: hidden; clear: both;">
+            <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
                 <div style="float: right; width: 48%;">
-                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden;">
-                        <tr style="background: #f8f9fb; border-bottom: 1px solid #dee2e6;">
-                            <td style="padding: 7px 12px; text-align: right; font-weight: 600; width: 55%; color: #555; border: 0 !important;">SUBTOTAL (Excl. Tax)</td>
-                            <td style="padding: 7px 12px; text-align: right; font-weight: 600; color: #222; border: 0 !important;">
+                    <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 4px; overflow: hidden;">
+                        <tr style="background: #f8fafc; border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 6px 12px; text-align: right; font-weight: 500; width: 55%; color: #4a5568; border: 0 !important;">SUBTOTAL (Excl. Tax)</td>
+                            <td style="padding: 6px 12px; text-align: right; font-weight: 500; color: #1a202c; border: 0 !important;">
                                 <span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                             </td>
                         </tr>
-                        <tr style="background: #ffffff; border-bottom: 1px solid #dee2e6;">
-                            <td style="padding: 7px 12px; text-align: right; font-weight: 600; color: #555; border: 0 !important;">TOTAL TAX</td>
-                            <td style="padding: 7px 12px; text-align: right; font-weight: 600; color: #222; border: 0 !important;">
+                        <tr style="background: #ffffff; border-bottom: 1px solid #edf2f7;">
+                            <td style="padding: 6px 12px; text-align: right; font-weight: 500; color: #4a5568; border: 0 !important;">TOTAL TAX</td>
+                            <td style="padding: 6px 12px; text-align: right; font-weight: 500; color: #1a202c; border: 0 !important;">
                                 <span t-field="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                             </td>
                         </tr>
                         <tr t-attf-style="background-color: {{ theme_color }}; color: #ffffff;">
-                            <td style="padding: 9px 12px; text-align: right; font-weight: 700; font-size: 11.5px; color: #ffffff; border: 0 !important;">TOTAL (Incl. Tax)</td>
-                            <td style="padding: 9px 12px; text-align: right; font-weight: 800; font-size: 12.5px; color: #ffffff; border: 0 !important;">
+                            <td style="padding: 8px 12px; text-align: right; font-weight: 600; font-size: 10.5px; color: #ffffff; border: 0 !important;">TOTAL (Incl. Tax)</td>
+                            <td style="padding: 8px 12px; text-align: right; font-weight: 700; font-size: 11.5px; color: #ffffff; border: 0 !important;">
                                 <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                             </td>
                         </tr>
@@ -253,35 +248,35 @@
             </div>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- TERMS AND BANKING ROW (Float Divs)                         -->
+            <!-- TERMS AND BANKING ROW                                      -->
             <!-- ══════════════════════════════════════════════════════════ -->
-            <div style="width: 100%; margin-bottom: 18px; overflow: hidden; clear: both;">
+            <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
                 <!-- TERMS -->
-                <div style="float: left; width: 48%; border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; box-sizing: border-box;">
-                    <div t-attf-style="padding: 6px 12px; font-weight: 700; border-bottom: 2px solid {{ theme_color }}; color: {{ theme_color }}; font-size: 10.5px; background: #f4f6fb;">
+                <div style="float: left; width: 48%; border: 1px solid #e2e8f0; border-radius: 4px; overflow: hidden; box-sizing: border-box;">
+                    <div t-attf-style="padding: 5px 10px; font-weight: 600; border-bottom: 2px solid {{ theme_color }}; color: {{ theme_color }}; font-size: 10px; background: #f8fafc;">
                         <i class="fa fa-file-text-o"/> TERMS &amp; CONDITIONS
                     </div>
-                    <div style="padding: 10px 14px; min-height: 60px; color: #555; font-size: 9.5px;">
+                    <div style="padding: 8px 12px; min-height: 55px; color: #4a5568; font-size: 9px; line-height: 1.5;">
                         <div t-if="doc_model == 'sale.order' and o.note" t-field="o.note"/>
                         <div t-if="doc_model == 'account.move' and o.narration" t-field="o.narration"/>
                     </div>
-                    <div style="padding: 6px 14px 10px; border-top: 1px dashed #dee2e6; font-size: 9.5px; color: #666;">
+                    <div style="padding: 6px 12px 8px; border-top: 1px dashed #cbd5e0; font-size: 9px; color: #718096;">
                         ------------------------------------<br/>
                         <strong>Authorised Signatory</strong><br/>
-                        <span t-field="company.name" style="text-transform: uppercase; font-weight: 600;"/>
+                        <span t-field="company.name" style="text-transform: uppercase; font-weight: 600; color: #2d3748;"/>
                     </div>
                 </div>
 
                 <!-- BANKING -->
-                <div style="float: right; width: 48%; border: 1px solid #dee2e6; border-radius: 6px; overflow: hidden; box-sizing: border-box;">
-                    <div t-attf-style="padding: 6px 12px; font-weight: 700; border-bottom: 2px solid {{ theme_color }}; color: {{ theme_color }}; font-size: 10.5px; background: #f4f6fb;">
+                <div style="float: right; width: 48%; border: 1px solid #e2e8f0; border-radius: 4px; overflow: hidden; box-sizing: border-box;">
+                    <div t-attf-style="padding: 5px 10px; font-weight: 600; border-bottom: 2px solid {{ theme_color }}; color: {{ theme_color }}; font-size: 10px; background: #f8fafc;">
                         <i class="fa fa-university"/> BANKING DETAILS
                     </div>
-                    <div style="padding: 10px 14px; min-height: 60px; font-size: 9.5px;">
+                    <div style="padding: 8px 12px; min-height: 55px; font-size: 9px; line-height: 1.55; color: #4a5568;">
                         <t t-if="company.hao_bank_name or company.hao_bank_detail_ids">
                             <t t-if="company.hao_multi_bank and company.hao_bank_detail_ids">
                                 <t t-foreach="company.hao_bank_detail_ids" t-as="bank">
-                                    <div style="margin-bottom: 3px; color: #222;">
+                                    <div style="margin-bottom: 2px; color: #1a202c;">
                                         <i class="fa fa-bank" t-attf-style="margin-right:4px; color: {{ theme_color }};"/>
                                         <span t-field="bank.bank_name"/> — Acc: <strong><span t-field="bank.acc_number"/></strong>
                                         <span t-if="bank.branch"> (<span t-field="bank.branch"/>)</span>
@@ -289,17 +284,17 @@
                                 </t>
                             </t>
                             <t t-else="">
-                                <div t-if="company.hao_bank_name" style="margin-bottom:3px;"><strong>Bank:</strong> <span t-field="company.hao_bank_name"/></div>
-                                <div t-if="company.hao_bank_account_name" style="margin-bottom:3px;"><strong>Account Name:</strong> <span t-field="company.hao_bank_account_name"/></div>
+                                <div t-if="company.hao_bank_name" style="margin-bottom:2px;"><strong>Bank:</strong> <span t-field="company.hao_bank_name"/></div>
+                                <div t-if="company.hao_bank_account_name" style="margin-bottom:2px;"><strong>Account Name:</strong> <span t-field="company.hao_bank_account_name"/></div>
                                 <div t-if="company.hao_bank_account_no"><strong>Account No:</strong> <span t-field="company.hao_bank_account_no"/></div>
                             </t>
                         </t>
                         <t t-else="">
-                            <span style="color:#aaa; font-style:italic;">No banking details provided.</span>
+                            <span style="color:#a0aec0; font-style:italic;">No banking details provided.</span>
                         </t>
                     </div>
-                    <div t-attf-style="padding: 6px 14px 10px; border-top: 1px dashed #dee2e6; text-align: left; font-weight: 600; font-size: 10.5px; color: {{ theme_color }};">
-                        <i t-attf-style="background-color: {{ theme_color }}; color: white; border-radius: 50%; padding: 3px 4px; margin-right: 4px;" class="fa fa-handshake-o"/>
+                    <div t-attf-style="padding: 5px 12px 7px; border-top: 1px dashed #cbd5e0; text-align: left; font-weight: 600; font-size: 9.5px; color: {{ theme_color }};">
+                        <i t-attf-style="background-color: {{ theme_color }}; color: white; border-radius: 50%; padding: 2px 3px; margin-right: 4px;" class="fa fa-handshake-o"/>
                         Thank you for your business!
                     </div>
                 </div>
@@ -308,7 +303,7 @@
             <!-- ══════════════════════════════════════════════════════════ -->
             <!-- FOOTER                                                     -->
             <!-- ══════════════════════════════════════════════════════════ -->
-            <div t-attf-style="background: linear-gradient(to right, {{ theme_color }}, #1a3a6e); color: white; text-align: center; padding: 8px; font-size: 9.5px; border-radius: 4px; letter-spacing: 0.8px; clear: both;">
+            <div t-attf-style="background-color: {{ theme_color }}; color: #ffffff; text-align: center; padding: 7px; font-size: 9px; font-weight: 500; border-radius: 4px; letter-spacing: 0.6px; clear: both;">
                 <i class="fa fa-bolt" style="margin-right: 4px;"/> Powered by <strong>HavanoERP</strong>
                 <t t-if="company.website"> &amp;nbsp;|&amp;nbsp; <span t-field="company.website"/></t>
             </div>
