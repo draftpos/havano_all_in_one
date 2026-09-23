@@ -230,7 +230,17 @@
                                     <t t-set="line_count" t-value="line_count + 1"/>
                                 </td>
                                 <td style="padding: 8px; text-align: left; border-right: 1px solid #dee2e6;">
-                                    <div class="sl-line-desc" t-out="line.name"/>
+                                    <!-- Render HTML if present, otherwise convert plain-text newlines to <br/> -->
+                                    <t t-if="'&lt;' in (line.name or '')">
+                                        <div class="sl-line-desc" t-out="line.name"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="sl-line-desc">
+                                            <t t-foreach="(line.name or '').split('\n')" t-as="ln">
+                                                <span t-esc="ln"/><br t-if="not ln_last"/>
+                                            </t>
+                                        </div>
+                                    </t>
                                 </td>
                                 <td style="padding: 8px; text-align: center; border-right: 1px solid #dee2e6;">
                                     <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty" t-options='{"widget": "float", "precision": 1}'/>
