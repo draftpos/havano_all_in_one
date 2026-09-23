@@ -4,6 +4,7 @@
         <t t-set="doc_model" t-value="o._name"/>
         <t t-set="company" t-value="o.company_id"/>
         <t t-set="partner" t-value="o.partner_id"/>
+        <t t-set="salesperson" t-value="o.invoice_user_id if (doc_model == 'account.move' and o.invoice_user_id) else o.user_id"/>
         <t t-set="theme_color" t-value="'#0a1c40'"/>
 
         <div class="article page showline-wrap" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
@@ -34,50 +35,74 @@
             <div t-attf-style="height: 3px; background-color: {{ theme_color }}; margin: 4px 0 16px 0;"/>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- HEADER ROW 2: Company Header & Metadata                    -->
+            <!-- HEADER ROW 2: Company Info + Salesperson Details           -->
             <!-- ══════════════════════════════════════════════════════════ -->
             <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
                 <!-- LEFT: Logo -->
                 <div style="float: left; width: 17%; text-align: left;">
                     <t t-if="company.logo">
                         <img t-att-src="'/web/image/res.company/%s/logo' % company.id"
-                             style="max-height: 80px; max-width: 130px; object-fit: contain;"/>
+                             style="max-height: 85px; max-width: 130px; object-fit: contain;"/>
                     </t>
                 </div>
 
-                <!-- MIDDLE: Company Information -->
+                <!-- MIDDLE: Full Company Details -->
                 <div style="float: left; width: 51%; padding-left: 10px;">
                     <div t-attf-style="font-size: 18px; font-weight: 800; color: {{ theme_color }}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
                         <span t-field="company.name"/>
                     </div>
                     <div style="font-size: 12.5px; font-weight: 600; color: #1f2937; line-height: 1.6;">
-                        <t t-if="company.street">
+                        <!-- Address -->
+                        <t t-if="company.street or company.street2 or company.city or company.state_id or company.country_id">
                             <div>
-                                <span t-field="company.street"/><t t-if="company.street2">, <span t-field="company.street2"/></t><t t-if="company.city">, <span t-field="company.city"/></t><t t-if="company.state_id">, <span t-field="company.state_id.name"/></t><t t-if="company.country_id">, <span t-field="company.country_id.name"/></t>
+                                <span t-if="company.street" t-field="company.street"/>
+                                <span t-if="company.street2">, <span t-field="company.street2"/></span>
+                                <span t-if="company.city">, <span t-field="company.city"/></span>
+                                <span t-if="company.state_id">, <span t-field="company.state_id.name"/></span>
+                                <span t-if="company.country_id">, <span t-field="company.country_id.name"/></span>
                             </div>
                         </t>
+                        <!-- Phone / Mobile -->
                         <t t-if="company.phone">
-                            <div>Tel: <span t-field="company.phone"/></div>
+                            <div><span>Tel: </span><span t-field="company.phone"/><t t-if="company.mobile"> | <span>Mob: </span><span t-field="company.mobile"/></t></div>
                         </t>
+                        <t t-elif="company.mobile">
+                            <div><span>Mob: </span><span t-field="company.mobile"/></div>
+                        </t>
+                        <!-- Email -->
                         <t t-if="company.email">
-                            <div>Email: <span t-field="company.email"/></div>
+                            <div><span>Email: </span><span t-field="company.email"/></div>
                         </t>
+                        <!-- Website -->
                         <t t-if="company.website">
-                            <div>Web: <span t-field="company.website"/></div>
+                            <div><span>Web: </span><span t-field="company.website"/></div>
+                        </t>
+                        <!-- VAT / TIN / Reg -->
+                        <t t-if="company.vat">
+                            <div><span>VAT / TIN: </span><strong style="color: #111827;"><span t-field="company.vat"/></strong></div>
+                        </t>
+                        <t t-if="company.company_registry">
+                            <div><span>Reg No: </span><strong style="color: #111827;"><span t-field="company.company_registry"/></strong></div>
                         </t>
                     </div>
                 </div>
 
-                <!-- RIGHT: Company Registration & Tax Metadata -->
-                <div style="float: right; width: 32%; text-align: right; font-size: 13px; line-height: 1.7; color: #1f2937; padding-top: 2px;">
-                    <div t-if="company.company_registry">
-                        <span style="color: #374151; font-weight: 700;">Registration No:</span>
-                        <span style="font-weight: 800; color: #111827; margin-left: 5px;"><t t-esc="company.company_registry"/></span>
-                    </div>
-                    <div t-if="company.vat">
-                        <span style="color: #374151; font-weight: 700;">VAT No:</span>
-                        <span style="font-weight: 800; color: #111827; margin-left: 5px;"><t t-esc="company.vat"/></span>
-                    </div>
+                <!-- RIGHT: Salesperson Details -->
+                <div style="float: right; width: 32%; text-align: right; font-size: 12.5px; line-height: 1.6; color: #1f2937; padding-top: 2px;">
+                    <t t-if="salesperson">
+                        <div t-attf-style="font-size: 13px; font-weight: 800; color: {{ theme_color }}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+                            <i class="fa fa-user-circle" style="margin-right: 4px;"/> SALESPERSON
+                        </div>
+                        <div style="font-weight: 800; color: #111827; font-size: 13.5px; margin-bottom: 2px;">
+                            <span t-field="salesperson.name"/>
+                        </div>
+                        <div t-if="salesperson.phone or salesperson.mobile" style="color: #374151; font-weight: 600;">
+                            <span>Tel: </span><span t-esc="salesperson.phone or salesperson.mobile"/>
+                        </div>
+                        <div t-if="salesperson.email" style="color: #374151; font-weight: 600;">
+                            <span>Email: </span><span t-esc="salesperson.email"/>
+                        </div>
+                    </t>
                 </div>
             </div>
 
@@ -150,11 +175,11 @@
                         </tr>
                         <tr style="background: #ffffff;">
                             <td style="font-weight: 700; padding: 6px 12px; color: #374151; font-size: 12.5px; border: 0 !important;">
-                                <t t-if="doc_model == 'sale.order'">Salesperson</t>
+                                <t t-if="doc_model == 'sale.order'">Payment Terms</t>
                                 <t t-else="">Due Date</t>
                             </td>
                             <td style="padding: 6px 12px; font-weight: 700; color: #111827; font-size: 12.5px; border: 0 !important;">
-                                <t t-if="doc_model == 'sale.order'"><span t-field="o.user_id.name"/></t>
+                                <t t-if="doc_model == 'sale.order'"><span t-field="o.payment_term_id.name"/></t>
                                 <t t-if="doc_model == 'account.move'"><span t-field="o.invoice_date_due" t-options='{"widget": "date"}'/></t>
                             </td>
                         </tr>
@@ -163,17 +188,16 @@
             </div>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- LINES TABLE                                                -->
+            <!-- LINES TABLE (Without Tax Column)                           -->
             <!-- ══════════════════════════════════════════════════════════ -->
             <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #9ca3af; margin-bottom: 16px; overflow: hidden; clear: both;">
                 <thead>
                     <tr t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 800; font-size: 12.5px;">
                         <th style="padding: 10px 6px; text-align: center; width: 5%; color: #ffffff; border: 0 !important;">#</th>
-                        <th style="padding: 10px 10px; text-align: left; width: 45%; color: #ffffff; border: 0 !important;">Description</th>
+                        <th style="padding: 10px 10px; text-align: left; width: 55%; color: #ffffff; border: 0 !important;">Description</th>
                         <th style="padding: 10px 6px; text-align: center; width: 10%; color: #ffffff; border: 0 !important;">Qty</th>
-                        <th style="padding: 10px 10px; text-align: right; width: 14%; color: #ffffff; border: 0 !important;">Unit Price (<span t-field="o.currency_id.symbol"/>)</th>
-                        <th style="padding: 10px 10px; text-align: right; width: 12%; color: #ffffff; border: 0 !important;">Tax Amt (<span t-field="o.currency_id.symbol"/>)</th>
-                        <th style="padding: 10px 10px; text-align: right; width: 14%; color: #ffffff; border: 0 !important;">Total Amt (<span t-field="o.currency_id.symbol"/>)</th>
+                        <th style="padding: 10px 10px; text-align: right; width: 15%; color: #ffffff; border: 0 !important;">Unit Price (<span t-field="o.currency_id.symbol"/>)</th>
+                        <th style="padding: 10px 10px; text-align: right; width: 15%; color: #ffffff; border: 0 !important;">Total Amt (<span t-field="o.currency_id.symbol"/>)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -206,10 +230,6 @@
                                 <td style="padding: 9px 10px; text-align: right; vertical-align: top; font-weight: 600; font-size: 13px; color: #111827; border: 0 !important;">
                                     <span t-field="line.price_unit" t-options='{"widget": "float", "precision": 2}'/>
                                 </td>
-                                <td style="padding: 9px 10px; text-align: right; vertical-align: top; font-weight: 600; font-size: 13px; color: #111827; border: 0 !important;">
-                                    <t t-set="tax_amt" t-value="line.price_total - line.price_subtotal"/>
-                                    <span t-esc="tax_amt" t-options='{"widget": "float", "precision": 2}'/>
-                                </td>
                                 <td t-attf-style="padding: 9px 10px; text-align: right; vertical-align: top; font-weight: 800; font-size: 13px; color: {{ theme_color }}; border: 0 !important;">
                                     <span t-field="line.price_total" t-options='{"widget": "float", "precision": 2}'/>
                                 </td>
@@ -220,26 +240,14 @@
             </table>
 
             <!-- ══════════════════════════════════════════════════════════ -->
-            <!-- TOTALS ROW                                                 -->
+            <!-- TOTALS ROW (Clean Total Only)                              -->
             <!-- ══════════════════════════════════════════════════════════ -->
             <div style="width: 100%; margin-bottom: 18px; overflow: hidden; clear: both;">
-                <div style="float: right; width: 48%;">
-                    <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #9ca3af; overflow: hidden;">
-                        <tr style="background: #f9fafb; border-bottom: 1px solid #d1d5db;">
-                            <td style="padding: 8px 14px; text-align: right; font-weight: 700; width: 55%; color: #374151; font-size: 12.5px; border: 0 !important;">SUBTOTAL (Excl. Tax)</td>
-                            <td style="padding: 8px 14px; text-align: right; font-weight: 700; color: #111827; font-size: 13px; border: 0 !important;">
-                                <span t-field="o.amount_untaxed" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                            </td>
-                        </tr>
-                        <tr style="background: #ffffff; border-bottom: 1px solid #d1d5db;">
-                            <td style="padding: 8px 14px; text-align: right; font-weight: 700; color: #374151; font-size: 12.5px; border: 0 !important;">TOTAL TAX</td>
-                            <td style="padding: 8px 14px; text-align: right; font-weight: 700; color: #111827; font-size: 13px; border: 0 !important;">
-                                <span t-field="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
-                            </td>
-                        </tr>
+                <div style="float: right; width: 45%;">
+                    <table style="width: 100%; border-collapse: collapse; border: 1.5px solid #0a1c40; overflow: hidden;">
                         <tr t-attf-style="background-color: {{ theme_color }}; color: #ffffff;">
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 800; font-size: 13.5px; color: #ffffff; border: 0 !important;">TOTAL (Incl. Tax)</td>
-                            <td style="padding: 10px 14px; text-align: right; font-weight: 900; font-size: 16px; color: #ffffff; border: 0 !important;">
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 800; font-size: 13.5px; color: #ffffff; border: 0 !important; width: 45%;">TOTAL</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 900; font-size: 16.5px; color: #ffffff; border: 0 !important;">
                                 <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
                             </td>
                         </tr>
@@ -304,7 +312,7 @@
             <!-- FOOTER                                                     -->
             <!-- ══════════════════════════════════════════════════════════ -->
             <div t-attf-style="background-color: {{ theme_color }}; color: #ffffff; text-align: center; padding: 9px; font-size: 12px; font-weight: 700; border-radius: 2px; letter-spacing: 0.6px; clear: both;">
-                <i class="fa fa-bolt" style="margin-right: 4px;"/> Powered by <strong>HavanoERP</strong>
+                <i class="fa fa-bolt" style="margin-right: 4px;"/> Powered by <strong>Showline Solutions</strong>
                 <t t-if="company.website"> &amp;nbsp;|&amp;nbsp; <span t-field="company.website"/></t>
             </div>
 
