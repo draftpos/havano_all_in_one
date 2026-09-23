@@ -62,12 +62,9 @@
                                 <span t-if="company.country_id">, <span t-field="company.country_id.name"/></span>
                             </div>
                         </t>
-                        <!-- Phone / Mobile -->
+                        <!-- Phone -->
                         <t t-if="company.phone">
-                            <div><span>Tel: </span><span t-field="company.phone"/><t t-if="company.mobile"> | <span>Mob: </span><span t-field="company.mobile"/></t></div>
-                        </t>
-                        <t t-elif="company.mobile">
-                            <div><span>Mob: </span><span t-field="company.mobile"/></div>
+                            <div><span>Tel: </span><span t-field="company.phone"/></div>
                         </t>
                         <!-- Email -->
                         <t t-if="company.email">
@@ -96,11 +93,11 @@
                         <div style="font-weight: 800; color: #111827; font-size: 13.5px; margin-bottom: 2px;">
                             <span t-field="salesperson.name"/>
                         </div>
-                        <div t-if="salesperson.phone or salesperson.mobile" style="color: #374151; font-weight: 600;">
-                            <span>Tel: </span><span t-esc="salesperson.phone or salesperson.mobile"/>
+                        <div t-if="salesperson.phone or (salesperson.partner_id and salesperson.partner_id.phone)" style="color: #374151; font-weight: 600;">
+                            <span>Tel: </span><span t-esc="salesperson.phone or salesperson.partner_id.phone"/>
                         </div>
-                        <div t-if="salesperson.email" style="color: #374151; font-weight: 600;">
-                            <span>Email: </span><span t-esc="salesperson.email"/>
+                        <div t-if="salesperson.email or (salesperson.partner_id and salesperson.partner_id.email)" style="color: #374151; font-weight: 600;">
+                            <span>Email: </span><span t-esc="salesperson.email or salesperson.partner_id.email"/>
                         </div>
                     </t>
                 </div>
