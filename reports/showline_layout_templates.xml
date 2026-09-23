@@ -22,6 +22,27 @@
                 letter-spacing: 1px;
                 text-transform: uppercase;
             }
+            /* Rich-text description: render bullet points and formatting */
+            .sl-line-desc ul, .sl-line-desc ol {
+                margin: 2px 0 2px 16px;
+                padding: 0;
+            }
+            .sl-line-desc li {
+                margin-bottom: 1px;
+                list-style-type: disc;
+            }
+            .sl-line-desc ol li {
+                list-style-type: decimal;
+            }
+            .sl-line-desc p {
+                margin: 1px 0;
+            }
+            .sl-line-desc strong, .sl-line-desc b {
+                font-weight: 700;
+            }
+            .sl-line-desc em, .sl-line-desc i {
+                font-style: italic;
+            }
         </style>
 
         <div class="article page showline-wrap" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
@@ -209,7 +230,7 @@
                                     <t t-set="line_count" t-value="line_count + 1"/>
                                 </td>
                                 <td style="padding: 8px; text-align: left; border-right: 1px solid #dee2e6;">
-                                    <span t-field="line.name"/>
+                                    <div class="sl-line-desc" t-out="line.name"/>
                                 </td>
                                 <td style="padding: 8px; text-align: center; border-right: 1px solid #dee2e6;">
                                     <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty" t-options='{"widget": "float", "precision": 1}'/>
