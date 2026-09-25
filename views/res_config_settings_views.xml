@@ -72,6 +72,14 @@
                         </div>
                         <button type="action" class="btn btn-secondary" name="%(action_havano_invoice_template)d" string="Manage Invoice Templates"/>
                     </block>
+                    <block title="Terms &amp; Conditions" name="terms_setting_container">
+                        <div class="text-muted mb-2">
+                            Configure company-wide default terms and conditions with rich formatting, pictures, and custom text styles.
+                        </div>
+                        <setting help="Default terms and conditions for quotations and invoices if not overridden by the active template or document.">
+                            <field name="hao_terms_and_conditions" widget="html"/>
+                        </setting>
+                    </block>
                     <block title="Rebranding">
                         <div class="text-muted mb-2">
                             Rename standard terminology to match your business needs.

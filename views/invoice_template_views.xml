@@ -44,6 +44,9 @@
                             </group>
                             <group string="Display Options">
                                 <field name="sales_person"/>
+                                <field name="show_sales_person_email" invisible="not sales_person"/>
+                                <field name="sales_person_always_use_fallback" invisible="not sales_person or not show_sales_person_email"/>
+                                <field name="sales_person_fallback_email" invisible="not sales_person or not show_sales_person_email" placeholder="e.g. sales@mycompany.com"/>
                                 <field name="description"/>
                                 <field name="tax_value"/>
                                 <field name="reference"/>
@@ -58,6 +61,11 @@
                             <field name="preview" widget="html" nolabel="1" readonly="1"/>
                         </div>
                     </div>
+                    <notebook>
+                        <page string="Terms &amp; Conditions" name="terms_and_conditions_page">
+                            <field name="terms_and_conditions" widget="html" placeholder="Enter terms and conditions here... You can format text, adjust font sizes, insert images/stamps, create lists, and apply custom styling."/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

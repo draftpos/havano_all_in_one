@@ -41,6 +41,13 @@ class ResConfigSettings(models.TransientModel):
         default=True,
     )
 
+    # Terms and Conditions
+    hao_terms_and_conditions = fields.Html(
+        related='company_id.hao_terms_and_conditions',
+        readonly=False,
+        string="Default Terms & Conditions",
+    )
+
     # Customer/supplier split
     hao_show_only_customers_in_sales = fields.Boolean(
         string="Sales show customers only",

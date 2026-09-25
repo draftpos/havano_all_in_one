@@ -46,6 +46,9 @@
                         <field name="hao_bank_detail_ids" nolabel="1"/>
                     </group>
                 </page>
+                <page string="Terms &amp; Conditions" name="hao_terms_and_conditions_page">
+                    <field name="hao_terms_and_conditions" widget="html" placeholder="Enter company-wide default terms and conditions..."/>
+                </page>
             </xpath>
         </field>
     </record>

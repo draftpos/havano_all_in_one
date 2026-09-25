@@ -92,6 +92,11 @@ class ResCompany(models.Model):
 
     custom_vat = fields.Char(string="VAT Number")
     custom_tin = fields.Char(string="TIN Number")
+    hao_terms_and_conditions = fields.Html(
+        string="Default Terms & Conditions",
+        sanitize=False,
+        help="Global default Terms & Conditions used across reports if not overridden by the active template or document."
+    )
 
     def write(self, vals):
         res = super(ResCompany, self).write(vals)

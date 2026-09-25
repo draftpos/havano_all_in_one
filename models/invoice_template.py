@@ -74,6 +74,10 @@ class HavanoInvoiceTemplate(models.Model):
     customer_position = fields.Selection([('left', 'Left'), ('right', 'Right')], string="Customer position", default="right", help="Customer address position")
     company_position = fields.Selection([('left', 'Left'), ('right', 'Right')], string="Company Address Position", default="left", help="Company address position")
     sales_person = fields.Boolean(string='Sales person', default=True, help="Sales Person of the layout")
+    show_sales_person_email = fields.Boolean(string='Show Salesperson Email', default=True, help="Display email under the Salesperson section in reports")
+    sales_person_always_use_fallback = fields.Boolean(string='Always Use Fallback Email', default=False, help="Always display the fallback email instead of the individual salesperson's email")
+    sales_person_fallback_email = fields.Char(string='Fallback Email', help="Email address to display if the salesperson does not have an email or if always use fallback is enabled")
+    terms_and_conditions = fields.Html(string="Terms & Conditions", sanitize=False, help="Terms & conditions for this layout template. Supports rich formatting, font sizes, colors, bullets, and images.")
     description = fields.Boolean(string='Description', default=True, help="Description of the layout")
     tax_value = fields.Boolean(string='Tax', default=True, help="Tax of the layout")
     reference = fields.Boolean(string='Customer Reference', default=True, help="Customer Reference")
@@ -147,6 +151,8 @@ class HavanoInvoiceTemplate(models.Model):
         self.ensure_one()
         self.env.company.base_layout = self.base_layout
         self.env.company.hao_document_layout_id = self.id
+        if self.terms_and_conditions:
+            self.env.company.hao_terms_and_conditions = self.terms_and_conditions
         if self.is_default:
             self.search([('id', '!=', self.id)]).write({'is_default': False})
         return {
