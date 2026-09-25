@@ -47,7 +47,7 @@
                                 <field name="show_sales_person_email" invisible="not sales_person"/>
                                 <field name="sales_person_always_use_fallback" invisible="not sales_person or not show_sales_person_email"/>
                                 <field name="sales_person_fallback_email" invisible="not sales_person or not show_sales_person_email" placeholder="e.g. sales@mycompany.com"/>
-                                <field name="payment_terms_label"/>
+                                <field name="custom_payment_terms"/>
                                 <field name="description"/>
                                 <field name="tax_value"/>
                                 <field name="reference"/>

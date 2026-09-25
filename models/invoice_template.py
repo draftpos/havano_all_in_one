@@ -77,7 +77,7 @@ class HavanoInvoiceTemplate(models.Model):
     show_sales_person_email = fields.Boolean(string='Show Salesperson Email', default=True, help="Display email under the Salesperson section in reports")
     sales_person_always_use_fallback = fields.Boolean(string='Always Use Fallback Email', default=False, help="Always display the fallback email instead of the individual salesperson's email")
     sales_person_fallback_email = fields.Char(string='Fallback Email', help="Email address to display if the salesperson does not have an email or if always use fallback is enabled")
-    payment_terms_label = fields.Char(string='Payment Terms Label', default='Payment Terms', help="Label to use for Payment Terms / Due Date on the document")
+    custom_payment_terms = fields.Char(string='Custom Payment Terms', help="Custom text to display instead of the standard Odoo payment terms. Leave empty to use the standard terms.")
     terms_and_conditions = fields.Html(string="Terms & Conditions", sanitize=False, help="Terms & conditions for this layout template. Supports rich formatting, font sizes, colors, bullets, and images.")
     description = fields.Boolean(string='Description', default=True, help="Description of the layout")
     tax_value = fields.Boolean(string='Tax', default=True, help="Tax of the layout")

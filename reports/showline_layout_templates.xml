@@ -189,12 +189,16 @@
                         </tr>
                         <tr style="background: #ffffff;">
                             <td style="font-weight: 700; padding: 6px 12px; color: #374151; font-size: 12.5px; border: 0 !important;">
-                                <t t-if="doc_model == 'sale.order'"><span t-out="company.hao_document_layout_id.payment_terms_label or 'Payment Terms'"/></t>
-                                <t t-else=""><span t-out="company.hao_document_layout_id.payment_terms_label or 'Due Date'"/></t>
+                                <t t-if="doc_model == 'sale.order'">Payment Terms</t>
+                                <t t-else="">Due Date</t>
                             </td>
                             <td style="padding: 6px 12px; font-weight: 700; color: #111827; font-size: 12.5px; border: 0 !important;">
-                                <t t-if="doc_model == 'sale.order'"><span t-field="o.payment_term_id.name"/></t>
-                                <t t-if="doc_model == 'account.move'"><span t-field="o.invoice_date_due" t-options='{"widget": "date"}'/></t>
+                                <t t-set="custom_terms" t-value="company.hao_document_layout_id.custom_payment_terms"/>
+                                <t t-if="custom_terms"><span t-out="custom_terms"/></t>
+                                <t t-else="">
+                                    <t t-if="doc_model == 'sale.order'"><span t-field="o.payment_term_id.name"/></t>
+                                    <t t-if="doc_model == 'account.move'"><span t-field="o.invoice_date_due" t-options='{"widget": "date"}'/></t>
+                                </t>
                             </td>
                         </tr>
                     </table>
