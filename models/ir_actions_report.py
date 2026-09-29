@@ -4,6 +4,7 @@ from odoo import models
 REPORT_PAPERFORMAT_MAP = {
     'puremetrix': 'havano_all_in_one.paperformat_puremetrix',
     'showline': 'havano_all_in_one.paperformat_puremetrix',
+    'showline_v2': 'havano_all_in_one.paperformat_puremetrix',
 }
 
 # Reports that should have their paperformat switched
@@ -58,7 +59,7 @@ class IrActionsReport(models.Model):
         report = self._get_report(report_ref) if report_ref else self
         if report and report.report_name in (INVOICE_REPORT_NAMES | SALE_REPORT_NAMES):
             company = self.env.company
-            if getattr(company, 'base_layout', False) in ('puremetrix', 'showline'):
+            if getattr(company, 'base_layout', False) in ('puremetrix', 'showline', 'showline_v2'):
                 if specific_paperformat_args is None:
                     specific_paperformat_args = {}
                 specific_paperformat_args.setdefault('data-report-margin-top', 6.0)

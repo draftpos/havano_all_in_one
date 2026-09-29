@@ -37,5 +37,12 @@
             <field name="heading_text_color">#ffffff</field>
             <field name="text_color">#222222</field>
         </record>
+        <record id="showline_v2_template" model="havano.invoice.template">
+            <field name="name">Showline V2</field>
+            <field name="base_layout">showline_v2</field>
+            <field name="base_color">#555f6e</field>
+            <field name="heading_text_color">#111827</field>
+            <field name="text_color">#111827</field>
+        </record>
     </data>
 </odoo>

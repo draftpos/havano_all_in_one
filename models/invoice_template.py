@@ -54,7 +54,8 @@ class HavanoInvoiceTemplate(models.Model):
             ('custom_fiscal', 'Seller Buyer Layout'),
             ('tripple_fresh', 'Tripple Fresh Letterhead'),
             ('puremetrix', 'Puremetrix Layout'),
-            ('showline', 'Showline Layout')
+            ('showline', 'Showline Layout'),
+            ('showline_v2', 'Showline V2')
         ]
         if 'trucking.load' in self.env:
             selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))
@@ -142,7 +143,9 @@ class HavanoInvoiceTemplate(models.Model):
                 elif template.base_layout == 'puremetrix':
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Puremetrix Layout</h4><p>This layout uses a custom Puremetrix header and footer. Please print a test document to see the exact design.</p></div>"
                 elif template.base_layout == 'showline':
-                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4 style='color: #c07d38;'>Showline Layout</h4><p>Modern minimalist layout featuring top-left logo, top-right company details card, middle-left customer block with VAT/TIN, and clear totals. Print or preview a real quotation or invoice to see the live document.</p></div>"
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Showline Layout</h4><p>Modern minimalist layout featuring top-left logo, top-right company details card, middle-left customer block with VAT/TIN, and clear totals. Print or preview a real quotation or invoice to see the live document.</p></div>"
+                elif template.base_layout == 'showline_v2':
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Showline V2</h4><p>Updated Showline layout with a professional grey theme, cleaner totals row, and clearer formatting for notes, sections, and items.</p></div>"
                 else:
                     template.preview = False
             except Exception as e:
