@@ -48,43 +48,45 @@
                     </t>
                 </div>
 
-                <!-- RIGHT: Full Company Details -->
+                <!-- RIGHT: Full Company Details (Left-aligned text block on the right) -->
                 <div style="float: right; width: 63%; text-align: right;">
-                    <div t-attf-style="font-size: 18px; font-weight: 800; color: {{ theme_color }}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
-                        <span t-field="company.name"/>
-                    </div>
-                    <div style="font-size: 12.5px; font-weight: 600; color: #1f2937; line-height: 1.6;">
-                        <t t-if="company.street or company.street2 or company.city or company.state_id or company.country_id">
-                            <div>
-                                <span t-if="company.street" t-field="company.street"/>
-                                <span t-if="company.street2">, <span t-field="company.street2"/></span>
-                                <span t-if="company.city">, <span t-field="company.city"/></span>
-                                <span t-if="company.state_id">, <span t-field="company.state_id.name"/></span>
-                                <span t-if="company.country_id">, <span t-field="company.country_id.name"/></span>
+                    <div style="display: inline-block; text-align: left;">
+                        <div t-attf-style="font-size: 18px; font-weight: 800; color: {{ theme_color }}; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+                            <span t-field="company.name"/>
+                        </div>
+                        <div style="font-size: 12.5px; font-weight: 600; color: #1f2937; line-height: 1.6;">
+                            <t t-set="addr_items" t-value="[]"/>
+                            <t t-if="company.street"><t t-set="addr_items" t-value="addr_items + [company.street]"/></t>
+                            <t t-if="company.street2"><t t-set="addr_items" t-value="addr_items + [company.street2]"/></t>
+                            <t t-if="company.city"><t t-set="addr_items" t-value="addr_items + [company.city]"/></t>
+                            <t t-if="company.state_id"><t t-set="addr_items" t-value="addr_items + [company.state_id.name]"/></t>
+                            <t t-if="company.country_id"><t t-set="addr_items" t-value="addr_items + [company.country_id.name]"/></t>
+                            <div t-if="addr_items">
+                                <span t-esc="', '.join(addr_items)"/>
                             </div>
-                        </t>
-                        <t t-set="comp_phone" t-value="company.phone or (company.partner_id and company.partner_id.phone)"/>
-                        <t t-set="comp_mobile" t-value="company.partner_id and 'mobile' in company.partner_id._fields and company.partner_id.mobile"/>
-                        <t t-if="comp_phone or comp_mobile">
-                            <div>
-                                <span>Tel / Mobile: </span>
-                                <span t-if="comp_phone" t-esc="comp_phone"/>
-                                <span t-if="comp_phone and comp_mobile"> | </span>
-                                <span t-if="comp_mobile" t-esc="comp_mobile"/>
-                            </div>
-                        </t>
-                        <t t-if="company.email">
-                            <div><span>Email: </span><span t-field="company.email"/></div>
-                        </t>
-                        <t t-if="company.website">
-                            <div><span>Web: </span><span t-field="company.website"/></div>
-                        </t>
-                        <t t-if="company.vat">
-                            <div><span>VAT / TIN: </span><strong style="color: #111827;"><span t-field="company.vat"/></strong></div>
-                        </t>
-                        <t t-if="company.company_registry">
-                            <div><span>Reg No: </span><strong style="color: #111827;"><span t-field="company.company_registry"/></strong></div>
-                        </t>
+                            <t t-set="comp_phone" t-value="company.phone or (company.partner_id and company.partner_id.phone)"/>
+                            <t t-set="comp_mobile" t-value="company.partner_id and 'mobile' in company.partner_id._fields and company.partner_id.mobile"/>
+                            <t t-if="comp_phone or comp_mobile">
+                                <div>
+                                    <span>Tel / Mobile: </span>
+                                    <span t-if="comp_phone" t-esc="comp_phone"/>
+                                    <span t-if="comp_phone and comp_mobile"> | </span>
+                                    <span t-if="comp_mobile" t-esc="comp_mobile"/>
+                                </div>
+                            </t>
+                            <t t-if="company.email">
+                                <div><span>Email: </span><span t-field="company.email"/></div>
+                            </t>
+                            <t t-if="company.website">
+                                <div><span>Web: </span><span t-field="company.website"/></div>
+                            </t>
+                            <t t-if="company.vat">
+                                <div><span>VAT / TIN: </span><strong style="color: #111827;"><span t-field="company.vat"/></strong></div>
+                            </t>
+                            <t t-if="company.company_registry">
+                                <div><span>Reg No: </span><strong style="color: #111827;"><span t-field="company.company_registry"/></strong></div>
+                            </t>
+                        </div>
                     </div>
                 </div>
             </div>
