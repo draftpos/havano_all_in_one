@@ -64,7 +64,7 @@
                             </div>
                         </t>
                         <t t-set="comp_phone" t-value="company.phone or (company.partner_id and company.partner_id.phone)"/>
-                        <t t-set="comp_mobile" t-value="company.partner_id and getattr(company.partner_id, 'mobile', False)"/>
+                        <t t-set="comp_mobile" t-value="company.partner_id and 'mobile' in company.partner_id._fields and company.partner_id.mobile"/>
                         <t t-if="comp_phone or comp_mobile">
                             <div>
                                 <span>Tel / Mobile: </span>
