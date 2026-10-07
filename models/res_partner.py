@@ -128,15 +128,17 @@ class ResPartner(models.Model):
     def write(self, vals):
         vals = dict(vals)
         self._apply_doctor_role_vals(vals)
-        for partner in self:
-            merged_vals = {
-                "name": vals.get("name", partner.name),
-                "email": vals.get("email", partner.email),
-                "phone": vals.get("phone", partner.phone),
-                "street": vals.get("street", partner.street),
-                "city": vals.get("city", partner.city),
-            }
-            self._raise_if_duplicate_for_values(merged_vals, current_id=partner.id)
+        contact_fields = {"name", "email", "phone", "street", "city"}
+        if not self.env.context.get("skip_duplicate_check") and any(f in vals for f in contact_fields):
+            for partner in self:
+                merged_vals = {
+                    "name": vals.get("name", partner.name),
+                    "email": vals.get("email", partner.email),
+                    "phone": vals.get("phone", partner.phone),
+                    "street": vals.get("street", partner.street),
+                    "city": vals.get("city", partner.city),
+                }
+                self._raise_if_duplicate_for_values(merged_vals, current_id=partner.id)
         if "is_supplier" in vals:
             if vals["is_supplier"]:
                 vals["supplier_rank"] = max(1, max(self.mapped("supplier_rank")))
