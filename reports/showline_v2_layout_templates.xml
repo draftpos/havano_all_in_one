@@ -133,7 +133,7 @@
             <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
                 <!-- CUSTOMER DETAILS — grey header, white text -->
                 <div style="float: left; width: 48%;">
-                    <table style="width: 100%; border-collapse: collapse; border: none !important; outline: none !important;">
+                    <table style="width: 100%; border-collapse: separate; border-spacing: 0; border: 0 hidden transparent !important; outline: none !important;">
                         <tr>
                             <td colspan="2" t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 800; padding: 8px 12px; font-size: 13px; letter-spacing: 0.5px; border: none !important;">
                                 <i class="fa fa-user" style="margin-right: 6px; color: #ffffff;"/> CUSTOMER DETAILS
@@ -169,7 +169,7 @@
 
                 <!-- ORDER / INVOICE DETAILS — grey header, white text -->
                 <div style="float: right; width: 48%;">
-                    <table style="width: 100%; border-collapse: collapse; border: none !important; outline: none !important;">
+                    <table style="width: 100%; border-collapse: separate; border-spacing: 0; border: 0 hidden transparent !important; outline: none !important;">
                         <tr>
                             <td colspan="2" t-attf-style="background-color: {{ theme_color }}; color: #ffffff; font-weight: 800; padding: 8px 12px; font-size: 13px; letter-spacing: 0.5px; border: none !important;">
                                 <i class="fa fa-file-text-o" style="margin-right: 6px; color: #ffffff;"/>
