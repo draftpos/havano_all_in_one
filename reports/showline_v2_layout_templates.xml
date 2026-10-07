@@ -41,10 +41,10 @@
             <!-- ══════════════════════════════════════════════════════════ -->
             <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
                 <!-- LEFT: Logo -->
-                <div style="float: left; width: 22%; text-align: left;">
+                <div style="float: left; width: 22%; text-align: left; padding-top: 10px;">
                     <t t-if="company.logo">
                         <img t-att-src="'/web/image/res.company/%s/logo' % company.id"
-                             style="max-height: 120px; max-width: 175px; object-fit: contain;"/>
+                             style="max-height: 110px; max-width: 175px; object-fit: contain;"/>
                     </t>
                 </div>
 
@@ -63,8 +63,15 @@
                                 <span t-if="company.country_id">, <span t-field="company.country_id.name"/></span>
                             </div>
                         </t>
-                        <t t-if="company.phone">
-                            <div><span>Tel: </span><span t-field="company.phone"/></div>
+                        <t t-set="comp_phone" t-value="company.phone or (company.partner_id and company.partner_id.phone)"/>
+                        <t t-set="comp_mobile" t-value="company.partner_id and company.partner_id.mobile"/>
+                        <t t-if="comp_phone or comp_mobile">
+                            <div>
+                                <span>Tel / Mobile: </span>
+                                <span t-if="comp_phone" t-esc="comp_phone"/>
+                                <span t-if="comp_phone and comp_mobile"> | </span>
+                                <span t-if="comp_mobile" t-esc="comp_mobile"/>
+                            </div>
                         </t>
                         <t t-if="company.email">
                             <div><span>Email: </span><span t-field="company.email"/></div>
