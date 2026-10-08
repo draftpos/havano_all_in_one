@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_template_report_showline_v3">
+        <t t-set="doc_model" t-value="o._name"/>
+        <t t-set="company" t-value="o.company_id"/>
+        <t t-set="partner" t-value="o.partner_id"/>
+        <t t-set="salesperson" t-value="o.invoice_user_id if (doc_model == 'account.move' and o.invoice_user_id) else o.user_id"/>
+        <t t-set="theme_color" t-value="'#111827'"/>
+
+        <div class="article page showline-wrap" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
+             style="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; font-size: 13px; color: #111827; width: 100%; margin: 0; padding: 0;">
+
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- HEADER ROW 1: Centered Document Title                      -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <div style="text-align: center; font-size: 28px; font-weight: 900; letter-spacing: 5px; color: #111827; padding: 4px 0 2px 0; text-transform: uppercase;">
+                <span style="font-size: 18px; opacity: 0.4; letter-spacing: 2px; margin-right: 10px;">&#9472;&#9472;</span>
+                <t t-if="doc_model == 'sale.order'">
+                    <t t-if="is_pro_forma">PRO-FORMA</t>
+                    <t t-elif="o.state in ['draft', 'sent']">QUOTATION</t>
+                    <t t-else="">SALES ORDER</t>
+                </t>
+                <t t-if="doc_model == 'account.move'">
+                    <t t-if="o.move_type == 'out_invoice' and o.state == 'posted'">INVOICE</t>
+                    <t t-elif="o.move_type == 'out_invoice' and o.state == 'draft'">DRAFT INVOICE</t>
+                    <t t-elif="o.move_type == 'out_refund'">CREDIT NOTE</t>
+                    <t t-elif="o.move_type == 'in_invoice'">VENDOR BILL</t>
+                    <t t-elif="o.move_type == 'in_refund'">VENDOR CREDIT NOTE</t>
+                    <t t-else="">DOCUMENT</t>
+                </t>
+                <span style="font-size: 18px; opacity: 0.4; letter-spacing: 2px; margin-left: 10px;">&#9472;&#9472;</span>
+            </div>
+
+            <!-- Accent divider line under title -->
+            <div style="height: 2px; background-color: #111827; margin: 4px 0 16px 0;"/>
+
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- HEADER ROW 2: Company Info + Logo                           -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
+                <!-- LEFT: Logo -->
+                <div style="float: left; width: 35%; text-align: left; padding-top: 10px;">
+                    <t t-if="company.logo">
+                        <img t-att-src="'/web/image/res.company/%s/logo' % company.id"
+                             style="max-height: 110px; max-width: 175px; object-fit: contain;"/>
+                    </t>
+                </div>
+
+                <!-- RIGHT: Full Company Details -->
+                <div style="float: right; width: 63%; text-align: right;">
+                    <div style="display: inline-block; text-align: left;">
+                        <div style="font-size: 18px; font-weight: 800; color: #111827; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+                            <span t-field="company.name"/>
+                        </div>
+                        <div style="font-size: 12.5px; font-weight: 600; color: #1f2937; line-height: 1.6;">
+                            <t t-set="addr_items" t-value="[]"/>
+                            <t t-if="company.street"><t t-set="addr_items" t-value="addr_items + [company.street]"/></t>
+                            <t t-if="company.street2"><t t-set="addr_items" t-value="addr_items + [company.street2]"/></t>
+                            <t t-if="company.city"><t t-set="addr_items" t-value="addr_items + [company.city]"/></t>
+                            <t t-if="company.state_id"><t t-set="addr_items" t-value="addr_items + [company.state_id.name]"/></t>
+                            <t t-if="company.country_id"><t t-set="addr_items" t-value="addr_items + [company.country_id.name]"/></t>
+                            <div t-if="addr_items">
+                                <span t-esc="', '.join(addr_items)"/>
+                            </div>
+                            <t t-set="comp_phone" t-value="company.phone or (company.partner_id and company.partner_id.phone)"/>
+                            <t t-set="comp_mobile" t-value="company.partner_id and 'mobile' in company.partner_id._fields and company.partner_id.mobile"/>
+                            <t t-if="comp_phone or comp_mobile">
+                                <div>
+                                    <span>Tel / Mobile: </span>
+                                    <span t-if="comp_phone" t-esc="comp_phone"/>
+                                    <span t-if="comp_phone and comp_mobile"> | </span>
+                                    <span t-if="comp_mobile" t-esc="comp_mobile"/>
+                                </div>
+                            </t>
+                            <t t-if="company.email">
+                                <div><span>Email: </span><span t-field="company.email"/></div>
+                            </t>
+                            <t t-if="company.website">
+                                <div><span>Web: </span><span t-field="company.website"/></div>
+                            </t>
+                            <t t-if="company.vat">
+                                <div><span>VAT / TIN: </span><strong style="color: #111827;"><span t-field="company.vat"/></strong></div>
+                            </t>
+                            <t t-if="company.company_registry">
+                                <div><span>Reg No: </span><strong style="color: #111827;"><span t-field="company.company_registry"/></strong></div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subtle Section Divider -->
+            <div style="height: 1.5px; background-color: #cbd5e1; margin-bottom: 16px; clear: both;"/>
+
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- DETAILS ROW: Customer + Invoice Info                       -->
+            <!-- V3: Border lines without background color fill            -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <div style="width: 100%; margin-bottom: 16px; overflow: hidden; clear: both;">
+                <!-- CUSTOMER DETAILS -->
+                <div style="float: left; width: 48%;">
+                    <table style="width: 100%; border-collapse: separate; border-spacing: 0; border: none !important; outline: none !important;">
+                        <tr>
+                            <td colspan="2" style="background: transparent; color: #111827; font-weight: 800; padding: 6px 4px; font-size: 13px; letter-spacing: 0.5px; border-top: 2px solid #111827 !important; border-bottom: 2px solid #111827 !important;">
+                                <i class="fa fa-user" style="margin-right: 6px; color: #111827;"/> CUSTOMER DETAILS
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="font-weight: 700; padding: 6px 4px; width: 30%; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Customer</td>
+                            <td style="padding: 6px 4px; font-weight: 800; color: #111827; font-size: 13px; border-bottom: 1px solid #e5e7eb !important;"><span t-field="partner.name"/></td>
+                        </tr>
+                        <tr t-if="partner.street or partner.city or partner.country_id" style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Address</td>
+                            <td style="padding: 6px 4px; font-weight: 600; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">
+                                <span t-if="partner.street" t-field="partner.street"/>
+                                <span t-if="partner.street2">, <span t-field="partner.street2"/></span>
+                                <span t-if="partner.city">, <span t-field="partner.city"/></span>
+                                <span t-if="partner.country_id">, <span t-field="partner.country_id.name"/></span>
+                            </td>
+                        </tr>
+                        <tr t-if="partner.phone" style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Phone</td>
+                            <td style="padding: 6px 4px; font-weight: 700; color: #111827; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;"><span t-esc="partner.phone"/></td>
+                        </tr>
+                        <tr t-if="partner.email" style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Email</td>
+                            <td style="padding: 6px 4px; font-weight: 700; color: #111827; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;"><span t-esc="partner.email"/></td>
+                        </tr>
+                        <tr t-if="partner.vat" style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">VAT / TIN</td>
+                            <td style="padding: 6px 4px; font-weight: 700; color: #111827; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;"><span t-esc="partner.vat"/></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- ORDER / INVOICE DETAILS -->
+                <div style="float: right; width: 48%;">
+                    <table style="width: 100%; border-collapse: separate; border-spacing: 0; border: none !important; outline: none !important;">
+                        <tr>
+                            <td colspan="2" style="background: transparent; color: #111827; font-weight: 800; padding: 6px 4px; font-size: 13px; letter-spacing: 0.5px; border-top: 2px solid #111827 !important; border-bottom: 2px solid #111827 !important;">
+                                <i class="fa fa-file-text-o" style="margin-right: 6px; color: #111827;"/>
+                                <t t-if="doc_model == 'sale.order'">ORDER DETAILS</t>
+                                <t t-else="">INVOICE DETAILS</t>
+                            </td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="font-weight: 700; padding: 6px 4px; width: 34%; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">
+                                <t t-if="doc_model == 'sale.order'">Order No.</t>
+                                <t t-else="">Invoice No.</t>
+                            </td>
+                            <td style="padding: 6px 4px; font-weight: 900; color: #111827; font-size: 14px; border-bottom: 1px solid #e5e7eb !important;"><span t-field="o.name"/></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #e5e7eb;">
+                            <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Date</td>
+                            <td style="padding: 6px 4px; font-weight: 700; color: #111827; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">
+                                <t t-if="doc_model == 'sale.order'"><span t-field="o.date_order" t-options='{"widget": "date"}'/></t>
+                                <t t-if="doc_model == 'account.move'"><span t-field="o.invoice_date" t-options='{"widget": "date"}'/></t>
+                            </td>
+                        </tr>
+                        <t t-if="salesperson">
+                            <t t-set="sp_phone" t-value="salesperson.phone or (salesperson.partner_id and salesperson.partner_id.phone)"/>
+                            <t t-set="tmpl" t-value="company.hao_document_layout_id"/>
+                            <t t-set="sp_email" t-value="False"/>
+                            <t t-if="tmpl and tmpl.show_sales_person_email">
+                                <t t-set="sp_email" t-value="tmpl.sales_person_fallback_email if tmpl.sales_person_always_use_fallback else (salesperson.email or tmpl.sales_person_fallback_email)"/>
+                            </t>
+                            <t t-if="not sp_email and salesperson.email">
+                                <t t-set="sp_email" t-value="salesperson.email"/>
+                            </t>
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Sales Person</td>
+                                <td style="padding: 6px 4px; font-weight: 800; color: #111827; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;"><span t-field="salesperson.name"/></td>
+                            </tr>
+                            <tr t-if="sp_phone" style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Phone</td>
+                                <td style="padding: 6px 4px; font-weight: 700; color: #111827; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;"><span t-esc="sp_phone"/></td>
+                            </tr>
+                            <tr t-if="sp_email" style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="font-weight: 700; padding: 6px 4px; color: #374151; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;">Email</td>
+                                <td style="padding: 6px 4px; font-weight: 700; color: #111827; font-size: 12.5px; border-bottom: 1px solid #e5e7eb !important;"><span t-esc="sp_email"/></td>
+                            </tr>
+                        </t>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- LINES TABLE — Horizontal borders only, no vertical lines   -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 16px; overflow: hidden; clear: both;">
+                <thead>
+                    <tr style="background: transparent; color: #111827; font-weight: 800; font-size: 12.5px; border-top: 2px solid #111827 !important; border-bottom: 2px solid #111827 !important;">
+                        <th style="padding: 8px 6px; text-align: center; width: 5%; color: #111827;">#</th>
+                        <th style="padding: 8px 10px; text-align: left; width: 55%; color: #111827;">Description</th>
+                        <th style="padding: 8px 6px; text-align: center; width: 10%; color: #111827;">Qty</th>
+                        <th style="padding: 8px 10px; text-align: right; width: 15%; color: #111827;">Unit Price (<span t-field="o.currency_id.symbol"/>)</th>
+                        <th style="padding: 8px 10px; text-align: right; width: 15%; color: #111827;">Total Amt (<span t-field="o.currency_id.symbol"/>)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="lines" t-value="o.invoice_line_ids if doc_model == 'account.move' else o.order_line"/>
+                    <t t-set="line_count" t-value="1"/>
+                    <t t-foreach="lines" t-as="line">
+
+                        <!-- SECTION HEADER LINE -->
+                        <t t-if="line.display_type == 'line_section'">
+                            <tr style="border-bottom: 1px solid #cbd5e1; background: #f8fafc;">
+                                <td colspan="5" style="padding: 7px 10px; font-weight: 800; font-size: 13px; color: #111827;">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </tr>
+                        </t>
+
+                        <!-- NOTE LINE -->
+                        <t t-elif="line.display_type == 'line_note'">
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td colspan="5" style="padding: 5px 10px; font-size: 12px; font-style: italic; color: #4b5563;">
+                                    <span t-field="line.name"/>
+                                </td>
+                            </tr>
+                        </t>
+
+                        <!-- PRODUCT LINE -->
+                        <t t-elif="line.display_type in ['product', False, '']">
+                            <!-- Strip leading [CODE] prefix if present -->
+                            <t t-set="desc_text" t-value="line.name or ''"/>
+                            <t t-if="desc_text and desc_text.startswith('[') and '] ' in desc_text">
+                                <t t-set="desc_text" t-value="desc_text.split('] ', 1)[1]"/>
+                            </t>
+                            <t t-elif="desc_text and desc_text.startswith('[') and ']' in desc_text">
+                                <t t-set="desc_text" t-value="desc_text.split(']', 1)[1].strip()"/>
+                            </t>
+
+                            <tr style="border-bottom: 1px solid #e5e7eb;">
+                                <td style="padding: 9px 6px; text-align: center; font-weight: 800; font-size: 12.5px; color: #111827; vertical-align: top;">
+                                    <span t-esc="line_count"/>
+                                    <t t-set="line_count" t-value="line_count + 1"/>
+                                </td>
+                                <td style="padding: 9px 10px; text-align: left; vertical-align: top;">
+                                    <t t-if="'&lt;' in desc_text">
+                                        <div style="line-height: 1.55; font-size: 12.5px; color: #111827; font-weight: 400;" t-out="desc_text"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div style="line-height: 1.55; font-size: 12.5px; color: #111827; font-weight: 400;">
+                                            <t t-foreach="desc_text.split('\n')" t-as="ln">
+                                                <span t-esc="ln"/><br t-if="not ln_last"/>
+                                            </t>
+                                        </div>
+                                    </t>
+                                </td>
+                                <td style="padding: 9px 6px; text-align: center; vertical-align: top; font-weight: 700; font-size: 13px; color: #111827;">
+                                    <span t-if="doc_model == 'sale.order'" t-field="line.product_uom_qty" t-options='{"widget": "float", "precision": 1}'/>
+                                    <span t-if="doc_model == 'account.move'" t-field="line.quantity" t-options='{"widget": "float", "precision": 1}'/>
+                                </td>
+                                <td style="padding: 9px 10px; text-align: right; vertical-align: top; font-weight: 600; font-size: 13px; color: #111827;">
+                                    <span t-field="line.price_unit" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                                <td style="padding: 9px 10px; text-align: right; vertical-align: top; font-weight: 800; font-size: 13px; color: #111827;">
+                                    <span t-field="line.price_total" t-options='{"widget": "float", "precision": 2}'/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- TOTALS ROW — Clean border line style                      -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <div style="width: 100%; margin-bottom: 18px; overflow: hidden; clear: both;">
+                <div style="float: right; width: 45%;">
+                    <table style="width: 100%; border-collapse: collapse; border-top: 2px solid #111827 !important; border-bottom: 2px solid #111827 !important;">
+                        <tr>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 800; font-size: 13.5px; color: #111827; width: 45%;">TOTAL</td>
+                            <td style="padding: 10px 14px; text-align: right; font-weight: 900; font-size: 16.5px; color: #111827;">
+                                <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- TERMS AND BANKING ROW                                      -->
+            <!-- V3: Border lines without background color fill            -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <div style="width: 100%; margin-bottom: 18px; overflow: hidden; clear: both;">
+                <!-- TERMS -->
+                <div style="float: left; width: 48%; box-sizing: border-box;">
+                    <div style="padding: 6px 4px; font-weight: 800; color: #111827; font-size: 12.5px; background: transparent; border-top: 2px solid #111827 !important; border-bottom: 2px solid #111827 !important;">
+                        <i class="fa fa-file-text-o" style="color: #111827;"/> TERMS &amp; CONDITIONS
+                    </div>
+                    <div style="padding: 10px 4px; min-height: 60px; color: #1f2937; font-size: 12px; font-weight: 400; line-height: 1.6; border-bottom: 1px solid #e5e7eb;">
+                        <t t-set="doc_terms" t-value="o.note if doc_model == 'sale.order' else o.narration"/>
+                        <t t-set="tmpl" t-value="company.hao_document_layout_id"/>
+                        <t t-set="tmpl_terms" t-value="tmpl and tmpl.terms_and_conditions"/>
+                        <t t-set="comp_terms" t-value="company.hao_terms_and_conditions or company.invoice_terms"/>
+                        <t t-if="doc_terms and not is_html_empty(doc_terms)">
+                            <div t-if="doc_model == 'sale.order'" t-field="o.note"/>
+                            <div t-if="doc_model == 'account.move'" t-field="o.narration"/>
+                        </t>
+                        <t t-elif="tmpl_terms and not is_html_empty(tmpl_terms)">
+                            <div t-field="tmpl.terms_and_conditions"/>
+                        </t>
+                        <t t-elif="comp_terms and not is_html_empty(comp_terms)">
+                            <div t-if="company.hao_terms_and_conditions" t-field="company.hao_terms_and_conditions"/>
+                            <div t-elif="company.invoice_terms" t-field="company.invoice_terms"/>
+                        </t>
+                    </div>
+                    <div style="padding: 8px 4px 10px; font-size: 12px; color: #4b5563;">
+                        <t t-set="tmpl" t-value="company.hao_document_layout_id"/>
+                        <t t-set="has_tmpl_sig" t-value="tmpl and tmpl.authorised_signature"/>
+                        <t t-set="has_comp_sig" t-value="company.hao_authorised_signature"/>
+                        <t t-if="has_tmpl_sig or has_comp_sig">
+                            <div style="margin-bottom: -18px; margin-top: -6px; padding-left: 10px;">
+                                <t t-if="has_tmpl_sig">
+                                    <img t-att-src="'/web/image/havano.invoice.template/%s/authorised_signature' % tmpl.id" style="max-height: 60px; max-width: 170px; object-fit: contain;"/>
+                                </t>
+                                <t t-elif="has_comp_sig">
+                                    <img t-att-src="'/web/image/res.company/%s/hao_authorised_signature' % company.id" style="max-height: 60px; max-width: 170px; object-fit: contain;"/>
+                                </t>
+                            </div>
+                        </t>
+                        ------------------------------------<br/>
+                        <strong style="color: #111827; font-weight: 700;">Authorised Signatory</strong><br/>
+                        <span t-field="company.name" style="text-transform: uppercase; font-weight: 800; color: #111827;"/>
+                    </div>
+                </div>
+
+                <!-- BANKING -->
+                <div style="float: right; width: 48%; box-sizing: border-box;">
+                    <div style="padding: 6px 4px; font-weight: 800; color: #111827; font-size: 12.5px; background: transparent; border-top: 2px solid #111827 !important; border-bottom: 2px solid #111827 !important;">
+                        <i class="fa fa-university" style="color: #111827;"/> BANKING DETAILS
+                    </div>
+                    <div style="padding: 10px 4px; min-height: 60px; font-size: 12px; line-height: 1.6; color: #1f2937; font-weight: 600; border-bottom: 1px solid #e5e7eb;">
+                        <t t-if="company.hao_bank_name or company.hao_bank_detail_ids">
+                            <t t-if="company.hao_multi_bank and company.hao_bank_detail_ids">
+                                <t t-foreach="company.hao_bank_detail_ids" t-as="bank">
+                                    <div style="margin-bottom: 4px; color: #111827;">
+                                        <i class="fa fa-bank" style="margin-right:4px; color: #111827;"/>
+                                        <span t-field="bank.bank_name"/> — Acc: <strong><span t-field="bank.acc_number"/></strong>
+                                        <span t-if="bank.branch"> (<span t-field="bank.branch"/>)</span>
+                                    </div>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <div t-if="company.hao_bank_name" style="margin-bottom:4px;"><strong>Bank:</strong> <span t-field="company.hao_bank_name"/></div>
+                                <div t-if="company.hao_bank_account_name" style="margin-bottom:4px;"><strong>Account Name:</strong> <span t-field="company.hao_bank_account_name"/></div>
+                                <div t-if="company.hao_bank_account_no"><strong>Account No:</strong> <span t-field="company.hao_bank_account_no"/></div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <span style="color:#6b7280; font-style:italic;">No banking details provided.</span>
+                        </t>
+                    </div>
+                    <div style="padding: 7px 4px 10px; text-align: left; font-weight: 800; font-size: 12px; color: #111827;">
+                        <i style="background-color: #111827; color: white; border-radius: 50%; padding: 3px 4px; margin-right: 4px;" class="fa fa-handshake-o"/>
+                        Thank you for your business!
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <!-- FOOTER BAR — Border top and bottom                         -->
+            <!-- ══════════════════════════════════════════════════════════ -->
+            <div style="background: transparent; color: #111827; text-align: center; padding: 8px 4px; font-size: 12px; font-weight: 700; letter-spacing: 0.6px; clear: both; border-top: 1.5px solid #111827 !important; border-bottom: 1.5px solid #111827 !important;">
+                <i class="fa fa-bolt" style="margin-right: 4px; color: #111827;"/> Powered by <strong><span t-field="company.name"/></strong>
+                <t t-if="company.website"> &amp;nbsp;|&amp;nbsp; <span t-field="company.website"/></t>
+            </div>
+
+        </div>
+    </template>
+</odoo>
