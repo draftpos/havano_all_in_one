@@ -15,7 +15,8 @@ class ResCompany(models.Model):
             ('tripple_fresh', 'Tripple Fresh Letterhead'),
             ('puremetrix', 'Puremetrix Layout'),
             ('showline', 'Showline Layout'),
-            ('showline_v2', 'Showline V2')
+            ('showline_v2', 'Showline V2'),
+            ('showline_v3', 'Showline V3')
         ]
         if 'trucking.load' in self.env:
             selection.append(('trucking', 'Trucking (Fiscal Tax Invoice)'))

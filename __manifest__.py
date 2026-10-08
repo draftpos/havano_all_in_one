@@ -45,6 +45,7 @@
         "reports/puremetrix_layout_templates.xml",
         "reports/showline_layout_templates.xml",
         "reports/showline_v2_layout_templates.xml",
+        "reports/showline_v3_layout_templates.xml",
         "reports/report_sale_templates.xml",
         "views/invoice_template_views.xml",
         "views/res_company_views.xml",
