@@ -309,6 +309,19 @@
                         </t>
                     </div>
                     <div style="padding: 8px 14px 10px; border-top: 1px dashed #9ca3af; font-size: 12px; color: #4b5563;">
+                        <t t-set="tmpl" t-value="company.hao_document_layout_id"/>
+                        <t t-set="has_tmpl_sig" t-value="tmpl and tmpl.authorised_signature"/>
+                        <t t-set="has_comp_sig" t-value="company.hao_authorised_signature"/>
+                        <t t-if="has_tmpl_sig or has_comp_sig">
+                            <div style="margin-bottom: -18px; margin-top: -6px; padding-left: 10px;">
+                                <t t-if="has_tmpl_sig">
+                                    <img t-att-src="'/web/image/havano.invoice.template/%s/authorised_signature' % tmpl.id" style="max-height: 60px; max-width: 170px; object-fit: contain;"/>
+                                </t>
+                                <t t-elif="has_comp_sig">
+                                    <img t-att-src="'/web/image/res.company/%s/hao_authorised_signature' % company.id" style="max-height: 60px; max-width: 170px; object-fit: contain;"/>
+                                </t>
+                            </div>
+                        </t>
                         ------------------------------------<br/>
                         <strong style="color: #111827; font-weight: 700;">Authorised Signatory</strong><br/>
                         <span t-field="company.name" style="text-transform: uppercase; font-weight: 800; color: #111827;"/>

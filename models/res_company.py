@@ -93,6 +93,11 @@ class ResCompany(models.Model):
 
     custom_vat = fields.Char(string="VAT Number")
     custom_tin = fields.Char(string="TIN Number")
+    hao_authorised_signature = fields.Binary(
+        string="Authorised Signature Image",
+        attachment=True,
+        help="Global default transparent PNG signature image to display above the Authorised Signatory line across reports."
+    )
     hao_terms_and_conditions = fields.Html(
         string="Default Terms & Conditions",
         sanitize=False,

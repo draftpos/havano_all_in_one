@@ -79,6 +79,7 @@ class HavanoInvoiceTemplate(models.Model):
     sales_person_always_use_fallback = fields.Boolean(string='Always Use Fallback Email', default=False, help="Always display the fallback email instead of the individual salesperson's email")
     sales_person_fallback_email = fields.Char(string='Fallback Email', help="Email address to display if the salesperson does not have an email or if always use fallback is enabled")
     custom_payment_terms = fields.Char(string='Custom Payment Terms', help="Custom text to display instead of the standard Odoo payment terms. Leave empty to use the standard terms.")
+    authorised_signature = fields.Binary(string="Authorised Signature Image", attachment=True, help="Upload a transparent PNG signature image to display above the Authorised Signatory section for this template.")
     terms_and_conditions = fields.Html(string="Terms & Conditions", sanitize=False, help="Terms & conditions for this layout template. Supports rich formatting, font sizes, colors, bullets, and images.")
     description = fields.Boolean(string='Description', default=True, help="Description of the layout")
     tax_value = fields.Boolean(string='Tax', default=True, help="Tax of the layout")
