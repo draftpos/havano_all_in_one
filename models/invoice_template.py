@@ -148,6 +148,8 @@ class HavanoInvoiceTemplate(models.Model):
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Showline Layout</h4><p>Modern minimalist layout featuring top-left logo, top-right company details card, middle-left customer block with VAT/TIN, and clear totals. Print or preview a real quotation or invoice to see the live document.</p></div>"
                 elif template.base_layout == 'showline_v2':
                     template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Showline V2</h4><p>Updated Showline layout with a professional grey theme, cleaner totals row, and clearer formatting for notes, sections, and items.</p></div>"
+                elif template.base_layout == 'showline_v3':
+                    template.preview = "<div style='padding: 50px; text-align: center; color: #555; background: #fafafa; border-radius: 8px;'><h4>Showline V3</h4><p>Border-focused clean design without background fills, crisp dividers, and zero-margin layout starting directly at the top.</p></div>"
                 else:
                     template.preview = False
             except Exception as e:
