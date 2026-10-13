@@ -106,12 +106,12 @@
                             </td>
                         </tr>
                         <tr style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="font-weight: 500; padding: 6px 4px; width: 30%; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Customer</td>
-                            <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-field="partner.name"/></td>
+                            <td style="font-weight: 700; padding: 6px 4px; width: 30%; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Customer</td>
+                            <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-field="partner.name"/></td>
                         </tr>
                         <tr t-if="partner.street or partner.city or partner.country_id" style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Address</td>
-                            <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">
+                            <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Address</td>
+                            <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">
                                 <span t-if="partner.street" t-field="partner.street"/>
                                 <span t-if="partner.street2">, <span t-field="partner.street2"/></span>
                                 <span t-if="partner.city">, <span t-field="partner.city"/></span>
@@ -119,16 +119,16 @@
                             </td>
                         </tr>
                         <tr t-if="partner.phone" style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Phone</td>
-                            <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="partner.phone"/></td>
+                            <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Phone</td>
+                            <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="partner.phone"/></td>
                         </tr>
                         <tr t-if="partner.email" style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Email</td>
-                            <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="partner.email"/></td>
+                            <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Email</td>
+                            <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="partner.email"/></td>
                         </tr>
                         <tr t-if="partner.vat" style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">VAT / TIN</td>
-                            <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="partner.vat"/></td>
+                            <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">VAT / TIN</td>
+                            <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="partner.vat"/></td>
                         </tr>
                     </table>
                 </div>
@@ -144,15 +144,15 @@
                             </td>
                         </tr>
                         <tr style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="font-weight: 500; padding: 6px 4px; width: 34%; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">
+                            <td style="font-weight: 700; padding: 6px 4px; width: 34%; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">
                                 <t t-if="doc_model == 'sale.order'">Order No.</t>
                                 <t t-else="">Invoice No.</t>
                             </td>
-                            <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-field="o.name"/></td>
+                            <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-field="o.name"/></td>
                         </tr>
                         <tr style="border-bottom: 1px solid #f1f5f9;">
-                            <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Date</td>
-                            <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">
+                            <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Date</td>
+                            <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">
                                 <t t-if="doc_model == 'sale.order'"><span t-field="o.date_order" t-options='{"widget": "date"}'/></t>
                                 <t t-if="doc_model == 'account.move'"><span t-field="o.invoice_date" t-options='{"widget": "date"}'/></t>
                             </td>
@@ -168,16 +168,16 @@
                                 <t t-set="sp_email" t-value="salesperson.email"/>
                             </t>
                             <tr style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Sales Person</td>
-                                <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-field="salesperson.name"/></td>
+                                <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Sales Person</td>
+                                <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-field="salesperson.name"/></td>
                             </tr>
                             <tr t-if="sp_phone" style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Phone</td>
-                                <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="sp_phone"/></td>
+                                <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Phone</td>
+                                <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="sp_phone"/></td>
                             </tr>
                             <tr t-if="sp_email" style="border-bottom: 1px solid #f1f5f9;">
-                                <td style="font-weight: 500; padding: 6px 4px; color: #4b5563; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Email</td>
-                                <td style="padding: 6px 4px; font-weight: 400; color: #1f2937; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="sp_email"/></td>
+                                <td style="font-weight: 700; padding: 6px 4px; color: #111827; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;">Email</td>
+                                <td style="padding: 6px 4px; font-weight: 400; color: #374151; font-size: 12.5px; border-bottom: 1px solid #f1f5f9 !important;"><span t-esc="sp_email"/></td>
                             </tr>
                         </t>
                     </table>
