@@ -4,9 +4,9 @@
 
 <p align="center">
   <a href="#-features-overview"><img src="https://img.shields.io/badge/Odoo-19.0%20Enterprise%20%26%20Community-714B67?style=for-the-badge&logo=odoo&logoColor=white" alt="Odoo 19.0"/></a>
+  <a href="#-lead-developer--maintainer"><img src="https://img.shields.io/badge/Developer-Tatenda%20Tembo-6366F1?style=for-the-badge&logo=github&logoColor=white" alt="Developed by Tatenda Tembo"/></a>
   <a href="#-installation--setup"><img src="https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python Version"/></a>
-  <a href="#-license"><img src="https://img.shields.io/badge/License-LGPL--3-blue?style=for-the-badge" alt="License LGPL-3"/></a>
-  <a href="#-architecture"><img src="https://img.shields.io/badge/Architecture-Modular%20Enterprise-success?style=for-the-badge&logo=stackblitz&logoColor=white" alt="Architecture"/></a>
+  <a href="#-license--legal-terms"><img src="https://img.shields.io/badge/License-LGPL--3-blue?style=for-the-badge" alt="License LGPL-3"/></a>
   <a href="#-document--invoice-template-studio"><img src="https://img.shields.io/badge/PDF%20Engine-Showline%20V3%20Inside-8B5CF6?style=for-the-badge&logo=adobeacrobatreader&logoColor=white" alt="Showline V3 Inside"/></a>
 </p>
 
@@ -38,8 +38,8 @@ Designed for production environments where data integrity, regulatory compliance
 - [🎨 White-Labeling & Custom Login Builder](#-white-labeling--custom-login-builder)
 - [⚡ Operations Automation & Maintenance](#-operations-automation--maintenance)
 - [📁 Module Architecture & Code Map](#-module-architecture--code-map)
-- [🚀 Installation & Setup](#-installation--setup)
-- [📄 License & Authorship](#-license--authorship)
+- [👨‍💻 Lead Developer & Maintainer](#-lead-developer--maintainer)
+- [⚖️ License & Legal Terms](#️-license--legal-terms)
 
 ---
 
@@ -301,15 +301,54 @@ python odoo-bin -c odoo.conf -d <your_database> -u havano_all_in_one --stop-afte
 
 ---
 
-## 📄 License & Authorship
+## 👨‍💻 Lead Developer & Maintainer
 
-- **Author**: Havano
-- **License**: LGPL-3 (GNU Lesser General Public License v3.0)
-- **Version**: `19.0.1.0.10`
-- **Maintained By**: Havano Core Engineering Team
+<table style="border: none;">
+  <tr>
+    <td width="90" align="center" valign="middle">
+      <img src="https://avatars.githubusercontent.com/u/198754167?v=4" width="80" height="80" style="border-radius: 50%;" alt="Tatenda Tembo"/>
+    </td>
+    <td>
+      <h3 style="margin: 0; padding: 0;">Tatenda Tembo</h3>
+      <p style="margin: 4px 0; color: #64748b; font-size: 14px;">Lead Odoo Enterprise Systems Architect &amp; Software Engineer</p>
+      <p style="margin: 4px 0; font-size: 13px;">
+        🔗 <b>GitHub</b>: <a href="https://github.com/tatendatembojnr-code">@tatendatembojnr-code</a> &nbsp;|&nbsp;
+        💼 <b>Organization</b>: Havano / DraftPOS &nbsp;|&nbsp;
+        📧 <b>Direct Contact</b>: <a href="mailto:tatendatembojnr@gmail.com">tatendatembojnr@gmail.com</a>
+      </p>
+    </td>
+  </tr>
+</table>
+
+> *Developed and architected by **Tatenda Tembo** to deliver high-performance, robust, and beautiful ERP extensions for modern Odoo enterprise ecosystems.*
+
+---
+
+## ⚖️ License & Legal Terms
+
+This module is published and licensed under the **GNU Lesser General Public License v3.0 (LGPL-3)**.
+
+```text
+Copyright (C) 2026 Tatenda Tembo / Havano Core Engineering Team.
+All rights reserved.
+```
+
+### Key Terms & Permissions:
+- ✅ **Commercial Use**: You are free to run this software in commercial, retail, or industrial enterprise installations.
+- ✅ **Modification**: You may inspect, modify, and customize the source code to suit your organizational business rules.
+- ✅ **Distribution**: You may distribute copies of the software provided that derivative library works remain licensed under LGPL-3.
+- ✅ **Private Use**: Internal company deployments may adapt the code privately.
+
+### Conditions & Notices:
+- 📌 **License & Copyright Preservation**: All copies of the software must retain the original copyright notice crediting **Tatenda Tembo** and **Havano**.
+- 📌 **Source Code Disclosure**: Any modifications made to the core library itself when distributed must be conveyed under LGPL-3.
+- 📌 **State Changes**: Any file modifications must carry prominent notices stating that the files were changed and the date of modification.
+
+### Disclaimer of Warranty:
+> *THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE DEVELOPER (TATENDA TEMBO) OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE.*
 
 ---
 
 <p align="center">
-  <b>Built with ❤️ for modern Odoo enterprise deployments.</b>
+  <b>Developed by Tatenda Tembo &bull; Engineered with ❤️ for Odoo 19 Enterprise & Community</b>
 </p>

@@ -3,7 +3,10 @@
     "version": "19.0.1.0.10",
     "category": "Sales",
     "summary": "Havano suite: duplicates, contacts, pharmacy products, doctors, tax pricing, PDF preview",
-    "author": "Havano",
+    "author": "Tatenda Tembo | Havano",
+    "maintainer": "Tatenda Tembo",
+    "website": "https://github.com/draftpos/havano_all_in_one",
+    "support": "tatendatembojnr@gmail.com",
     "license": "LGPL-3",
     "depends": [
         "base",
