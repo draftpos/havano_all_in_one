@@ -163,6 +163,7 @@ class HavanoInvoiceTemplate(models.Model):
             self.env.company.hao_terms_and_conditions = self.terms_and_conditions
         if self.is_default:
             self.search([('id', '!=', self.id)]).write({'is_default': False})
+        self.env['havano.invoice.template'].invalidate_model(['is_applied'])
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',

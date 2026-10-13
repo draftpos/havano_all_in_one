@@ -22,6 +22,22 @@ class SaleOrder(models.Model):
         ('sales_invoice', 'Sales Invoice')
     ], string='Status', copy=False, readonly=True)
 
+    theme_id = fields.Many2one(
+        'havano.invoice.template',
+        string="Invoice Template",
+        compute='_compute_theme_id',
+        help="Active template layout configuration"
+    )
+
+    def _compute_theme_id(self):
+        for order in self:
+            tmpl = order.company_id.hao_document_layout_id
+            if not tmpl:
+                tmpl = self.env['havano.invoice.template'].search([
+                    ('base_layout', '=', order.company_id.base_layout)
+                ], limit=1)
+            order.theme_id = tmpl
+
     hao_delivery_location_id = fields.Many2one(
         'stock.location', string='Delivery Location',
         domain=[('usage', '=', 'internal')]
