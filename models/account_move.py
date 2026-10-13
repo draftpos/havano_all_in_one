@@ -16,6 +16,22 @@ LAYOUT_PAPERFORMAT_MAP = {
 class AccountMove(models.Model):
     _inherit = "account.move"
 
+    theme_id = fields.Many2one(
+        'havano.invoice.template',
+        string="Invoice Template",
+        compute='_compute_theme_id',
+        help="Active template layout configuration"
+    )
+
+    def _compute_theme_id(self):
+        for move in self:
+            tmpl = move.company_id.hao_document_layout_id
+            if not tmpl:
+                tmpl = self.env['havano.invoice.template'].search([
+                    ('base_layout', '=', move.company_id.base_layout)
+                ], limit=1)
+            move.theme_id = tmpl
+
     def _hao_ensure_purchase_invoice_date(self):
         """Use today when bill date is empty so vendor bills can post (Havano automation)."""
         today = fields.Date.context_today(self)

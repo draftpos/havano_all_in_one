@@ -1,55 +1,261 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="0">
-        <!--Demo records within the doc layout model-->
-        <record id="Modern" model="havano.invoice.template">
-            <field name="name">Modern</field>
-            <field name="base_color">#732673</field>
-            <field name="heading_text_color">#ffffff</field>
-            <field name="text_color">#000000</field>
-            <field name="customer_text_color">#d117d1</field>
-            <field name="logo_position">right</field>
-            <field name="tagline_position">right</field>
-            <field name="customer_position">right</field>
-            <field name="company_position">left</field>
-            <field name="company_text_color">#2439d6</field>
-        </record>
-        <record id="standard" model="havano.invoice.template">
-      	    <field name="name">Standard</field>
-            <field name="base_color">#ff7733</field>
-            <field name="heading_text_color">#ffffff</field>
-            <field name="text_color">#000000</field>
-            <field name="customer_text_color">#0c1d75</field>
-            <field name="logo_position">left</field>
-            <field name="tagline_position">left</field>
-            <field name="customer_position">left</field>
-            <field name="company_position">right</field>
-            <field name="company_text_color">#17822f</field>
-        </record>
-        <record id="custom_fiscal_template" model="havano.invoice.template">
-            <field name="name">Seller Buyer Layout</field>
-            <field name="base_layout">custom_fiscal</field>
-        </record>
-        <record id="showline_template" model="havano.invoice.template">
-            <field name="name">Showline</field>
-            <field name="base_layout">showline</field>
-            <field name="base_color">#c07d38</field>
-            <field name="heading_text_color">#ffffff</field>
-            <field name="text_color">#222222</field>
-        </record>
-        <record id="showline_v2_template" model="havano.invoice.template">
-            <field name="name">Showline V2</field>
-            <field name="base_layout">showline_v2</field>
-            <field name="base_color">#555f6e</field>
-            <field name="heading_text_color">#111827</field>
-            <field name="text_color">#111827</field>
-        </record>
+        <!-- 1. Showline V3 -->
         <record id="showline_v3_template" model="havano.invoice.template">
             <field name="name">Showline V3</field>
             <field name="base_layout">showline_v3</field>
             <field name="base_color">#111827</field>
             <field name="heading_text_color">#111827</field>
             <field name="text_color">#111827</field>
+            <field name="customer_text_color">#111827</field>
+            <field name="company_text_color">#111827</field>
+            <field name="logo_position">right</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">left</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 2. Showline V2 -->
+        <record id="showline_v2_template" model="havano.invoice.template">
+            <field name="name">Showline V2</field>
+            <field name="base_layout">showline_v2</field>
+            <field name="base_color">#555f6e</field>
+            <field name="heading_text_color">#111827</field>
+            <field name="text_color">#111827</field>
+            <field name="customer_text_color">#111827</field>
+            <field name="company_text_color">#111827</field>
+            <field name="logo_position">right</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">left</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 3. Showline (V1) -->
+        <record id="showline_template" model="havano.invoice.template">
+            <field name="name">Showline</field>
+            <field name="base_layout">showline</field>
+            <field name="base_color">#c07d38</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#222222</field>
+            <field name="customer_text_color">#222222</field>
+            <field name="company_text_color">#222222</field>
+            <field name="logo_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 4. Tripple Fresh Letterhead -->
+        <record id="tripple_fresh_template" model="havano.invoice.template">
+            <field name="name">Tripple Fresh Letterhead</field>
+            <field name="base_layout">tripple_fresh</field>
+            <field name="base_color">#16a34a</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#111827</field>
+            <field name="customer_text_color">#111827</field>
+            <field name="company_text_color">#111827</field>
+            <field name="logo_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 5. Puremetrix Layout -->
+        <record id="puremetrix_template" model="havano.invoice.template">
+            <field name="name">Puremetrix Layout</field>
+            <field name="base_layout">puremetrix</field>
+            <field name="base_color">#000000</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#000000</field>
+            <field name="customer_text_color">#000000</field>
+            <field name="company_text_color">#000000</field>
+            <field name="logo_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 6. Fresh Company (Fiscal Tax Invoice) -->
+        <record id="fresh_template" model="havano.invoice.template">
+            <field name="name">Fresh Company (Fiscal Tax Invoice)</field>
+            <field name="base_layout">fresh</field>
+            <field name="base_color">#059669</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#111827</field>
+            <field name="customer_text_color">#111827</field>
+            <field name="company_text_color">#111827</field>
+            <field name="logo_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 7. Seller Buyer Layout -->
+        <record id="custom_fiscal_template" model="havano.invoice.template">
+            <field name="name">Seller Buyer Layout</field>
+            <field name="base_layout">custom_fiscal</field>
+            <field name="base_color">#1e293b</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#111827</field>
+            <field name="customer_text_color">#111827</field>
+            <field name="company_text_color">#111827</field>
+            <field name="logo_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 8. Modern Layout -->
+        <record id="Modern" model="havano.invoice.template">
+            <field name="name">Modern</field>
+            <field name="base_layout">modern</field>
+            <field name="base_color">#732673</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#000000</field>
+            <field name="customer_text_color">#d117d1</field>
+            <field name="company_text_color">#2439d6</field>
+            <field name="logo_position">right</field>
+            <field name="tagline_position">right</field>
+            <field name="customer_position">right</field>
+            <field name="company_position">left</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 9. Normal Layout -->
+        <record id="normal_template" model="havano.invoice.template">
+            <field name="name">Normal Layout</field>
+            <field name="base_layout">normal</field>
+            <field name="base_color">#1e3a8a</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#111827</field>
+            <field name="customer_text_color">#1e3a8a</field>
+            <field name="company_text_color">#111827</field>
+            <field name="logo_position">left</field>
+            <field name="tagline_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 10. Old Standard Layout -->
+        <record id="old_standard_template" model="havano.invoice.template">
+            <field name="name">Old Standard Layout</field>
+            <field name="base_layout">old</field>
+            <field name="base_color">#374151</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#111827</field>
+            <field name="customer_text_color">#1f2937</field>
+            <field name="company_text_color">#111827</field>
+            <field name="logo_position">left</field>
+            <field name="tagline_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
+        </record>
+
+        <!-- 11. Standard (Odoo Default) -->
+        <record id="standard" model="havano.invoice.template">
+            <field name="name">Standard (Default Layout)</field>
+            <field name="base_layout">default</field>
+            <field name="base_color">#ff7733</field>
+            <field name="heading_text_color">#ffffff</field>
+            <field name="text_color">#000000</field>
+            <field name="customer_text_color">#0c1d75</field>
+            <field name="company_text_color">#17822f</field>
+            <field name="logo_position">left</field>
+            <field name="tagline_position">left</field>
+            <field name="customer_position">left</field>
+            <field name="company_position">right</field>
+            <field name="sales_person">True</field>
+            <field name="show_sales_person_email">True</field>
+            <field name="description">True</field>
+            <field name="tax_value">True</field>
+            <field name="reference">True</field>
+            <field name="address">True</field>
+            <field name="city">True</field>
+            <field name="country">True</field>
+            <field name="vat">True</field>
         </record>
     </data>
 </odoo>
