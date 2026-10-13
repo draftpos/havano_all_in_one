@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Havano All In One - Developed by Tatenda Tembo</title>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #0ea5e9;
+      --dark: #0f172a;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #1e293b;
+      --muted: #64748b;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: #f8fafc;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .hero-banner {
+      width: 100%;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.15);
+      margin-bottom: 32px;
+      display: block;
+    }
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      color: var(--dark);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .badge-primary {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      color: #4338ca;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+    }
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .card-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark);
+      margin: 0 0 8px 0;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+    }
+    .developer-box {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 36px;
+      box-shadow: 0 10px 25px -5px rgba(30, 27, 75, 0.25);
+    }
+    .developer-avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 3px solid #818cf8;
+      object-fit: cover;
+    }
+    .developer-info h3 {
+      margin: 0 0 6px 0;
+      font-size: 22px;
+      color: #ffffff;
+    }
+    .developer-info p {
+      margin: 0 0 10px 0;
+      color: #94a3b8;
+      font-size: 14px;
+    }
+    .developer-links a {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 13px;
+      margin-right: 16px;
+    }
+    .developer-links a:hover {
+      text-decoration: underline;
+    }
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Animated SVG Banner -->
+    <img src="havano_banner.svg" class="hero-banner" alt="Havano All In One"/>
+
+    <!-- Badges Row -->
+    <div class="badge-bar">
+      <span class="badge badge-primary">✨ Odoo 19.0 Enterprise &amp; Community</span>
+      <span class="badge">👨‍💻 Developed by Tatenda Tembo</span>
+      <span class="badge">📑 Flagship Showline V3 Engine</span>
+      <span class="badge">⚖️ LGPL-3 Licensed</span>
+      <span class="badge">🚀 Production Ready</span>
+    </div>
+
+    <!-- Feature Cards Grid -->
+    <div class="grid-2">
+      <div class="card">
+        <span class="card-icon">📑</span>
+        <h4 class="card-title">Document &amp; Invoice Studio</h4>
+        <p class="card-desc">Featuring Showline V3 layout with clean horizontal borders, bold field labels, multi-bank &amp; branch support, transparent authorised signatures, and instant in-browser PDF previews.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🛡️</span>
+        <h4 class="card-title">Anti-Duplication Shield</h4>
+        <p class="card-desc">Real-time prevention of duplicate Contacts (Exact Name, Email, Phone, Address) and Products (Name and default_code SKU reference) with strict Customer/Supplier isolation.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">💊</span>
+        <h4 class="card-title">Clinical Pharmacy Suite</h4>
+        <p class="card-desc">Pharmaceutical product controls, dosage tracking, active ingredient strength, prescription &amp; controlled substance monitoring, and doctor prescriber linkages.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">📊</span>
+        <h4 class="card-title">IFRS Financial Reports &amp; Ratios</h4>
+        <p class="card-desc">Standardized multi-step Profit &amp; Loss, IFRS Balance Sheet, Statement of Changes in Equity, and real-time Financial Ratios dashboard (Liquidity, Solvency, Margin, ROE/ROA).</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🎨</span>
+        <h4 class="card-title">Custom Login Builder &amp; White-Labeling</h4>
+        <p class="card-desc">Left, Center, and Right auth layout templates, custom background media or hex colors, root URL redirect, and granular Accounting menu rebranding.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">📈</span>
+        <h4 class="card-title">Sales Profitability Intelligence</h4>
+        <p class="card-desc">Daily sales auditing, category and item-level profitability analysis, margin calculation taking into account landed costs, and sales return monitoring.</p>
+      </div>
+    </div>
+
+    <!-- Developer Attribution Box -->
+    <div class="developer-box">
+      <img src="https://avatars.githubusercontent.com/u/198754167?v=4" class="developer-avatar" alt="Tatenda Tembo"/>
+      <div class="developer-info">
+        <h3>Developed by Tatenda Tembo</h3>
+        <p>Lead Odoo Enterprise Systems Architect &amp; Software Engineer &bull; Havano / DraftPOS</p>
+        <div class="developer-links">
+          <a href="https://github.com/tatendatembojnr-code" target="_blank">🔗 GitHub: @tatendatembojnr-code</a>
+          <a href="mailto:tatendatembojnr@gmail.com">📧 tatendatembojnr@gmail.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>Licensed under GNU Lesser General Public License v3.0 (LGPL-3). Copyright &copy; 2026 Tatenda Tembo / Havano.</p>
+    </div>
+  </div>
+</body>
+</html>
